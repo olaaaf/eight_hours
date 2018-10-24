@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="circle_width">310dp</dimen>
+    <dimen name="circle_height">310dp</dimen>
+    <dimen name="circle_view_width">320dp</dimen>
+    <dimen name="circle_view_height">320dp</dimen>
+    <dimen name="circle_stroke">10dp</dimen>
+    <color name="circle_color">#47525E</color>
+    <color name="drag_color">#e25033</color>
+    <dimen name="arc_stroke">11dp</dimen>
+
+    <array name="colors">
+        <item>#f8bbd0</item>
+        <item>#e0f7fa</item>
+        <item>#90caf9</item>
+        <item>#b388ff</item>
+        <item>#ea80fc</item>
+    </array>
+</resources>
