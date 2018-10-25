@@ -19,6 +19,10 @@ public class Circle extends View {
     float alpha;
     boolean dragging = false;
 
+    public boolean is_gitWorking(){
+        return true;
+    }
+
     public Circle(Context context){
         super(context);
         init(context);
