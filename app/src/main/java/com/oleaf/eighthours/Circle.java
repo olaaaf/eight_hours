@@ -20,7 +20,7 @@ public class Circle extends View {
     boolean dragging = false;
 
     public boolean is_gitWorking(){
-        return true;
+        return false;
     }
 
     public Circle(Context context){
