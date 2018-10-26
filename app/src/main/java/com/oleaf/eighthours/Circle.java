@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +19,7 @@ public class Circle extends View {
     Home home;
     float alpha;
     boolean dragging = false;
+    Gestures gestures;
 
     public Circle(Context context){
         super(context);
@@ -42,6 +44,25 @@ public class Circle extends View {
         rectangle = new RectF((resources.getDimension(R.dimen.circle_view_width)-width) / 2f, (resources.getDimension(R.dimen.circle_view_height)-height) / 2f, width, height);
         colors = resources.obtainTypedArray(R.array.colors);
         home = (Home)getContext();
+        gestures = new Gestures(64) {
+            @Override
+            protected void onTap(float x, float y) {
+                Log.d("Single Tap", "" + calculateAlpha(x, y));
+            }
+
+            @Override
+            protected void onDragStop(float x, float y) {
+                dragging = false;
+                invalidate();
+            }
+
+            @Override
+            protected void onDrag(float x, float y) {
+                calculateAlpha(x, y);
+                dragging = true;
+                invalidate();
+            }
+        };
     }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -57,15 +78,7 @@ public class Circle extends View {
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d("Circle", ""+event.getActionMasked());
-        if (event.getActionMasked() == MotionEvent.ACTION_MOVE){
-            Log.d("Circle", ""+calculateAlpha(event.getX(), event.getY()));
-            dragging = true;
-            invalidate();
-        }else if(event.getActionMasked() == MotionEvent.ACTION_UP){
-            dragging = false;
-            invalidate();
-        }
+        gestures.touchEvent(event);
         return true;
     }
     private float calculateAlpha(float x, float y){

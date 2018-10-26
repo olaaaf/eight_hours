@@ -7,6 +7,11 @@
         android:layout_height="match_parent"
         tools:context=".Home">
 
+    <view android:visibility="visible" android:layout_height="320dp" class="com.oleaf.eighthours.Circle"
+          id="@+id/view" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+          android:layout_width="320dp" android:layout_marginBottom="3dp" android:id="@+id/circle"
+          app:layout_constraintHorizontal_bias="0.494" app:layout_constraintVertical_bias="0.502"/>
     <TextView
             android:text="Activity Menu"
             android:layout_width="wrap_content"
@@ -19,11 +24,6 @@
             android:layout_marginTop="16dp" app:fontFamily="@font/roboto" android:textSize="20sp"
             android:textAllCaps="false" android:typeface="normal" android:textColor="@color/circle_color"
             android:textStyle="bold"/>
-    <view android:visibility="visible" android:layout_height="320dp" class="com.oleaf.eighthours.Circle"
-          id="@+id/view" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
-          app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-          android:layout_width="320dp" android:layout_marginBottom="3dp" android:id="@+id/circle"
-          app:layout_constraintHorizontal_bias="0.494" app:layout_constraintVertical_bias="0.502"/>
     <TextView
             android:text="8 hours\n0 min"
             android:gravity="center"
