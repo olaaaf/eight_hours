@@ -6,20 +6,21 @@ import android.content.res.TypedArray;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.DragEvent;
-import android.view.GestureDetector;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class Circle extends View {
+public class Circle extends View{
     public TypedArray colors;
     Paint paint;
     Resources resources;
     RectF rectangle;
     Home home;
+    Gestures gestures;
+    Vibrator vibrator;
+    boolean vibrated = false;
     float alpha;
     boolean dragging = false;
-    Gestures gestures;
 
     public Circle(Context context){
         super(context);
@@ -44,7 +45,8 @@ public class Circle extends View {
         rectangle = new RectF((resources.getDimension(R.dimen.circle_view_width)-width) / 2f, (resources.getDimension(R.dimen.circle_view_height)-height) / 2f, width, height);
         colors = resources.obtainTypedArray(R.array.colors);
         home = (Home)getContext();
-        gestures = new Gestures(64, 500) {
+        vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        gestures = new Gestures(64, 400) {
             @Override
             protected void onTap(float x, float y) {
                 Log.d("Single Tap", "" + calculateAlpha(x, y));
@@ -62,11 +64,15 @@ public class Circle extends View {
             }
             @Override
             protected void longPress(float x, float y) {
+                if (!vibrated){
+                    vibrated = true;
+                    vibrator.vibrate(20);
+                }
                 Log.d("Long Press", ""+calculateAlpha(x,y));
             }
             @Override
             protected void longPressStop(float x, float y) {
-
+                vibrated = false;
             }
         };
     }
