@@ -12,15 +12,16 @@ import android.view.View;
 
 public class Circle extends View{
     public TypedArray colors;
+    public static final float alpha_threshold = 30;
     Paint paint;
     Resources resources;
     RectF rectangle;
     Home home;
     Gestures gestures;
     Vibrator vibrator;
-    boolean vibrated = false;
-    float alpha;
-    boolean dragging = false;
+    boolean vibrated;
+    float alpha, start_alpha;
+    boolean dragging, onRight;
 
     public Circle(Context context){
         super(context);
@@ -53,6 +54,8 @@ public class Circle extends View{
             }
             @Override
             protected void onDragStop(float x, float y) {
+                calculateAlpha(x, y);
+                home.newActivity(convertAlpha(alpha-(start_alpha+90)), 1);
                 dragging = false;
                 invalidate();
             }
@@ -77,10 +80,6 @@ public class Circle extends View{
         };
     }
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        //TODO
-    }
-    @Override
     protected void onDraw(Canvas canvas) {
         drawBaseCircle(canvas);
         drawSpans(canvas);
@@ -95,7 +94,16 @@ public class Circle extends View{
     }
     private float calculateAlpha(float x, float y){
         alpha = -1f * (float)(Math.toDegrees(Math.atan2(x-rectangle.width()/2.0f, y-rectangle.height()/2.0f))-180f);
+        clampAlpha();
         return alpha;
+    }
+
+    private int convertAlpha(float ... a)   {
+        if (a.length > 0){
+            return Math.round(a[0]/360f * home.maximum);
+        }else{
+            return Math.round(alpha/360f * home.maximum);
+        }
     }
     private void drawBaseCircle(Canvas canvas){
         paint.setStrokeWidth(resources.getDimension(R.dimen.circle_stroke));
@@ -104,20 +112,40 @@ public class Circle extends View{
     }
     private void drawSpans(Canvas canvas){
         paint.setStrokeWidth(resources.getDimension(R.dimen.arc_stroke));
-        float s_alpha = -90;
+        start_alpha = -90;
         for (Home.Span span : home.spans){
             paint.setColor(colors.getColor(span.color_index, 0));
-            drawArc(canvas, s_alpha, span.minutes/home.maximum * 360.0f);
-            s_alpha += span.minutes/home.maximum * 360.0f;
+            drawArc(canvas, start_alpha, span.minutes/home.maximum * 360.0f);
+            start_alpha += span.minutes/home.maximum * 360.0f;
         }
     }
     private void drawDragging(Canvas canvas){
         paint.setColor(resources.getColor(R.color.drag_color));
-        drawArc(canvas, -90, alpha);
+        drawArc(canvas, start_alpha, alpha-(start_alpha+90));
     }
     private void drawArc(Canvas canvas, float startAngle, float sweepAngle){
         Path arc = new Path();
         arc.addArc(rectangle, startAngle, sweepAngle);
         canvas.drawPath(arc, paint);
+    }
+
+    private float clampAlpha(){
+        if (alpha >= (360 - alpha_threshold * 2) && alpha < (360-alpha_threshold)){
+            onRight = false;
+        }else if (alpha >= alpha_threshold  && alpha <= alpha_threshold * 2){
+            onRight = true;
+        }
+        if (start_alpha + 90 > alpha_threshold){
+            onRight = false;
+        }
+        if (alpha >= (360 - alpha_threshold) && onRight){
+            alpha = 0;
+        }else if(alpha < alpha_threshold && !onRight){
+            alpha = 360;
+        }
+        if (alpha < start_alpha + 90){
+            alpha = start_alpha + 90;
+        }
+        return alpha;
     }
 }

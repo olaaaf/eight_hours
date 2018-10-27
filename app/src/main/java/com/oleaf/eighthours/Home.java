@@ -29,15 +29,14 @@ public class Home extends AppCompatActivity {
         return spans;
     }
     public void newActivity(int minutes, int color_index){
+        if (minutes < grid/2f){
+            return;
+        }
         int ix = findColor(color_index)+1;
         Span[] cp = new Span[spans.length+1];
-        for (int i = 0; i < ix; ++i){
-            cp[i] = spans[i];
-        }
+        for (int i = 0; i < ix; ++i) cp[i] = spans[i];
         cp[ix] = new Span(minutes, color_index);
-        for (int i = ix+1; i < spans.length+1; ++i){
-            cp[i] = spans[i-1];
-        }
+        for (int i = ix+1; i < spans.length+1; ++i) cp[i] = spans[i - 1];
         spans = cp.clone();
     }
     private int findColor(int search){
