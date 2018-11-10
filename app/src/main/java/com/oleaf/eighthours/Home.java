@@ -46,6 +46,7 @@ public class Home extends AppCompatActivity {
         public Span(int _minutes, int _color_index){
             minutes = clamp(round_up(_minutes));
             color_index = (byte) _color_index;
+            time_left -= minutes;
         }
         private int round_up(int time) {
             return Math.round(time / grid) * grid;
@@ -57,6 +58,7 @@ public class Home extends AppCompatActivity {
             }else if(time < 0){
                 time = 0;
             }
+
             return time;
         }
     }

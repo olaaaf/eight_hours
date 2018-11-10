@@ -56,6 +56,7 @@ public class Circle extends View{
             protected void onDragStop(float x, float y) {
                 calculateAlpha(x, y);
                 home.newActivity(convertAlpha(alpha-(start_alpha+90)), 1);
+                home.updateText(home.time_left);
                 dragging = false;
                 invalidate();
             }
