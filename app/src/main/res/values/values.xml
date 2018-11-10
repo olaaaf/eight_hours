@@ -8,7 +8,10 @@
     <color name="circle_color">#47525E</color>
     <color name="drag_color">#e25033</color>
     <dimen name="arc_stroke">11dp</dimen>
-
+    <dimen name="top_guide">0.25</dimen>
+    <dimen name="bottom_guide">0.75</dimen>
+    <dimen name="left_guide">0.11</dimen>
+    <dimen name="right_guide">0.89</dimen>
     <array name="colors">
         <item>#f8bbd0</item>
         <item>#e0f7fa</item>

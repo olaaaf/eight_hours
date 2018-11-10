@@ -63,6 +63,7 @@ public class Circle extends View{
             protected void onDrag(float x, float y) {
                 calculateAlpha(x, y);
                 dragging = true;
+                home.updateText(convertAlpha(alpha-(start_alpha+90)));
                 invalidate();
             }
             @Override
@@ -100,9 +101,9 @@ public class Circle extends View{
 
     private int convertAlpha(float ... a)   {
         if (a.length > 0){
-            return Math.round(a[0]/360f * home.maximum);
+            return Math.round(Math.round(a[0]/360f * home.maximum) / home.grid) * home.grid;
         }else{
-            return Math.round(alpha/360f * home.maximum);
+            return Math.round(Math.round(alpha/360f * home.maximum) / home.grid) * home.grid;
         }
     }
     private void drawBaseCircle(Canvas canvas){

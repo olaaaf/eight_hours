@@ -1,16 +1,7 @@
 package com.oleaf.eighthours;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.*;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 public class Home extends AppCompatActivity {
@@ -18,11 +9,13 @@ public class Home extends AppCompatActivity {
     public int maximum = 60 * 8;
     public int time_left = maximum;
     public Span[] spans;
+    public TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        textView = findViewById(R.id.textView);
         spans = new Span[0];
     }
     public Span[] getSpans(){
@@ -66,5 +59,27 @@ public class Home extends AppCompatActivity {
             }
             return time;
         }
+    }
+
+    public void updateText(int minutes){
+        int hours = (int) Math.floor((float)minutes/60f);
+        minutes = minutes - (hours*60);
+        char text[];
+        int characters = 13;
+
+        char x = '\0';
+        if ((int)Math.floor(minutes/10f) != 0) {
+            x = Character.forDigit((int) Math.floor(minutes / 10f), 5);
+        }
+        if (hours != 1){
+            text = new char[]{Character.forDigit(hours, 24), ' ', 'h', 'o', 'u', 'r',  's', '\n',
+                    x, Character.forDigit(minutes%10, 9),' ', 'm', 'i', 'n'};
+            characters++;
+
+        }else{
+            text = new char[]{Character.forDigit(hours, 24), ' ', 'h', 'o', 'u', 'r', '\n',
+                    x, Character.forDigit(minutes%10, 9), ' ', 'm', 'i', 'n'};
+        }
+        textView.setText(text, 0, characters);
     }
 }
