@@ -9,6 +9,8 @@ import android.util.Log;
 import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 public class Circle extends View{
     public TypedArray colors;
@@ -22,6 +24,8 @@ public class Circle extends View{
     boolean vibrated;
     float alpha, start_alpha;
     boolean dragging, onRight;
+    Animation animation;
+    Menu menu;
 
     public Circle(Context context){
         super(context);
@@ -55,8 +59,7 @@ public class Circle extends View{
             @Override
             protected void onDragStop(float x, float y) {
                 calculateAlpha(x, y);
-                home.newActivity(convertAlpha(alpha-(start_alpha+90)), 1);
-                home.updateText(home.time_left);
+                menuUp();
                 dragging = false;
                 invalidate();
             }
@@ -80,7 +83,9 @@ public class Circle extends View{
                 vibrated = false;
             }
         };
+        animation = AnimationUtils.loadAnimation(c, R.anim.circle_up);
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         drawBaseCircle(canvas);
@@ -130,7 +135,6 @@ public class Circle extends View{
         arc.addArc(rectangle, startAngle, sweepAngle);
         canvas.drawPath(arc, paint);
     }
-
     private float clampAlpha(){
         if (alpha >= (360 - alpha_threshold * 2) && alpha < (360-alpha_threshold)){
             onRight = false;
@@ -149,5 +153,24 @@ public class Circle extends View{
             alpha = start_alpha + 90;
         }
         return alpha;
+    }
+
+    /*
+    menu functions
+    TODO: Canceling
+    TODO: Editing time
+    TODO: Confirming
+     */
+    public void menuUp(){
+        home.popup();
+    }
+    public void cancel(){
+        alpha = 0;
+        invalidate();
+        home.updateText(home.time_left);
+    }
+    public void confirm(){
+        home.newActivity(convertAlpha(alpha-(start_alpha+90)), 1);
+        home.updateText(home.time_left);
     }
 }
