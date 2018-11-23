@@ -16,6 +16,7 @@ public class Menu extends View {
     RectF[] rectangles;
     float rounded_radius;
     Paint paint;
+    boolean up;
 
     Menu(Context context){
         super(context);
@@ -43,9 +44,17 @@ public class Menu extends View {
         paint.setAntiAlias(true);
     }
 
+    //popup tools
     public void popUp(){
         setVisibility(View.VISIBLE);
         invalidate();
+        up = true;
+    }
+    public void down(){
+        up = false;
+    }
+    public boolean isUp(){
+        return up;
     }
 
     @Override

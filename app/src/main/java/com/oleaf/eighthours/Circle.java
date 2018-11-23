@@ -25,7 +25,6 @@ public class Circle extends View{
     float alpha, start_alpha;
     boolean dragging, onRight;
     Animation animation;
-    Menu menu;
 
     public Circle(Context context){
         super(context);
@@ -41,6 +40,9 @@ public class Circle extends View{
     }
     private void init(Context c){
         resources = c.getResources();
+        home = (Home)getContext();
+        vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+
         paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
@@ -49,8 +51,7 @@ public class Circle extends View{
         float height = resources.getDimension(R.dimen.circle_height)-paint.getStrokeWidth();
         rectangle = new RectF((resources.getDimension(R.dimen.circle_view_width)-width) / 2f, (resources.getDimension(R.dimen.circle_view_height)-height) / 2f, width, height);
         colors = resources.obtainTypedArray(R.array.colors);
-        home = (Home)getContext();
-        vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        animation = AnimationUtils.loadAnimation(c, R.anim.circle_up);
         gestures = new Gestures(64, 400) {
             @Override
             protected void onTap(float x, float y) {
@@ -58,9 +59,9 @@ public class Circle extends View{
             }
             @Override
             protected void onDragStop(float x, float y) {
+                if (!home.isMenuUp())
+                    menuUp();
                 calculateAlpha(x, y);
-                menuUp();
-                dragging = false;
                 invalidate();
             }
             @Override
@@ -83,7 +84,6 @@ public class Circle extends View{
                 vibrated = false;
             }
         };
-        animation = AnimationUtils.loadAnimation(c, R.anim.circle_up);
     }
 
     @Override
@@ -107,9 +107,9 @@ public class Circle extends View{
 
     private int convertAlpha(float ... a)   {
         if (a.length > 0){
-            return Math.round(Math.round(a[0]/360f * home.maximum) / home.grid) * home.grid;
+            return Math.round(Math.round(a[0]/360f * home.maximum) / Home.grid) * Home.grid;
         }else{
-            return Math.round(Math.round(alpha/360f * home.maximum) / home.grid) * home.grid;
+            return Math.round(Math.round(alpha/360f * home.maximum) / Home.grid) * Home.grid;
         }
     }
     private void drawBaseCircle(Canvas canvas){
@@ -120,7 +120,7 @@ public class Circle extends View{
     private void drawSpans(Canvas canvas){
         paint.setStrokeWidth(resources.getDimension(R.dimen.arc_stroke));
         start_alpha = -90;
-        for (Home.Span span : home.spans){
+        for (Home.Span span : home.getSpans()){
             paint.setColor(colors.getColor(span.color_index, 0));
             drawArc(canvas, start_alpha, span.minutes/home.maximum * 360.0f);
             start_alpha += span.minutes/home.maximum * 360.0f;
@@ -157,14 +157,13 @@ public class Circle extends View{
 
     /*
     menu functions
-    TODO: Canceling
-    TODO: Editing time
-    TODO: Confirming
+    TODO: Animation
      */
     public void menuUp(){
         home.popup();
     }
     public void cancel(){
+        dragging = false;
         alpha = 0;
         invalidate();
         home.updateText(home.time_left);
@@ -172,5 +171,8 @@ public class Circle extends View{
     public void confirm(){
         home.newActivity(convertAlpha(alpha-(start_alpha+90)), 1);
         home.updateText(home.time_left);
+        dragging = false;
+        alpha = 0;
+        invalidate();
     }
 }

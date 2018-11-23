@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -14,40 +13,57 @@ public class Home extends AppCompatActivity {
     public static final int grid = 20;
     public int maximum = 60 * 8;
     public int time_left = maximum;
-    public Span[] spans;
-    public TextView textView, desc, cancel;
-    public Menu menu;
+    private Span[] spans;
+    private TextView hoursText, desc, cancel_button, confirm_button;
     private Animation popUpCircle, popUpMenu, downCircle, downMenu;
-    public int color_pressed, color_normal;
+    private Menu menu;
+    private boolean menuUp;
+    private int color_pressed, color_normal;
     private Circle circle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        textView = findViewById(R.id.textView);
         spans = new Span[0];
+        color_normal = ContextCompat.getColor(this, R.color.cancel); color_pressed = ContextCompat.getColor(this, R.color.cancel_pressed);
+
+        hoursText = findViewById(R.id.textView);
         menu = findViewById(R.id.menu_view);
         desc = findViewById(R.id.textView3);
         circle = findViewById(R.id.circle);
-        cancel = findViewById(R.id.cancel);
-        color_normal = ContextCompat.getColor(this, R.color.cancel); color_pressed = ContextCompat.getColor(this, R.color.cancel_pressed);
+        cancel_button = findViewById(R.id.cancel);
+        confirm_button = findViewById(R.id.confirm);
 
         popUpCircle = AnimationUtils.loadAnimation(this, R.anim.circle_up);
         popUpMenu = AnimationUtils.loadAnimation(this, R.anim.menu_popup);
         downCircle = AnimationUtils.loadAnimation(this, R.anim.circle_down);
         downMenu = AnimationUtils.loadAnimation(this, R.anim.menu_down);
 
-        cancel.setOnTouchListener(new View.OnTouchListener() {
+        cancel_button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP){
                     //TODO: Canceling caneling :) [check if pointer position is on text]
                     cancel();
-                    cancel.setTextColor(color_normal);
+                    cancel_button.setTextColor(color_normal);
                 }
                 else if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    cancel.setTextColor(color_pressed);
+                    cancel_button.setTextColor(color_pressed);
+                }
+                return true;
+            }
+        });
+        confirm_button.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP){
+                    //TODO: Canceling caneling :) [check if pointer position is on text]
+                    confirm();
+                    confirm_button.setTextColor(color_normal);
+                }
+                else if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    confirm_button.setTextColor(color_pressed);
                 }
                 return true;
             }
@@ -75,10 +91,10 @@ public class Home extends AppCompatActivity {
         }
         return -1;
     }
-    public class Span{
+    class Span{
         float minutes;
         byte color_index;
-        public Span(int _minutes, int _color_index){
+        Span(int _minutes, int _color_index){
             minutes = clamp(round_up(_minutes));
             color_index = (byte) _color_index;
             time_left -= minutes;
@@ -97,25 +113,48 @@ public class Home extends AppCompatActivity {
             return time;
         }
     }
-    public void popup(){
-        cancel.setVisibility(View.VISIBLE);
-        menu.popUp();
-        circle.startAnimation(popUpCircle);
-        cancel.startAnimation(popUpMenu);
-        menu.startAnimation(popUpMenu);
-        desc.startAnimation(popUpCircle);
-        desc.setText(R.string.drag_to_edit);
-        textView.startAnimation(popUpCircle);
+    public boolean isMenuUp(){
+        return menuUp;
     }
-
+    public void popup(){
+        menuUp = true;
+        menu.popUp();
+        animation(true);
+    }
+    public void confirm(){
+        if (!menuUp)
+            return;
+        menuUp = false;
+        circle.confirm();
+        animation(false);
+    }
     public void cancel(){
+        if (!menuUp)
+            return;
+        menuUp = false;
         circle.cancel();
-        cancel.startAnimation(downMenu);
-        circle.startAnimation(downCircle);
-        menu.startAnimation(downMenu);
-        desc.setText(R.string.drag_to_add);
-        desc.startAnimation(downCircle);
-        textView.startAnimation(downCircle);
+        animation(false);
+    }
+    private void animation(boolean show){
+        if (show){
+            confirm_button.setVisibility(View.VISIBLE);
+            cancel_button.setVisibility(View.VISIBLE);
+            circle.startAnimation(popUpCircle);
+            confirm_button.startAnimation(popUpMenu);
+            cancel_button.startAnimation(popUpMenu);
+            menu.startAnimation(popUpMenu);
+            desc.startAnimation(popUpCircle);
+            desc.setText(R.string.drag_to_edit);
+            hoursText.startAnimation(popUpCircle);
+        }else{
+            confirm_button.startAnimation(downMenu);
+            cancel_button.startAnimation(downMenu);
+            circle.startAnimation(downCircle);
+            menu.startAnimation(downMenu);
+            desc.setText(R.string.drag_to_add);
+            desc.startAnimation(downCircle);
+            hoursText.startAnimation(downCircle);
+        }
     }
     public void updateText(int minutes){
         int hours = (int) Math.floor((float)minutes/60f);
@@ -136,6 +175,6 @@ public class Home extends AppCompatActivity {
             text = new char[]{Character.forDigit(hours, 24), ' ', 'h', 'o', 'u', 'r', '\n',
                     x, Character.forDigit(minutes%10, 9), ' ', 'm', 'i', 'n'};
         }
-        textView.setText(text, 0, characters);
+        hoursText.setText(text, 0, characters);
     }
 }
