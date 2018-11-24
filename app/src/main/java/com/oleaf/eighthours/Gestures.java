@@ -3,6 +3,7 @@ package com.oleaf.eighthours;
 import android.view.MotionEvent;
 
 public abstract class Gestures{
+    public static float def_difference=64, def_longpress=400;
     private float lastX, lastY;
     private float dif;
     private float currentDifference;

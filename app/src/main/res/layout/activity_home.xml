@@ -68,7 +68,7 @@
         android:id="@+id/menu_view"
         class="com.oleaf.eighthours.Menu"
         android:layout_width="@dimen/circle_width"
-        android:layout_height="15dp"
+        android:layout_height="20dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,9 +102,6 @@
         app:layout_constraintTop_toTopOf="@+id/guideline4"
         app:layout_constraintVertical_bias="0.8" />
 
-    <!--
-    TODO: implement focusable
-    -->
     <TextView
         android:id="@+id/confirm"
         android:layout_width="122dp"

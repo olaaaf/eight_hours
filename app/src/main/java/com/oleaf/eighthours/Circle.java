@@ -104,7 +104,6 @@ public class Circle extends View{
         clampAlpha();
         return alpha;
     }
-
     private int convertAlpha(float ... a)   {
         if (a.length > 0){
             return Math.round(Math.round(a[0]/360f * home.maximum) / Home.grid) * Home.grid;
