@@ -96,7 +96,8 @@ public class Circle extends View{
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        gestures.touchEvent(event);
+        if (Home.viewContains(this, event.getX(), event.getY(), 0.2f ))
+            gestures.touchEvent(event);
         return true;
     }
     private float calculateAlpha(float x, float y){
@@ -126,7 +127,10 @@ public class Circle extends View{
         }
     }
     private void drawDragging(Canvas canvas){
-        paint.setColor(resources.getColor(R.color.drag_color));
+        if (home.getChosen() < 0)
+            paint.setColor(resources.getColor(R.color.drag_color));
+        else
+            paint.setColor(colors.getColor(home.getChosen(), 0 ));
         drawArc(canvas, start_alpha, alpha-(start_alpha+90));
     }
     private void drawArc(Canvas canvas, float startAngle, float sweepAngle){

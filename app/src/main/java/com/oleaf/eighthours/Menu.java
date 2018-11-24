@@ -18,7 +18,7 @@ public class Menu extends View {
     private static final float tollerance = 0.2f;
     public static final int animation_duration = 150;
     private float rounded_radius;
-    private int chosen=-1, next_chosen;
+    private int chosen=-1, next_chosen=-1;
     boolean up;
     private Resources resources;
     private RectF[] rectangles;
@@ -26,6 +26,7 @@ public class Menu extends View {
     private Gestures gestures;
     private Paint paint;
     private ValueAnimator va, def;
+    private Home home;
 
     Menu(Context context){
         super(context);
@@ -41,6 +42,7 @@ public class Menu extends View {
     }
     private void init(Context context){
         resources = context.getResources();
+        home = (Home) getContext();
         colors = resources.obtainTypedArray(R.array.colors);
         rectangles = new RectF[colors.length()];
         final float rect_width = resources.getDimension(R.dimen.circle_width) / (rectangles.length *(1 + pause) + pause);
@@ -55,7 +57,10 @@ public class Menu extends View {
             protected void onTap(float x, float y) {
                 if (!va.isRunning()){
                     next_chosen = indexPressed(x, y);
-                    def.start();
+                    if (next_chosen != chosen){
+                        def.start();
+                        home.colorChanged();
+                    }
                 }
             }
             @Override
@@ -136,7 +141,6 @@ public class Menu extends View {
         }
         return -1;
     }
-
     public int getChosen(){
         return next_chosen;
     }
@@ -147,9 +151,7 @@ public class Menu extends View {
         invalidate();
     }
     private static boolean rectContains(RectF rect, float x){
-        if (x <= rect.right + rect.width()*tollerance)
-            return true;
-        return false;
+        return x <= rect.right + rect.width() * tollerance;
     }
     private void resetRect(){
         final float rect_width = resources.getDimension(R.dimen.circle_width) / (rectangles.length *(1 + pause) + pause);

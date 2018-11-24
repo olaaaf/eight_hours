@@ -200,19 +200,21 @@ public class Home extends AppCompatActivity {
         }
         hoursText.setText(text, 0, characters);
     }
-
+    public int getChosen(){
+        return menu.getChosen();
+    }
+    public void colorChanged(){
+        circle.invalidate();
+    }
     /**
      * @param x ought to be the local position derived form the view
      * @param y ought to be the local position derived form the view
      */
-    public static boolean viewContains(View view, float x, float y, int ... bounds){
+    public static boolean viewContains(View view, float x, float y, float ... bounds){
         int width = view.getWidth(); int height = view.getHeight();
         if (bounds.length > 0){
-            if (x < -width*bounds[0] || y < -height*bounds[0] || x > width*(1f + bounds[0]) || y > height*(1+bounds[0]))
-                return false;
-        }else if (x < -width*button_bounds || y < -height*button_bounds || x > width*(1f + button_bounds) || y > height*(1+button_bounds)){
-            return false;
-        }
-        return true;
+            return !(x < -width * bounds[0]) && !(y < -height * bounds[0]) && !(x > width * (1f + bounds[0])) && !(y > height * (1 + bounds[0]));
+        }else
+            return !(x < -width * button_bounds) && !(y < -height * button_bounds) && !(x > width * (1f + button_bounds)) && !(y > height * (1 + button_bounds));
     }
 }
