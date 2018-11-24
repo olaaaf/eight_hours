@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="circle_color">#47525E</color>
+    <color name="drag_color">#e25033</color>
+    <color name="cancel">#47525E</color>
+    <color name="cancel_pressed">#a5bad1</color>
 </resources>

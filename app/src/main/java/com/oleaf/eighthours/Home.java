@@ -3,14 +3,17 @@ package com.oleaf.eighthours;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import org.w3c.dom.Text;
 
 public class Home extends AppCompatActivity {
     public static final int grid = 20;
+    public static final float button_bounds = 0.1f;
     public int maximum = 60 * 8;
     public int time_left = maximum;
     private Span[] spans;
@@ -39,13 +42,14 @@ public class Home extends AppCompatActivity {
         popUpMenu = AnimationUtils.loadAnimation(this, R.anim.menu_popup);
         downCircle = AnimationUtils.loadAnimation(this, R.anim.circle_down);
         downMenu = AnimationUtils.loadAnimation(this, R.anim.menu_down);
-
+        // TODO: check which solution is better performance-wise
         cancel_button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP){
-                    //TODO: Canceling caneling :) [check if pointer position is on text]
-                    cancel();
+                    if (viewContains(cancel_button, event.getX(), event.getY())){
+                        cancel();
+                    }
                     cancel_button.setTextColor(color_normal);
                 }
                 else if(event.getAction() == MotionEvent.ACTION_DOWN){
@@ -58,8 +62,9 @@ public class Home extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP){
-                    //TODO: Canceling caneling :) [check if pointer position is on text]
-                    confirm();
+                    if(viewContains(confirm_button, event.getX(), event.getY())){
+                        confirm();
+                    }
                     confirm_button.setTextColor(color_normal);
                 }
                 else if(event.getAction() == MotionEvent.ACTION_DOWN){
@@ -68,6 +73,26 @@ public class Home extends AppCompatActivity {
                 return true;
             }
         });
+        View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    if (v.getId() == R.id.cancel){
+                        cancel_button.setTextColor(color_pressed);
+                    }else{
+                        confirm_button.setTextColor(color_pressed);
+                    }
+                }else{
+                    if (v.getId() == R.id.cancel){
+                        cancel_button.setTextColor(color_normal);
+                    }else{
+                        confirm_button.setTextColor(color_normal);
+                    }
+                }
+            }
+        };
+        confirm_button.setOnFocusChangeListener(onFocusChangeListener);
+        cancel_button.setOnFocusChangeListener(onFocusChangeListener);
     }
     public Span[] getSpans(){
         return spans;
@@ -176,5 +201,17 @@ public class Home extends AppCompatActivity {
                     x, Character.forDigit(minutes%10, 9), ' ', 'm', 'i', 'n'};
         }
         hoursText.setText(text, 0, characters);
+    }
+
+    /**
+     * @param x ought to be the local position derived form the view
+     * @param y ought to be the local position derived form the view
+     */
+    public boolean viewContains(View view, float x, float y){
+        int width = view.getWidth(); int height = view.getHeight();
+        if (x < -width*button_bounds || y < -height*button_bounds || x > width*(1f + button_bounds) || y > height*(1+button_bounds)){
+            return false;
+        }
+        return true;
     }
 }

@@ -2,4 +2,6 @@
     <string name="app_name">Eight Hours</string>
     <string name="drag_to_add">Drag to add</string>
     <string name="drag_to_edit">Drag to edit</string>
+    <string name="cancel">cancel</string>
+    <string name="confirm">confirm</string>
 </resources>
