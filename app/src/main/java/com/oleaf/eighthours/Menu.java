@@ -59,7 +59,7 @@ public class Menu extends View {
                     next_chosen = indexPressed(x, y);
                     if (next_chosen != chosen){
                         def.start();
-                        home.colorChanged();
+                        home.chosenChanged();
                     }
                 }
             }
@@ -147,7 +147,7 @@ public class Menu extends View {
     public void popUp(){
         resetRect();
         chosen = -1;
-        setVisibility(View.VISIBLE);
+        //setVisibility(View.VISIBLE);
         invalidate();
     }
     private static boolean rectContains(RectF rect, float x){

@@ -22,6 +22,7 @@ public class Circle extends View{
     Gestures gestures;
     Vibrator vibrator;
     boolean vibrated;
+    int rectangle_offset;
     float alpha, start_alpha;
     boolean dragging, onRight;
     Animation animation;
@@ -49,7 +50,7 @@ public class Circle extends View{
         paint.setStrokeWidth(resources.getDimension(R.dimen.circle_stroke));
         float width = resources.getDimension(R.dimen.circle_width)-paint.getStrokeWidth();
         float height = resources.getDimension(R.dimen.circle_height)-paint.getStrokeWidth();
-        rectangle = new RectF((resources.getDimension(R.dimen.circle_view_width)-width) / 2f, (resources.getDimension(R.dimen.circle_view_height)-height) / 2f, width, height);
+        rectangle = new RectF(paint.getStrokeWidth(), paint.getStrokeWidth(), width, height);
         colors = resources.obtainTypedArray(R.array.colors);
         animation = AnimationUtils.loadAnimation(c, R.anim.circle_up);
         gestures = new Gestures(64, 400) {
@@ -59,9 +60,9 @@ public class Circle extends View{
             }
             @Override
             protected void onDragStop(float x, float y) {
+                calculateAlpha(x, y);
                 if (!home.isMenuUp())
                     menuUp();
-                calculateAlpha(x, y);
                 invalidate();
             }
             @Override
@@ -112,6 +113,9 @@ public class Circle extends View{
             return Math.round(Math.round(alpha/360f * home.maximum) / Home.grid) * Home.grid;
         }
     }
+    private float convertMinutes(int a){
+        return ((float)a)/((float)home.maximum)*360.0f;
+    }
     private void drawBaseCircle(Canvas canvas){
         paint.setStrokeWidth(resources.getDimension(R.dimen.circle_stroke));
         paint.setColor(resources.getColor(R.color.circle_color));
@@ -120,23 +124,24 @@ public class Circle extends View{
     private void drawSpans(Canvas canvas){
         paint.setStrokeWidth(resources.getDimension(R.dimen.arc_stroke));
         start_alpha = -90;
-        for (Home.Span span : home.getSpans()){
-            paint.setColor(colors.getColor(span.color_index, 0));
-            drawArc(canvas, start_alpha, span.minutes/home.maximum * 360.0f);
-            start_alpha += span.minutes/home.maximum * 360.0f;
+        int add_alpha = 1;
+        for (int index=0; index < home.getSpans().length; ++index){
+            paint.setColor(colors.getColor(home.getSpans()[index].color_index, 0));
+            if (index == home.getSpans().length-1)
+                add_alpha = 0;
+            drawArc(canvas, start_alpha, add_alpha+home.getSpans()[index].minutes/home.maximum * 360.0f);
+            start_alpha += home.getSpans()[index].minutes/home.maximum * 360.0f;
         }
     }
     private void drawDragging(Canvas canvas){
-        if (home.getChosen() < 0)
-            paint.setColor(resources.getColor(R.color.drag_color));
-        else
-            paint.setColor(colors.getColor(home.getChosen(), 0 ));
-        drawArc(canvas, start_alpha, alpha-(start_alpha+90));
+        paint.setColor(resources.getColor(R.color.drag_color));
+        if (home.getChosen() > -1){
+            paint.setColor(colors.getColor(home.getChosen(), 0));
+        }
+        drawArc(canvas, start_alpha,  alpha-(start_alpha+90));
     }
     private void drawArc(Canvas canvas, float startAngle, float sweepAngle){
-        Path arc = new Path();
-        arc.addArc(rectangle, startAngle, sweepAngle);
-        canvas.drawPath(arc, paint);
+        canvas.drawArc(rectangle, startAngle, sweepAngle, false, paint);
     }
     private float clampAlpha(){
         if (alpha >= (360 - alpha_threshold * 2) && alpha < (360-alpha_threshold)){
@@ -163,7 +168,10 @@ public class Circle extends View{
     TODO: Animation
      */
     public void menuUp(){
-        home.popup();
+        if (convertAlpha() > 0)
+            home.popup();
+        else
+            dragging = false;
     }
     public void cancel(){
         dragging = false;
@@ -172,7 +180,7 @@ public class Circle extends View{
         home.updateText(home.time_left);
     }
     public void confirm(){
-        home.newActivity(convertAlpha(alpha-(start_alpha+90)), 1);
+        home.newActivity(convertAlpha(alpha-(start_alpha+90)), home.getChosen());
         home.updateText(home.time_left);
         dragging = false;
         alpha = 0;

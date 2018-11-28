@@ -6,8 +6,14 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
+
+import java.util.Arrays;
+
+import static java.util.Arrays.copyOf;
 
 public class Home extends AppCompatActivity {
     public static final int grid = 20;
@@ -21,6 +27,7 @@ public class Home extends AppCompatActivity {
     private boolean menuUp;
     private int color_pressed, color_normal;
     private Circle circle;
+    private NumberIndicatorText indicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,7 @@ public class Home extends AppCompatActivity {
         circle = findViewById(R.id.circle);
         cancel_button = findViewById(R.id.cancel);
         confirm_button = findViewById(R.id.confirm);
+        indicator = findViewById(R.id.indicator);
 
         popUpCircle = AnimationUtils.loadAnimation(this, R.anim.circle_up);
         popUpMenu = AnimationUtils.loadAnimation(this, R.anim.menu_popup);
@@ -99,13 +107,20 @@ public class Home extends AppCompatActivity {
         if (minutes < grid/2f){
             return;
         }
-        int ix = findColor(color_index)+1;
+        int ix = 0;//findColor(color_index)+1;
         Span[] cp = new Span[spans.length+1];
+        indicator.update(cp.length);
+        if (ix == 0){
+            spans = copyOf(spans, spans.length+1);
+            spans[spans.length-1] = new Span(minutes, color_index);
+            return;
+        }
         for (int i = 0; i < ix; ++i) cp[i] = spans[i];
         cp[ix] = new Span(minutes, color_index);
         for (int i = ix+1; i < spans.length+1; ++i) cp[i] = spans[i - 1];
         spans = cp.clone();
     }
+    //TODO: delete activity
     private int findColor(int search){
         for (int ix = spans.length-1; ix >= 0; --ix){
             if (spans[ix].color_index == search){
@@ -162,22 +177,25 @@ public class Home extends AppCompatActivity {
         if (show){
             confirm_button.setVisibility(View.VISIBLE);
             cancel_button.setVisibility(View.VISIBLE);
-            circle.startAnimation(popUpCircle);
+            //circle.startAnimation(popUpCircle); //due to a drawing bug
             confirm_button.startAnimation(popUpMenu);
             cancel_button.startAnimation(popUpMenu);
             menu.startAnimation(popUpMenu);
-            desc.startAnimation(popUpCircle);
+            //desc.startAnimation(popUpCircle);
             desc.setText(R.string.drag_to_edit);
-            hoursText.startAnimation(popUpCircle);
+            //hoursText.startAnimation(popUpCircle);
         }else{
             confirm_button.startAnimation(downMenu);
             cancel_button.startAnimation(downMenu);
-            circle.startAnimation(downCircle);
+            //circle.startAnimation(downCircle);
             menu.startAnimation(downMenu);
             desc.setText(R.string.drag_to_add);
-            desc.startAnimation(downCircle);
-            hoursText.startAnimation(downCircle);
+            //desc.startAnimation(downCircle);
+            //hoursText.startAnimation(downCircle);
         }
+    }
+    public void chosenChanged(){
+        circle.invalidate();
     }
     public void updateText(int minutes){
         int hours = (int) Math.floor((float)minutes/60f);
@@ -203,8 +221,8 @@ public class Home extends AppCompatActivity {
     public int getChosen(){
         return menu.getChosen();
     }
-    public void colorChanged(){
-        circle.invalidate();
+    public boolean isAnimationDone(){
+        return circle.getAnimation().hasEnded();
     }
     /**
      * @param x ought to be the local position derived form the view
@@ -216,5 +234,8 @@ public class Home extends AppCompatActivity {
             return !(x < -width * bounds[0]) && !(y < -height * bounds[0]) && !(x > width * (1f + bounds[0])) && !(y > height * (1 + bounds[0]));
         }else
             return !(x < -width * button_bounds) && !(y < -height * button_bounds) && !(x > width * (1f + button_bounds)) && !(y > height * (1 + button_bounds));
+    }
+    public void colorChosen(){
+
     }
 }
