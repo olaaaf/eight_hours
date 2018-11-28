@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.*;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.view.ViewTreeObserver;
 
 public class NumberIndicatorText extends AppCompatTextView {
     private static final int duration = 300;

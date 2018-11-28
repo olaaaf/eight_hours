@@ -4,4 +4,10 @@
     <string name="drag_to_edit">Drag to edit</string>
     <string name="cancel">cancel</string>
     <string name="confirm">confirm</string>
+    <string-array name="menu_buttons">
+        <item>Circle</item>
+        <item>List</item>
+        <item>Timer</item>
+        <item>Settings</item>
+    </string-array>
 </resources>

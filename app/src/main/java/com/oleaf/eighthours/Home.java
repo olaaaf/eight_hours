@@ -6,16 +6,12 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
-import android.widget.TextView;
-
-import java.util.Arrays;
+import android.widget.*;
 
 import static java.util.Arrays.copyOf;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public static final int grid = 20;
     public static final float button_bounds = 0.1f;
     public int maximum = 60 * 8;
@@ -43,6 +39,11 @@ public class Home extends AppCompatActivity {
         cancel_button = findViewById(R.id.cancel);
         confirm_button = findViewById(R.id.confirm);
         indicator = findViewById(R.id.indicator);
+        Spinner menu = findViewById(R.id.drop_down);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.menu_buttons, R.layout.menu_item);
+        adapter.setDropDownViewResource(R.layout.menu_dropdown);
+        menu.setAdapter(adapter);
+        menu.setOnItemSelectedListener(this);
 
         popUpCircle = AnimationUtils.loadAnimation(this, R.anim.circle_up);
         popUpMenu = AnimationUtils.loadAnimation(this, R.anim.menu_popup);
@@ -129,6 +130,18 @@ public class Home extends AppCompatActivity {
         }
         return -1;
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String p = parent.getItemAtPosition(position).toString();
+        Toast.makeText(this, p, Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
     class Span{
         float minutes;
         byte color_index;
