@@ -13,6 +13,7 @@ public class NumberIndicatorText extends AppCompatTextView {
     PointF center;
     Paint paint;
     int count;
+    int color;
 
     NumberIndicatorText(Context context){
         super(context);
@@ -29,7 +30,8 @@ public class NumberIndicatorText extends AppCompatTextView {
 
     void init(Context context){
         paint = new Paint();
-        paint.setColor(context.getResources().getColor(R.color.indicator_circle));
+        color = context.getResources().getColor(R.color.indicator_circle);
+        paint.setColor(color);
         paint.setStyle(Paint.Style.FILL);
         post(new Runnable() {
             @Override

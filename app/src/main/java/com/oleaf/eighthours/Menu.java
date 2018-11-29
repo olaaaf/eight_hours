@@ -57,6 +57,8 @@ public class Menu extends View {
             protected void onTap(float x, float y) {
                 if (!va.isRunning()){
                     next_chosen = indexPressed(x, y);
+                    if (chosen == -1)
+                        home.colorChosen();
                     if (next_chosen != chosen){
                         def.start();
                         home.chosenChanged();
@@ -72,7 +74,6 @@ public class Menu extends View {
             @Override
             protected void longPressStop(float x, float y) {}
         };
-        ValueAnimator a = new ValueAnimator();
         va = new ValueAnimator(); def = new ValueAnimator();
         va.setFloatValues(0f, 1f); def.setFloatValues(1f, 0f);
         va.setDuration(animation_duration); def.setDuration(animation_duration/3);
@@ -147,7 +148,7 @@ public class Menu extends View {
     public void popUp(){
         resetRect();
         chosen = -1;
-        //setVisibility(View.VISIBLE);
+        next_chosen = -1;
         invalidate();
     }
     private static boolean rectContains(RectF rect, float x){

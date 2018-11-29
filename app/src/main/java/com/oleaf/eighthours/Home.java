@@ -24,6 +24,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     private int color_pressed, color_normal;
     private Circle circle;
     private NumberIndicatorText indicator;
+    private boolean colorChosen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +174,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         animation(true);
     }
     public void confirm(){
-        if (!menuUp)
+        if (!menuUp || !colorChosen)
             return;
         menuUp = false;
         circle.confirm();
@@ -188,23 +189,18 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     }
     private void animation(boolean show){
         if (show){
-            confirm_button.setVisibility(View.VISIBLE);
             cancel_button.setVisibility(View.VISIBLE);
-            //circle.startAnimation(popUpCircle); //due to a drawing bug
-            confirm_button.startAnimation(popUpMenu);
             cancel_button.startAnimation(popUpMenu);
             menu.startAnimation(popUpMenu);
-            //desc.startAnimation(popUpCircle);
             desc.setText(R.string.drag_to_edit);
-            //hoursText.startAnimation(popUpCircle);
         }else{
-            confirm_button.startAnimation(downMenu);
+            if (getChosen() != -1)
+                confirm_button.startAnimation(downMenu);
+            menu.popUp();
+            colorChosen = false;
             cancel_button.startAnimation(downMenu);
-            //circle.startAnimation(downCircle);
             menu.startAnimation(downMenu);
             desc.setText(R.string.drag_to_add);
-            //desc.startAnimation(downCircle);
-            //hoursText.startAnimation(downCircle);
         }
     }
     public void chosenChanged(){
@@ -249,6 +245,8 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
             return !(x < -width * button_bounds) && !(y < -height * button_bounds) && !(x > width * (1f + button_bounds)) && !(y > height * (1 + button_bounds));
     }
     public void colorChosen(){
-
+        colorChosen = true;
+        confirm_button.setVisibility(View.VISIBLE);
+        confirm_button.startAnimation(popUpMenu);
     }
 }
