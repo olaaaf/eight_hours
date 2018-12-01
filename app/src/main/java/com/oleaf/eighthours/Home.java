@@ -196,6 +196,8 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         }else{
             if (getChosen() != -1)
                 confirm_button.startAnimation(downMenu);
+            else
+                confirm_button.setVisibility(View.INVISIBLE);
             menu.popUp();
             colorChosen = false;
             cancel_button.startAnimation(downMenu);
