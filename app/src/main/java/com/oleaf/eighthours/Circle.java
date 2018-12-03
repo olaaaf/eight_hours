@@ -108,13 +108,13 @@ public class Circle extends View{
     }
     private int convertAlpha(float ... a)   {
         if (a.length > 0){
-            return Math.round(Math.round(a[0]/360f * home.maximum) / Home.grid) * Home.grid;
+            return Math.round(Math.round(a[0]/360f * home.activities.maximum) / Home.grid) * Home.grid;
         }else{
-            return Math.round(Math.round(alpha/360f * home.maximum) / Home.grid) * Home.grid;
+            return Math.round(Math.round(alpha/360f * home.activities.maximum) / Home.grid) * Home.grid;
         }
     }
     private float convertMinutes(int a){
-        return ((float)a)/((float)home.maximum)*360.0f;
+        return ((float)a)/((float)home.activities.maximum)*360.0f;
     }
     private void drawBaseCircle(Canvas canvas){
         paint.setStrokeWidth(resources.getDimension(R.dimen.circle_stroke));
@@ -125,12 +125,12 @@ public class Circle extends View{
         paint.setStrokeWidth(resources.getDimension(R.dimen.arc_stroke));
         start_alpha = -90;
         int add_alpha = 1;
-        for (int index=0; index < home.getSpans().length; ++index){
-            paint.setColor(colors.getColor(home.getSpans()[index].color_index, 0));
-            if (index == home.getSpans().length-1)
+        for (int index=0; index < home.activities.getSpans().length; ++index){
+            paint.setColor(colors.getColor(home.activities.getSpans()[index].color_index, 0));
+            if (index == home.activities.getSpans().length-1)
                 add_alpha = 0;
-            drawArc(canvas, start_alpha, add_alpha+home.getSpans()[index].minutes/home.maximum * 360.0f);
-            start_alpha += home.getSpans()[index].minutes/home.maximum * 360.0f;
+            drawArc(canvas, start_alpha, add_alpha+home.activities.getSpans()[index].minutes/home.activities.maximum * 360.0f);
+            start_alpha += home.activities.getSpans()[index].minutes/home.activities.maximum * 360.0f;
         }
     }
     private void drawDragging(Canvas canvas){
@@ -177,11 +177,11 @@ public class Circle extends View{
         dragging = false;
         alpha = 0;
         invalidate();
-        home.updateText(home.time_left);
+        home.updateText(home.activities.time_left);
     }
-    public void confirm(){
-        home.newActivity(convertAlpha(alpha-(start_alpha+90)), home.getChosen());
-        home.updateText(home.time_left);
+    public void confirm() {
+        home.addActivity(convertAlpha(alpha-(start_alpha+90)), home.getChosen());
+        home.updateText(home.activities.time_left);
         dragging = false;
         alpha = 0;
         invalidate();

@@ -14,9 +14,7 @@ import static java.util.Arrays.copyOf;
 public class Home extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public static final int grid = 20;
     public static final float button_bounds = 0.1f;
-    public int maximum = 60 * 8;
-    public int time_left = maximum;
-    private Span[] spans;
+    Activities activities;
     private TextView hoursText, desc, cancel_button, confirm_button;
     private Animation popUpCircle, popUpMenu, downCircle, downMenu;
     private Menu menu;
@@ -25,11 +23,12 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     private Circle circle;
     private NumberIndicatorText indicator;
     private boolean colorChosen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activities = new Activities(this);
         setContentView(R.layout.activity_home);
-        spans = new Span[0];
         color_normal = ContextCompat.getColor(this, R.color.cancel); color_pressed = ContextCompat.getColor(this, R.color.cancel_pressed);
         color_inactive = ContextCompat.getColor(this, R.color.inactive_text);
         hoursText = findViewById(R.id.textView);
@@ -103,45 +102,9 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         confirm_button.setOnFocusChangeListener(onFocusChangeListener);
         cancel_button.setOnFocusChangeListener(onFocusChangeListener);
     }
-    public Span[] getSpans(){
-        return spans;
-    }
-    public void newActivity(int minutes, int color_index){
-        if (minutes < grid/2f){
-            return;
-        }
-        int ix = 0;//findColor(color_index)+1;
-        Span[] cp = new Span[spans.length+1];
-        indicator.update(cp.length);
-        if (ix == 0){
-            spans = copyOf(spans, spans.length+1);
-            spans[spans.length-1] = new Span(minutes, color_index);
-            return;
-        }
-        for (int i = 0; i < ix; ++i) cp[i] = spans[i];
-        cp[ix] = new Span(minutes, color_index);
-        for (int i = ix+1; i < spans.length+1; ++i) cp[i] = spans[i - 1];
-        spans = cp.clone();
-    }
-    public boolean deleteActivity(int index){
-        if (index >= spans.length || index < 0)
-            return false;
-        Span[] cp = new Span[spans.length-1];
-        for (int ix=0; ix < spans.length; ++ix){
-            if (ix < index)
-                cp[ix] = spans[ix];
-            else if (ix > index)
-                cp[ix-1] = spans[ix];
-        }
-        return true;
-    }
-    private int findColor(int search){
-        for (int ix = spans.length-1; ix >= 0; --ix){
-            if (spans[ix].color_index == search){
-                return ix;
-            }
-        }
-        return -1;
+    public void addActivity(int min, int color){
+        activities.newActivity(min, color);
+        indicator.update(activities.getLength());
     }
 
     @Override
@@ -154,28 +117,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
-    class Span{
-        float minutes;
-        byte color_index;
-        Span(int _minutes, int _color_index){
-            minutes = clamp(round_up(_minutes));
-            color_index = (byte) _color_index;
-            time_left -= minutes;
-        }
-        private int round_up(int time) {
-            return Math.round(time / grid) * grid;
-        }
-        //no built in clamp function
-        private int clamp(int time){
-            if (time > time_left){
-                time = time_left;
-            }else if(time < 0){
-                time = 0;
-            }
 
-            return time;
-        }
-    }
     public boolean isMenuUp(){
         return menuUp;
     }
