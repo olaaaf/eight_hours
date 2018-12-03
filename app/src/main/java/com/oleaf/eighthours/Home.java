@@ -21,18 +21,17 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     private Animation popUpCircle, popUpMenu, downCircle, downMenu;
     private Menu menu;
     private boolean menuUp;
-    private int color_pressed, color_normal;
+    private int color_pressed, color_normal, color_inactive;
     private Circle circle;
     private NumberIndicatorText indicator;
     private boolean colorChosen;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         spans = new Span[0];
         color_normal = ContextCompat.getColor(this, R.color.cancel); color_pressed = ContextCompat.getColor(this, R.color.cancel_pressed);
-
+        color_inactive = ContextCompat.getColor(this, R.color.inactive_text);
         hoursText = findViewById(R.id.textView);
         menu = findViewById(R.id.menu_view);
         desc = findViewById(R.id.textView3);
@@ -69,13 +68,13 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         confirm_button.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP){
+                if (event.getAction() == MotionEvent.ACTION_UP && colorChosen){
                     if(viewContains(confirm_button, event.getX(), event.getY())){
                         confirm();
                     }
                     confirm_button.setTextColor(color_normal);
                 }
-                else if(event.getAction() == MotionEvent.ACTION_DOWN){
+                else if(event.getAction() == MotionEvent.ACTION_DOWN && colorChosen){
                     confirm_button.setTextColor(color_pressed);
                 }
                 return true;
@@ -88,13 +87,15 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
                     if (v.getId() == R.id.cancel){
                         cancel_button.setTextColor(color_pressed);
                     }else{
-                        confirm_button.setTextColor(color_pressed);
+                        if (colorChosen)
+                            confirm_button.setTextColor(color_pressed);
                     }
                 }else{
                     if (v.getId() == R.id.cancel){
                         cancel_button.setTextColor(color_normal);
                     }else{
-                        confirm_button.setTextColor(color_normal);
+                        if (colorChosen)
+                            confirm_button.setTextColor(color_normal);
                     }
                 }
             }
@@ -122,7 +123,18 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         for (int i = ix+1; i < spans.length+1; ++i) cp[i] = spans[i - 1];
         spans = cp.clone();
     }
-    //TODO: delete activity
+    public boolean deleteActivity(int index){
+        if (index >= spans.length || index < 0)
+            return false;
+        Span[] cp = new Span[spans.length-1];
+        for (int ix=0; ix < spans.length; ++ix){
+            if (ix < index)
+                cp[ix] = spans[ix];
+            else if (ix > index)
+                cp[ix-1] = spans[ix];
+        }
+        return true;
+    }
     private int findColor(int search){
         for (int ix = spans.length-1; ix >= 0; --ix){
             if (spans[ix].color_index == search){
@@ -140,7 +152,6 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     class Span{
@@ -176,6 +187,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     public void confirm(){
         if (!menuUp || !colorChosen)
             return;
+        colorChosen = false;
         menuUp = false;
         circle.confirm();
         animation(false);
@@ -183,23 +195,24 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     public void cancel(){
         if (!menuUp)
             return;
+        colorChosen = false;
         menuUp = false;
         circle.cancel();
         animation(false);
     }
     private void animation(boolean show){
         if (show){
+            confirm_button.setVisibility(View.VISIBLE);
             cancel_button.setVisibility(View.VISIBLE);
             cancel_button.startAnimation(popUpMenu);
+            confirm_button.startAnimation(popUpMenu);
+            confirm_button.setTextColor(color_inactive);
             menu.startAnimation(popUpMenu);
             desc.setText(R.string.drag_to_edit);
         }else{
-            if (getChosen() != -1)
-                confirm_button.startAnimation(downMenu);
-            else
-                confirm_button.setVisibility(View.INVISIBLE);
             menu.popUp();
             colorChosen = false;
+            confirm_button.startAnimation(downMenu);
             cancel_button.startAnimation(downMenu);
             menu.startAnimation(downMenu);
             desc.setText(R.string.drag_to_add);
@@ -248,7 +261,6 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     }
     public void colorChosen(){
         colorChosen = true;
-        confirm_button.setVisibility(View.VISIBLE);
-        confirm_button.startAnimation(popUpMenu);
+        confirm_button.setTextColor(color_normal);
     }
 }
