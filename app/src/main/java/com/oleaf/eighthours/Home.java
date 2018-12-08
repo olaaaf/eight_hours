@@ -1,15 +1,19 @@
 package com.oleaf.eighthours;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 
-import static java.util.Arrays.copyOf;
+import java.lang.reflect.Type;
+import java.util.Objects;
+
 
 public class Home extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public static final int grid = 20;
@@ -109,14 +113,29 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String p = parent.getItemAtPosition(position).toString();
-        Toast.makeText(this, p, Toast.LENGTH_SHORT);
+        String activity = parent.getItemAtPosition(position).toString();
+        changeActivity(activity);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
+    private void changeActivity(String ac){
+        Intent intent = new Intent();
+        switch (ac){
+            case "Circle":
+                return;
+            case "List":
+                intent = new Intent(Home.this, List.class);
+                break;
+
+                default:
+                    return;
+        }
+        intent.putExtra("activities", activities);
+        startActivity(intent);
+    }
 
     public boolean isMenuUp(){
         return menuUp;
@@ -205,4 +224,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         colorChosen = true;
         confirm_button.setTextColor(color_normal);
     }
+
+    //TODO: change activities animation
+    //TODO: better activities changing
 }
