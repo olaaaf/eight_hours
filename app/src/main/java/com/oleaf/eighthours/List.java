@@ -12,7 +12,6 @@ public class List extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         getExtras();
-        Log.d("activities", ""+activities.getSpans());
     }
 
     private void getExtras(){

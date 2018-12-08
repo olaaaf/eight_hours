@@ -3,7 +3,6 @@ package com.oleaf.eighthours;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import static java.util.Arrays.copyOf;
 
@@ -11,7 +10,6 @@ public class Activities implements Parcelable {
     public static final int grid = 20;
     public int maximum = 60 * 8;
     int time_left = maximum;
-    public Calendar calendar;
     private Span[] spans;
 
     Activities(boolean a){
@@ -20,7 +18,6 @@ public class Activities implements Parcelable {
 
     Activities(Context context){
         spans = new Span[0];
-        calendar = new Calendar(context);
     }
 
     private Activities(Parcel in){

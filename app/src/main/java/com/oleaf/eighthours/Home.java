@@ -1,37 +1,38 @@
 package com.oleaf.eighthours;
 
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 
-import java.lang.reflect.Type;
-import java.util.Objects;
 
 
 public class Home extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public static final int grid = 20;
     public static final float button_bounds = 0.1f;
-    Activities activities;
-    private TextView hoursText, desc, cancel_button, confirm_button;
-    private Animation popUpCircle, popUpMenu, downCircle, downMenu;
-    private Menu menu;
-    private boolean menuUp;
+
+    private boolean menuUp, colorChosen;
     private int color_pressed, color_normal, color_inactive;
-    private Circle circle;
+
+    private TextView hoursText, desc, cancel_button, confirm_button;
     private NumberIndicatorText indicator;
-    private boolean colorChosen;
+    private Animation popUpMenu, downMenu;
+    private Menu menu;
+    private Circle circle;
+
+    public Activities activities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activities = new Activities(this);
+
+        if (!getExtras())
+            activities = new Activities(this);
+
         setContentView(R.layout.activity_home);
         color_normal = ContextCompat.getColor(this, R.color.cancel); color_pressed = ContextCompat.getColor(this, R.color.cancel_pressed);
         color_inactive = ContextCompat.getColor(this, R.color.inactive_text);
@@ -48,9 +49,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         menu.setAdapter(adapter);
         menu.setOnItemSelectedListener(this);
 
-        popUpCircle = AnimationUtils.loadAnimation(this, R.anim.circle_up);
         popUpMenu = AnimationUtils.loadAnimation(this, R.anim.menu_popup);
-        downCircle = AnimationUtils.loadAnimation(this, R.anim.circle_down);
         downMenu = AnimationUtils.loadAnimation(this, R.anim.menu_down);
         // TODO: check which solution is better performance-wise
         cancel_button.setOnTouchListener(new View.OnTouchListener() {
@@ -111,31 +110,25 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         indicator.update(activities.getLength());
     }
 
+    //Activity changing
+    private boolean getExtras(){
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null)
+            return false;
+        if (bundle.size() < 1)
+            return false;
+        activities = bundle.getParcelable("activities");
+        return true;
+    }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String activity = parent.getItemAtPosition(position).toString();
-        changeActivity(activity);
+        String activityName = parent.getItemAtPosition(position).toString();
+        ChangingActivity.change(Home.this, "Circle", activityName, activities);
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
-    private void changeActivity(String ac){
-        Intent intent = new Intent();
-        switch (ac){
-            case "Circle":
-                return;
-            case "List":
-                intent = new Intent(Home.this, List.class);
-                break;
-
-                default:
-                    return;
-        }
-        intent.putExtra("activities", activities);
-        startActivity(intent);
-    }
 
     public boolean isMenuUp(){
         return menuUp;
@@ -206,9 +199,15 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     public int getChosen(){
         return menu.getChosen();
     }
+    public void colorChosen(){
+        colorChosen = true;
+        confirm_button.setTextColor(color_normal);
+    }
     public boolean isAnimationDone(){
         return circle.getAnimation().hasEnded();
     }
+    //TODO: change activities animation
+    //TODO: better activities changing
     /**
      * @param x ought to be the local position derived form the view
      * @param y ought to be the local position derived form the view
@@ -220,11 +219,4 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         }else
             return !(x < -width * button_bounds) && !(y < -height * button_bounds) && !(x > width * (1f + button_bounds)) && !(y > height * (1 + button_bounds));
     }
-    public void colorChosen(){
-        colorChosen = true;
-        confirm_button.setTextColor(color_normal);
-    }
-
-    //TODO: change activities animation
-    //TODO: better activities changing
 }
