@@ -12,6 +12,7 @@ public class List extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         getExtras();
+        findViewById(R.id.list_act);
     }
 
     private void getExtras(){

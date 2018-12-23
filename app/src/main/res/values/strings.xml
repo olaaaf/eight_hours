@@ -10,4 +10,6 @@
         <item>Timer</item>
         <item>Settings</item>
     </string-array>
+    <string name="start"><u>start</u></string>
+    <string name="delete"><u>delete</u></string>
 </resources>
