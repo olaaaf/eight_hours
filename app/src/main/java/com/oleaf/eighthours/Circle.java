@@ -24,7 +24,7 @@ public class Circle extends View{
     boolean vibrated;
     int rectangle_offset;
     float alpha, start_alpha;
-    boolean dragging, onRight;
+    boolean dragging, onRight, full;        //full - whether there's some time left
     Animation animation;
 
     public Circle(Context context){
@@ -60,25 +60,30 @@ public class Circle extends View{
             }
             @Override
             protected void onDragStop(float x, float y) {
-                calculateAlpha(x, y);
-                if (!home.isMenuUp())
-                    menuUp();
-                invalidate();
+                if (!full){
+                    calculateAlpha(x, y);
+                    if (!home.isMenuUp())
+                        menuUp();
+                    invalidate();
+                }
             }
             @Override
             protected void onDrag(float x, float y) {
-                calculateAlpha(x, y);
-                dragging = true;
-                home.updateText(convertAlpha(alpha-(start_alpha+90)));
-                invalidate();
+                if (!full){
+                    dragging = true;
+                    calculateAlpha(x, y);
+                    home.updateText(convertAlpha(alpha-(start_alpha+90)));
+                    invalidate();
+                }
             }
             @Override
             protected void longPress(float x, float y) {
                 if (!vibrated){
                     vibrated = true;
                     vibrator.vibrate(20);
+                    home.circleMenu.showUp(x+getLeft(), y+getTop(), calculateAlpha(x, y));
                 }
-                Log.d("Long Press", ""+calculateAlpha(x,y));
+                home.circleMenu.detectButtons(x+getLeft(), y+getTop());
             }
             @Override
             protected void longPressStop(float x, float y) {
@@ -160,12 +165,15 @@ public class Circle extends View{
         if (alpha < start_alpha + 90){
             alpha = start_alpha + 90;
         }
+        if (alpha < Activities.grid)
+            alpha = Activities.grid;
         return alpha;
     }
 
     /*
     menu functions
     TODO: Animation
+    TODO: deleting with the account of [full]
      */
     public void menuUp(){
         if (convertAlpha() > 0)
@@ -182,6 +190,8 @@ public class Circle extends View{
     public void confirm() {
         home.addActivity(convertAlpha(alpha-(start_alpha+90)), home.getChosen());
         home.updateText(home.activities.time_left);
+        if (home.activities.time_left <= 0)
+            full = true;
         dragging = false;
         alpha = 0;
         invalidate();

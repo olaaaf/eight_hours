@@ -3,13 +3,15 @@ package com.oleaf.eighthours;
 import android.view.MotionEvent;
 
 public abstract class Gestures{
-    public static float def_difference=64, def_longpress=400;
+    public static float def_difference=64;
+    public static long def_longpress=400;
     private float lastX, lastY;
     private float dif;
     private float currentDifference;
     private boolean drag;
     private long first_press;
     private long long_press;
+    //TODO private float drag_alpha;
 
     public Gestures(float dif){
         this.dif = dif;
@@ -77,4 +79,9 @@ public abstract class Gestures{
     protected abstract void onDrag(float x, float y);
     protected abstract void longPress(float x, float y);
     protected abstract void longPressStop(float x, float y);
+
+    //TODO: protected abstract void dragCircular(float x, float y)
+
 }
+
+

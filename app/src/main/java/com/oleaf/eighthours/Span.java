@@ -8,9 +8,12 @@ import static com.oleaf.eighthours.Activities.grid;
 public class Span implements Parcelable {
     float minutes;
     byte color_index;
+    String name;
+
     Span(int _minutes, int _color_index, int time_left){
         minutes = clamp(round_up(_minutes), time_left);
         color_index = (byte) _color_index;
+        name = "";
     }
     private int round_up(int time) {
         return Math.round(time / grid) * grid;
@@ -28,12 +31,14 @@ public class Span implements Parcelable {
     protected Span(Parcel in) {
         minutes = in.readFloat();
         color_index = in.readByte();
+        name = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeFloat(minutes);
         dest.writeByte(color_index);
+        dest.writeString(name);
     }
 
     @Override

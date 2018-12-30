@@ -25,6 +25,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     private Circle circle;
 
     public Activities activities;
+    public CircleMenu circleMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         adapter.setDropDownViewResource(R.layout.menu_dropdown);
         menu.setAdapter(adapter);
         menu.setOnItemSelectedListener(this);
-
+        circleMenu = findViewById(R.id.menu);
         popUpMenu = AnimationUtils.loadAnimation(this, R.anim.menu_popup);
         downMenu = AnimationUtils.loadAnimation(this, R.anim.menu_down);
         // TODO: check which solution is better performance-wise
@@ -107,7 +108,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     }
     public void addActivity(int min, int color){
         activities.newActivity(min, color);
-        indicator.update(activities.getLength());
+        //indicator.update(activities.getLength());
     }
 
     //Activity changing
@@ -118,6 +119,8 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         if (bundle.size() < 1)
             return false;
         activities = bundle.getParcelable("activities");
+        if (activities == null)
+            activities = new Activities(this);
         return true;
     }
     @Override
