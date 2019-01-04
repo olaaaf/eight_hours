@@ -104,8 +104,8 @@ public class Home extends AppCompatActivity {
         confirm_button.setOnFocusChangeListener(onFocusChangeListener);
         cancel_button.setOnFocusChangeListener(onFocusChangeListener);
     }
-    public void addActivity(int min, int color){
-        activities.newActivity(min, color);
+    public int addActivity(int min, int color){
+        return activities.newActivity(min, color);
         //indicator.update(activities.getLength());
     }
 

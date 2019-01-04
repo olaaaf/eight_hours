@@ -28,14 +28,15 @@ public class Activities implements Parcelable {
     }
     public int getLength() { return spans.length; }
     public boolean isActivity() { return (spans.length > 0); }
-    public void newActivity(int minutes, int color_index){
+    public int newActivity(int minutes, int color_index){
         if (minutes < grid/2f){
-            return;
+            return -1;
         }
         Span[] cp = new Span[spans.length+1];
         spans = copyOf(spans, spans.length+1);
         spans[spans.length-1] = new Span(minutes, color_index, time_left);
         time_left -= spans[spans.length-1].minutes;
+        return spans.length-1;
     }
     public int findColor(int search){
         for (int ix = spans.length-1; ix >= 0; --ix){

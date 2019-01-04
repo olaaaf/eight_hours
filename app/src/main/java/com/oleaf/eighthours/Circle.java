@@ -34,7 +34,7 @@ public class Circle extends View{
     private Handler handlerUpdater;
     private Runnable runnable;
     private boolean handlerWorking;
-    private static final int millisUpdate = 3;
+    private static final int millisUpdate = 5;
     //TODO: delete
     public static final boolean rounded = true;
 
@@ -62,7 +62,7 @@ public class Circle extends View{
             }
         };
         arcAnimations = (List<ArcAnimation>) new ArrayList();
-        draggingAnimation = new ArcAnimation(-1, 0, convertMinutes(Activities.grid));
+        draggingAnimation = new ArcAnimation(-1,100, -1f);
         draggingAnimation.stop();
         paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
@@ -88,7 +88,7 @@ public class Circle extends View{
             }
             @Override
             protected void onDragStop(float x, float y) {
-                if (!full){
+                if (!full && dragging){
                     calculateAlpha(x, y);
                     if (!home.isMenuUp())
                         menuUp();
@@ -164,7 +164,11 @@ public class Circle extends View{
             paint.setColor(colors.getColor(home.activities.getSpans()[index].color_index, 0));
             if (index == home.activities.getLength() - 1)
                 add_alpha = 0;
-            drawArcRounded(canvas, start_alpha, add_alpha+convertMinutes((int) home.activities.getSpans()[index].minutes), true);
+            float a = add_alpha+convertMinutes((int) home.activities.getSpans()[index].minutes);
+            int find = findAnimation(index);
+            if (find > -1)
+                a = add_alpha + arcAnimations.get(find).getAlpha();
+            drawArcRounded(canvas, start_alpha, a, true);
             start_alpha += home.activities.getSpans()[index].minutes/home.activities.maximum * 360.0f;
         }
     }
@@ -235,15 +239,29 @@ public class Circle extends View{
             handlerWorking = true;
             return;
         }
-        for (int ix = 0; ix < arcAnimations.size(); ++ix){
-            if (!arcAnimations.get(ix).finished()){
-                handlerWorking = true;
-                return;
-            }
-        }
+        if (!deleteAnimations() && arcAnimations.size() > 0)
+            handlerWorking = true;
         if (!handlerWorking)
             handlerUpdater.removeCallbacks(runnable);
     }
+    private int findAnimation(int id){
+        for (int ix = 0; ix < arcAnimations.size(); ++ix){
+            if (arcAnimations.get(ix).id == id)
+                return ix;
+        }
+        return -1;
+    }
+    private boolean deleteAnimations(boolean ... removed){
+        for (int ix= 0; ix < arcAnimations.size(); ++ix){
+            if (arcAnimations.get(ix).finished()){
+                arcAnimations.remove(ix);
+                deleteAnimations(true);
+            }
+        }
+        return (removed.length > 0);
+    }
+
+
     /*
     menu functions
         TODO: arc show up animation
@@ -265,7 +283,9 @@ public class Circle extends View{
         home.updateText(home.activities.time_left);
     }
     public void confirm() {
-        home.addActivity(convertAlpha(alpha-(start_alpha+90)), home.getChosen());
+        int id = home.addActivity(convertAlpha(alpha-(start_alpha+90)), home.getChosen());
+        //addAnimation(id, alpha - (start_alpha+90));
+        //arcAnimation();
         home.updateText(home.activities.time_left);
         if (home.activities.time_left <= 0)
             full = true;
@@ -275,10 +295,12 @@ public class Circle extends View{
     }
 
     public void addNew(){
-        if (!dragging){
+        checkAnimations();
+        if (!dragging && !handlerWorking){
             dragging = true;
-            alpha = convertMinutes((int) clamp(home.activities.time_left, Activities.grid,Activities.grid*3)) + start_alpha + 90;
+            alpha = convertMinutes((int) clamp(home.activities.time_left, Activities.grid,Activities.grid*3));
             draggingAnimation.start(alpha);
+            alpha += start_alpha + 90;
             arcAnimation();
             invalidate();
             menuUp();
@@ -290,7 +312,7 @@ public class Circle extends View{
     }
 
     private class ArcAnimation{
-        private static final int default_time = 50;
+        private static final int default_time = 230;
         int id;     // id of activity, if equalling -1, then pointing at dragging
         float time;
         long startTime;
@@ -300,12 +322,18 @@ public class Circle extends View{
         ArcAnimation(int id, float alpha){
             this(id, default_time, alpha, -1);
         }
+        ArcAnimation(int id, int milliseconds, float alpha){
+            this(id, milliseconds, alpha, -1);
+        }
         ArcAnimation(int id, int milliseconds, float alpha, float additionalAlpha){
             this.id = id;
             time = (float) milliseconds;
             startTime = System.currentTimeMillis();
             initialAlpha = alpha;
-            addAlpha = additionalAlpha;
+            if (additionalAlpha > 0)
+                addAlpha = additionalAlpha;
+            else
+                addAlpha = convertMinutes(Activities.grid);
         }
         ArcAnimation(int id, float alpha, float additionalAlpha){
             this(id, default_time, alpha, additionalAlpha);
