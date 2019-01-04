@@ -225,6 +225,7 @@ public class Circle extends View{
     private void addAnimation(int id, int millis, float alpha){
         arcAnimations.add(new ArcAnimation(id, millis, alpha));
     }
+
     private void arcAnimation(){
         if (!handlerWorking){
             handlerUpdater.postDelayed(runnable, millisUpdate);
@@ -283,9 +284,10 @@ public class Circle extends View{
         home.updateText(home.activities.time_left);
     }
     public void confirm() {
-        int id = home.addActivity(convertAlpha(alpha-(start_alpha+90)), home.getChosen());
-        //addAnimation(id, alpha - (start_alpha+90));
-        //arcAnimation();
+        float alp = (alpha - (start_alpha+90));
+        int id = home.addActivity(convertAlpha(alp), home.getChosen());
+        arcAnimations.add(new ArcAnimation(id, ArcAnimation.default_time, convertMinutes(convertAlpha(alp)), alp));
+        arcAnimation();
         home.updateText(home.activities.time_left);
         if (home.activities.time_left <= 0)
             full = true;
@@ -312,7 +314,7 @@ public class Circle extends View{
     }
 
     private class ArcAnimation{
-        private static final int default_time = 230;
+        private static final int default_time = 50;
         int id;     // id of activity, if equalling -1, then pointing at dragging
         float time;
         long startTime;
