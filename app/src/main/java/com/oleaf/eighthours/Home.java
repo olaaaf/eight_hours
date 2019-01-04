@@ -9,17 +9,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 
-
-
-public class Home extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Home extends AppCompatActivity {
     public static final int grid = 20;
     public static final float button_bounds = 0.1f;
 
     private boolean menuUp, colorChosen;
     private int color_pressed, color_normal, color_inactive;
 
-    private TextView hoursText, desc, cancel_button, confirm_button;
-    private NumberIndicatorText indicator;
+    private TextView hoursText, desc, cancel_button, confirm_button, add_button;
+
     private Animation popUpMenu, downMenu;
     private Menu menu;
     private Circle circle;
@@ -42,14 +40,10 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         circle = findViewById(R.id.circle);
         cancel_button = findViewById(R.id.cancel);
         confirm_button = findViewById(R.id.confirm);
-        indicator = findViewById(R.id.indicator);
-        Spinner menu = findViewById(R.id.drop_down);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.menu_buttons, R.layout.menu_item);
-        adapter.setDropDownViewResource(R.layout.menu_dropdown);
-        menu.setAdapter(adapter);
-        menu.setOnItemSelectedListener(this);
+        add_button = findViewById(R.id.addButton);
         popUpMenu = AnimationUtils.loadAnimation(this, R.anim.menu_popup);
         downMenu = AnimationUtils.loadAnimation(this, R.anim.menu_down);
+
         // TODO: check which solution is better performance-wise
         cancel_button.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -79,6 +73,12 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
                     confirm_button.setTextColor(color_pressed);
                 }
                 return true;
+            }
+        });
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                circle.addNew();
             }
         });
         View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
@@ -120,14 +120,6 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         if (activities == null)
             activities = new Activities(this);
         return true;
-    }
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String activityName = parent.getItemAtPosition(position).toString();
-        ChangingActivity.change(Home.this, "Circle", activityName, activities);
-    }
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
     }
 
     public boolean isMenuUp(){

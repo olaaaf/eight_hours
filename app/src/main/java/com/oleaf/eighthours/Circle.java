@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.*;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.os.Vibrator;
@@ -11,6 +12,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Circle extends View{
     public TypedArray colors;
@@ -25,7 +29,12 @@ public class Circle extends View{
     float alpha, start_alpha;
     boolean dragging, onRight, full;        //full - whether there's some time left
     Animation animation;
-
+    List<ArcAnimation> arcAnimations;
+    ArcAnimation draggingAnimation;
+    private Handler handlerUpdater;
+    private Runnable runnable;
+    private boolean handlerWorking;
+    private static final int millisUpdate = 3;
     //TODO: delete
     public static final boolean rounded = true;
 
@@ -44,6 +53,17 @@ public class Circle extends View{
     private void init(Context c){
         resources = c.getResources();
         home = (Home)getContext();
+        handlerUpdater = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                invalidate();
+                handlerUpdater.postDelayed(runnable, millisUpdate);
+            }
+        };
+        arcAnimations = (List<ArcAnimation>) new ArrayList();
+        draggingAnimation = new ArcAnimation(-1, 0, convertMinutes(Activities.grid));
+        draggingAnimation.stop();
         paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
@@ -77,8 +97,7 @@ public class Circle extends View{
             }
             @Override
             protected void onDrag(float x, float y) {
-                if (!full){
-                    dragging = true;
+                if (!full && dragging && draggingAnimation.finished()){
                     calculateAlpha(x, y);
                     home.updateText(convertAlpha(alpha-(start_alpha+90)));
                     invalidate();
@@ -103,6 +122,7 @@ public class Circle extends View{
         if (dragging){
             drawDragging(canvas);
         }
+        checkAnimations();
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -153,7 +173,10 @@ public class Circle extends View{
         if (home.getChosen() > -1){
             paint.setColor(colors.getColor(home.getChosen(), 0));
         }
-        drawArcRounded(canvas, start_alpha, alpha-(start_alpha+90), true);//(home.activities.isActivity()));
+        if (!draggingAnimation.finished())
+            drawArcRounded(canvas, start_alpha, draggingAnimation.getAlpha(), true);//(home.activities.isActivity()));
+        else
+            drawArcRounded(canvas, start_alpha, alpha - (start_alpha + 90), true);
     }
     private void drawArc(Canvas canvas, float startAngle, float sweepAngle){
         canvas.drawArc(rectangle, startAngle, sweepAngle, false, paint);
@@ -192,12 +215,42 @@ public class Circle extends View{
         }
         return alpha;
     }
-
-
+    private void addAnimation(int id, float alpha){
+        arcAnimations.add(new ArcAnimation(id, alpha));
+    }
+    private void addAnimation(int id, int millis, float alpha){
+        arcAnimations.add(new ArcAnimation(id, millis, alpha));
+    }
+    private void arcAnimation(){
+        if (!handlerWorking){
+            handlerUpdater.postDelayed(runnable, millisUpdate);
+            handlerWorking = true;
+        }
+    }
+    private void checkAnimations(){
+        if (!handlerWorking)
+            return;
+        handlerWorking = false;
+        if (!draggingAnimation.finished()){
+            handlerWorking = true;
+            return;
+        }
+        for (int ix = 0; ix < arcAnimations.size(); ++ix){
+            if (!arcAnimations.get(ix).finished()){
+                handlerWorking = true;
+                return;
+            }
+        }
+        if (!handlerWorking)
+            handlerUpdater.removeCallbacks(runnable);
+    }
     /*
     menu functions
-    TODO: Animation
-    TODO: deleting with the account of [full]
+        TODO: arc show up animation
+        TODO: deleting with the account of [full]
+        TODO: animation when activity added
+        TODO: maybe add arc shadow
+        TODO: direction detection (on the circle)
      */
     public void menuUp(){
         if (convertAlpha() > 0)
@@ -221,7 +274,65 @@ public class Circle extends View{
         invalidate();
     }
 
+    public void addNew(){
+        if (!dragging){
+            dragging = true;
+            alpha = convertMinutes((int) clamp(home.activities.time_left, Activities.grid,Activities.grid*3)) + start_alpha + 90;
+            draggingAnimation.start(alpha);
+            arcAnimation();
+            invalidate();
+            menuUp();
+            home.updateText(convertAlpha(alpha-(start_alpha+90)));
+        }
+    }
     public static float clamp(float v, float min, float max){
         return ((v > max) ? max : ((v < min) ? min : v));
+    }
+
+    private class ArcAnimation{
+        private static final int default_time = 50;
+        int id;     // id of activity, if equalling -1, then pointing at dragging
+        float time;
+        long startTime;
+        float addAlpha;
+        float initialAlpha;
+
+        ArcAnimation(int id, float alpha){
+            this(id, default_time, alpha, -1);
+        }
+        ArcAnimation(int id, int milliseconds, float alpha, float additionalAlpha){
+            this.id = id;
+            time = (float) milliseconds;
+            startTime = System.currentTimeMillis();
+            initialAlpha = alpha;
+            addAlpha = additionalAlpha;
+        }
+        ArcAnimation(int id, float alpha, float additionalAlpha){
+            this(id, default_time, alpha, additionalAlpha);
+        }
+        float getAlpha(){
+            if (addAlpha < 0)
+                return (getPart() * initialAlpha);
+            return (getPart() * (initialAlpha - addAlpha) + addAlpha);
+        }
+
+        float getPart(){
+            if (launched())
+                return clamp((System.currentTimeMillis() - startTime) / time, 0f, 1f);
+            else
+                return 0;
+        }
+        boolean finished(){
+            return (System.currentTimeMillis() - startTime >= time) & (launched());
+        }
+
+        //optional [without start]
+        void start(float alpha){
+            initialAlpha = alpha;
+            start();
+        }
+        void start(){ startTime = System.currentTimeMillis(); }
+        void stop(){ startTime = -1; }
+        boolean launched(){ return (startTime > -1);}
     }
 }

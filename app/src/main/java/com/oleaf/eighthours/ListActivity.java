@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 
-public class List extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity {
     Activities activities;
 
     @Override
