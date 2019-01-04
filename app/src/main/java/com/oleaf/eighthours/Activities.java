@@ -27,6 +27,7 @@ public class Activities implements Parcelable {
         return spans;
     }
     public int getLength() { return spans.length; }
+    public boolean isActivity() { return (spans.length > 0); }
     public void newActivity(int minutes, int color_index){
         if (minutes < grid/2f){
             return;

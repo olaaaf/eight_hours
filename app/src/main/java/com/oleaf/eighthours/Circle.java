@@ -14,18 +14,20 @@ import android.view.animation.AnimationUtils;
 
 public class Circle extends View{
     public TypedArray colors;
-    public static final float alpha_threshold = 30;
+    public static final float alpha_threshold = 45;
+    private float alpha_pause;
+    private float alpha_rounded;
     Paint paint;
     Resources resources;
     RectF rectangle;
     Home home;
     Gestures gestures;
-    Vibrator vibrator;
-    boolean vibrated;
-    int rectangle_offset;
     float alpha, start_alpha;
     boolean dragging, onRight, full;        //full - whether there's some time left
     Animation animation;
+
+    //TODO: delete
+    public static final boolean rounded = true;
 
     public Circle(Context context){
         super(context);
@@ -42,21 +44,27 @@ public class Circle extends View{
     private void init(Context c){
         resources = c.getResources();
         home = (Home)getContext();
-        vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-
         paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
-        paint.setStrokeWidth(resources.getDimension(R.dimen.circle_stroke));
-        float width = resources.getDimension(R.dimen.circle_width)-paint.getStrokeWidth();
-        float height = resources.getDimension(R.dimen.circle_height)-paint.getStrokeWidth();
-        rectangle = new RectF(paint.getStrokeWidth(), paint.getStrokeWidth(), width, height);
+
+        if (!rounded)
+            paint.setStrokeWidth(resources.getDimension(R.dimen.circle_stroke));
+        else
+            paint.setStrokeWidth(resources.getDimension(R.dimen.circle_rounded));
+
+        float width = resources.getDimension(R.dimen.circle_width)-paint.getStrokeWidth() / 2.0f;
+        float height = resources.getDimension(R.dimen.circle_height)-paint.getStrokeWidth() / 2.0f;
+
+        alpha_pause = resources.getDimension(R.dimen.alpha_break);
+        rectangle = new RectF(paint.getStrokeWidth() / 2.0f, paint.getStrokeWidth() / 2.0f, width, height);
         colors = resources.obtainTypedArray(R.array.colors);
         animation = AnimationUtils.loadAnimation(c, R.anim.circle_up);
-        gestures = new Gestures(64, 400) {
+        gestures = new Gestures(64, -1) {
             @Override
             protected void onTap(float x, float y) {
-                Log.d("Single Tap", "" + calculateAlpha(x, y));
+                calculateRadius(x, y); //TODO: click threshold
+                calculateAlpha(x, y);
             }
             @Override
             protected void onDragStop(float x, float y) {
@@ -78,23 +86,19 @@ public class Circle extends View{
             }
             @Override
             protected void longPress(float x, float y) {
-                if (!vibrated){
-                    vibrated = true;
-                    vibrator.vibrate(20);
-                    home.circleMenu.showUp(x+getLeft(), y+getTop(), calculateAlpha(x, y));
-                }
-                home.circleMenu.detectButtons(x+getLeft(), y+getTop());
+
             }
             @Override
             protected void longPressStop(float x, float y) {
-                vibrated = false;
+
             }
         };
+        alpha_rounded = (float) Math.asin(paint.getStrokeWidth() / (height / 2f));
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawBaseCircle(canvas);
+        //drawBaseCircle(canvas);
         drawSpans(canvas);
         if (dragging){
             drawDragging(canvas);
@@ -111,6 +115,10 @@ public class Circle extends View{
         clampAlpha();
         return alpha;
     }
+    private float calculateRadius(float x, float y){
+        return (float) (Math.sqrt(x*x + y*y));
+    }
+
     private int convertAlpha(float ... a)   {
         if (a.length > 0){
             return Math.round(Math.round(a[0]/360f * home.activities.maximum) / Home.grid) * Home.grid;
@@ -122,19 +130,21 @@ public class Circle extends View{
         return ((float)a)/((float)home.activities.maximum)*360.0f;
     }
     private void drawBaseCircle(Canvas canvas){
+        float stroke_width = paint.getStrokeWidth();
         paint.setStrokeWidth(resources.getDimension(R.dimen.circle_stroke));
+        paint.setStyle(Paint.Style.STROKE);
         paint.setColor(resources.getColor(R.color.circle_color));
         canvas.drawArc(rectangle, 0, 360, true, paint);
+        paint.setStrokeWidth(stroke_width);
     }
     private void drawSpans(Canvas canvas){
-        paint.setStrokeWidth(resources.getDimension(R.dimen.arc_stroke));
         start_alpha = -90;
-        int add_alpha = 1;
-        for (int index=0; index < home.activities.getSpans().length; ++index){
+        int add_alpha = 0;
+        for (int index=0; index < home.activities.getLength(); ++index){
             paint.setColor(colors.getColor(home.activities.getSpans()[index].color_index, 0));
-            if (index == home.activities.getSpans().length-1)
+            if (index == home.activities.getLength() - 1)
                 add_alpha = 0;
-            drawArc(canvas, start_alpha, add_alpha+home.activities.getSpans()[index].minutes/home.activities.maximum * 360.0f);
+            drawArcRounded(canvas, start_alpha, add_alpha+convertMinutes((int) home.activities.getSpans()[index].minutes), true);
             start_alpha += home.activities.getSpans()[index].minutes/home.activities.maximum * 360.0f;
         }
     }
@@ -143,10 +153,22 @@ public class Circle extends View{
         if (home.getChosen() > -1){
             paint.setColor(colors.getColor(home.getChosen(), 0));
         }
-        drawArc(canvas, start_alpha,  alpha-(start_alpha+90));
+        drawArcRounded(canvas, start_alpha, alpha-(start_alpha+90), true);//(home.activities.isActivity()));
     }
     private void drawArc(Canvas canvas, float startAngle, float sweepAngle){
         canvas.drawArc(rectangle, startAngle, sweepAngle, false, paint);
+    }
+
+    private void drawArcRounded(Canvas canvas, float startAngle, float sweepAngle, boolean addBreak){
+        if (addBreak){
+            startAngle += alpha_pause;
+            sweepAngle -= alpha_pause * 2;
+        }
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawCircle(rectangle.width()/2f * (float) Math.cos(Math.toRadians(startAngle+alpha_rounded)) + rectangle.left + rectangle.width()/2.0f, rectangle.height()/2f + rectangle.top + rectangle.width()/2f * (float) Math.sin(Math.toRadians(startAngle+alpha_rounded)), paint.getStrokeWidth() / 2f, paint);
+        canvas.drawCircle(rectangle.width()/2f * (float) Math.cos(Math.toRadians(sweepAngle-alpha_rounded+startAngle)) + rectangle.left + rectangle.width()/2.0f, rectangle.height()/2.0f + rectangle.top + rectangle.width()/2f * (float) Math.sin(Math.toRadians(sweepAngle-alpha_rounded+startAngle)), paint.getStrokeWidth() / 2f, paint);
+        paint.setStyle(Paint.Style.STROKE);
+        drawArc(canvas, startAngle+alpha_rounded, sweepAngle-alpha_rounded);
     }
     private float clampAlpha(){
         if (alpha >= (360 - alpha_threshold * 2) && alpha < (360-alpha_threshold)){
@@ -165,10 +187,12 @@ public class Circle extends View{
         if (alpha < start_alpha + 90){
             alpha = start_alpha + 90;
         }
-        if (alpha < Activities.grid)
-            alpha = Activities.grid;
+        if (convertAlpha(alpha - (start_alpha + 90)) < Activities.grid) {
+            alpha = convertMinutes(Activities.grid) + start_alpha + 90;
+        }
         return alpha;
     }
+
 
     /*
     menu functions
@@ -195,5 +219,9 @@ public class Circle extends View{
         dragging = false;
         alpha = 0;
         invalidate();
+    }
+
+    public static float clamp(float v, float min, float max){
+        return ((v > max) ? max : ((v < min) ? min : v));
     }
 }
