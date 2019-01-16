@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.*;
 import android.os.Handler;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.os.Vibrator;
@@ -12,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,7 @@ public class Circle extends View{
     private static final int millisUpdate = 5;
     //TODO: delete
     public static final boolean rounded = true;
+    public static final float touchRadius = 0.7f;
 
     public Circle(Context context){
         super(context);
@@ -83,8 +86,10 @@ public class Circle extends View{
         gestures = new Gestures(64, -1) {
             @Override
             protected void onTap(float x, float y) {
-                calculateRadius(x, y); //TODO: click threshold
-                calculateAlpha(x, y);
+                int tindex = touchActivity(x, y);
+                if (tindex != -1){
+                    home.showOptions(tindex);
+                }
             }
             @Override
             protected void onDragStop(float x, float y) {
@@ -133,6 +138,10 @@ public class Circle extends View{
     private float calculateAlpha(float x, float y){
         alpha = -1f * (float)(Math.toDegrees(Math.atan2(x-rectangle.width()/2.0f, y-rectangle.height()/2.0f))-180f);
         clampAlpha();
+        return alpha;
+    }
+    private float calculateAlphaNC(float x, float y){
+        alpha = -1f * (float)(Math.toDegrees(Math.atan2(x-rectangle.width()/2.0f, y-rectangle.height()/2.0f))-180f);
         return alpha;
     }
     private float calculateRadius(float x, float y){
@@ -197,7 +206,13 @@ public class Circle extends View{
         paint.setStyle(Paint.Style.STROKE);
         drawArc(canvas, startAngle+alpha_rounded, sweepAngle-alpha_rounded);
     }
+
     private float clampAlpha(){
+        return clampAlpha(false);
+    }
+    private float clampAlpha(boolean tap){
+        if (tap)
+            return alpha;
         if (alpha >= (360 - alpha_threshold * 2) && alpha < (360-alpha_threshold)){
             onRight = false;
         }else if (alpha >= alpha_threshold  && alpha <= alpha_threshold * 2){
@@ -219,11 +234,19 @@ public class Circle extends View{
         }
         return alpha;
     }
-    private void addAnimation(int id, float alpha){
-        arcAnimations.add(new ArcAnimation(id, alpha));
-    }
-    private void addAnimation(int id, int millis, float alpha){
-        arcAnimations.add(new ArcAnimation(id, millis, alpha));
+    private int touchActivity(float x, float y){
+        calculateAlphaNC(x, y);
+        float alphas[] = home.activities.getAlphas();
+        float radius = (float) Math.sqrt(x*x + y*y);
+        float a_start= 0;
+        if (radius > touchRadius*(rectangle.width()/2.0f)){
+            for (int ix = 0; ix < alphas.length; ++ix){
+                if (alpha <= a_start + alphas[ix])
+                    return ix;
+                a_start += alphas[ix];
+            }
+        }
+        return -1;
     }
 
     private void arcAnimation(){
@@ -365,4 +388,6 @@ public class Circle extends View{
         void stop(){ startTime = -1; }
         boolean launched(){ return (startTime > -1);}
     }
+
+    //TODO: after play button show animation change the drawable
 }

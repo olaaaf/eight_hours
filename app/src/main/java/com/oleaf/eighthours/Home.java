@@ -1,8 +1,14 @@
 package com.oleaf.eighthours;
 
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,6 +23,7 @@ public class Home extends AppCompatActivity {
     private int color_pressed, color_normal, color_inactive;
 
     private TextView hoursText, desc, cancel_button, confirm_button, add_button;
+    private ImageView play_button;
 
     private Animation popUpMenu, downMenu;
     private Menu menu;
@@ -41,9 +48,9 @@ public class Home extends AppCompatActivity {
         cancel_button = findViewById(R.id.cancel);
         confirm_button = findViewById(R.id.confirm);
         add_button = findViewById(R.id.addButton);
+        play_button = findViewById(R.id.play_button);
         popUpMenu = AnimationUtils.loadAnimation(this, R.anim.menu_popup);
         downMenu = AnimationUtils.loadAnimation(this, R.anim.menu_down);
-
         // TODO: check which solution is better performance-wise
         cancel_button.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -210,5 +217,28 @@ public class Home extends AppCompatActivity {
             return !(x < -width * bounds[0]) && !(y < -height * bounds[0]) && !(x > width * (1f + bounds[0])) && !(y > height * (1 + bounds[0]));
         }else
             return !(x < -width * button_bounds) && !(y < -height * button_bounds) && !(x > width * (1f + button_bounds)) && !(y > height * (1 + button_bounds));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void playClick(View view){
+        //animateClick(view);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void animateClick(View view){
+        Drawable d = ((ImageView) view).getDrawable();
+        if (d instanceof  AnimatedVectorDrawableCompat){
+            AnimatedVectorDrawableCompat avd = (AnimatedVectorDrawableCompat) d;
+            avd.start();
+        }else if(d instanceof AnimatedVectorDrawable){
+            AnimatedVectorDrawable avd = (AnimatedVectorDrawable) d;
+            avd.start();
+        }
+    }
+
+    public void showOptions(int tindex){
+        hoursText.setVisibility(View.INVISIBLE);
+        play_button.setVisibility(View.VISIBLE);
+        animateClick(play_button);
     }
 }

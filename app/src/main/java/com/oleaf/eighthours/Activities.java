@@ -79,6 +79,14 @@ public class Activities implements Parcelable {
         dest.writeTypedArray(spans, 0);
     }
 
+    public float[] getAlphas(){
+        float[] alphas = new float[spans.length];
+        for (int a = 0; a < alphas.length; ++a){
+            alphas[a] = spans[a].minutes / maximum * 360f;
+        }
+        return alphas;
+    }
+
     public static final Parcelable.Creator<Activities> CREATOR
             = new Parcelable.Creator<Activities>(){
         public Activities createFromParcel(Parcel in){

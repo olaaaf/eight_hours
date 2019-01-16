@@ -62,6 +62,7 @@ public abstract class Gestures{
         }
     }
 
+
     private void start(){
         first_press = System.currentTimeMillis();
     }
@@ -81,7 +82,9 @@ public abstract class Gestures{
     protected abstract void longPressStop(float x, float y);
 
     //TODO: protected abstract void dragCircular(float x, float y)
-
+    public boolean down(){
+        return (first_press >= 0);
+    }
 }
 
 
