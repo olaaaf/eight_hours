@@ -37,7 +37,7 @@
         <aapt:attr name="android:animation">
             <objectAnimator
                 android:propertyName="pathData"
-                android:duration="333"
+                android:duration="100"
                 android:valueFrom="M 1 11 L 1 11 Z"
                 android:valueTo="M 1 11 L 1 1 Z"
                 android:valueType="pathType"
@@ -49,23 +49,23 @@
             <set>
                 <objectAnimator
                     android:propertyName="strokeAlpha"
-                    android:duration="333"
+                    android:duration="100"
                     android:valueFrom="0"
                     android:valueTo="0"
                     android:valueType="floatType"
                     android:interpolator="@android:interpolator/fast_out_slow_in"/>
                 <objectAnimator
                     android:propertyName="strokeAlpha"
-                    android:startOffset="333"
-                    android:duration="333"
+                    android:startOffset="100"
+                    android:duration="100"
                     android:valueFrom="1"
                     android:valueTo="1"
                     android:valueType="floatType"
                     android:interpolator="@android:interpolator/fast_out_slow_in"/>
                 <objectAnimator
                     android:propertyName="pathData"
-                    android:startOffset="333"
-                    android:duration="333"
+                    android:startOffset="100"
+                    android:duration="100"
                     android:valueFrom="M 1 1 L 1 1"
                     android:valueTo="M 1 1 L 8 6"
                     android:valueType="pathType"
@@ -78,23 +78,23 @@
             <set>
                 <objectAnimator
                     android:propertyName="pathData"
-                    android:startOffset="666"
-                    android:duration="334"
+                    android:startOffset="200"
+                    android:duration="100"
                     android:valueFrom="M 8 6 L 8 6"
                     android:valueTo="M 1 11 L 8 6"
                     android:valueType="pathType"
                     android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
                 <objectAnimator
                     android:propertyName="strokeAlpha"
-                    android:startOffset="666"
-                    android:duration="334"
+                    android:startOffset="200"
+                    android:duration="100"
                     android:valueFrom="1"
                     android:valueTo="1"
                     android:valueType="floatType"
                     android:interpolator="@android:interpolator/fast_out_slow_in"/>
                 <objectAnimator
                     android:propertyName="strokeAlpha"
-                    android:duration="666"
+                    android:duration="200"
                     android:valueFrom="0"
                     android:valueTo="0"
                     android:valueType="floatType"

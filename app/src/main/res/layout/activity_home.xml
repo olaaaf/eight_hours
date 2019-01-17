@@ -221,19 +221,21 @@
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
-    <ImageView
+    <com.oleaf.eighthours.Options
         android:id="@+id/play_button"
-        android:layout_width="100dp"
+        android:layout_width="75dp"
         android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:clickable="true"
         android:onClick="playClick"
         android:tint="@color/colorAccent"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/play_show"
-        android:visibility="gone"/>
+        app:srcCompat="@drawable/play_show" />
 
 
 </android.support.constraint.ConstraintLayout>

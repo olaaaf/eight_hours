@@ -23,7 +23,7 @@ public class Home extends AppCompatActivity {
     private int color_pressed, color_normal, color_inactive;
 
     private TextView hoursText, desc, cancel_button, confirm_button, add_button;
-    private ImageView play_button;
+    private Options play_button;
 
     private Animation popUpMenu, downMenu;
     private Menu menu;
@@ -221,7 +221,7 @@ public class Home extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void playClick(View view){
-        //animateClick(view);
+        play_button.onClick();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -238,7 +238,6 @@ public class Home extends AppCompatActivity {
 
     public void showOptions(int tindex){
         hoursText.setVisibility(View.INVISIBLE);
-        play_button.setVisibility(View.VISIBLE);
-        animateClick(play_button);
+        play_button.show();
     }
 }
