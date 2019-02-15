@@ -20,7 +20,10 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:layout_constraintVertical_bias="0.445" />
+        app:layout_constraintVertical_bias="0.445" >
+
+
+    </view>
 
     <com.oleaf.eighthours.NumberIndicatorText
         android:id="@+id/indicator"
@@ -221,21 +224,51 @@
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
-    <com.oleaf.eighthours.Options
-        android:id="@+id/play_button"
-        android:layout_width="75dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:clickable="true"
-        android:onClick="playClick"
-        android:tint="@color/colorAccent"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <com.oleaf.eighthours.CMenu
+        android:id="@+id/circular_menu"
+        android:layout_width="@dimen/circle_width"
+        android:layout_height="@dimen/circle_height"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/circle"
+        app:layout_constraintEnd_toEndOf="@+id/circle"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/play_show" />
+        app:layout_constraintTop_toTopOf="@+id/circle"
+        app:layout_constraintVertical_bias="1.0">
+
+        <ImageButton
+            android:id="@+id/playButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:backgroundTint="#00FFFFFF"
+            app:layout_constraintCircle="@+id/circular_menu"
+            app:layout_constraintCircleAngle="0"
+            app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
+            app:srcCompat="@drawable/circle" />
+
+        <ImageView
+            android:id="@+id/editButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:backgroundTint="#00FFFFFF"
+            app:layout_constraintCircle="@+id/circular_menu"
+            app:layout_constraintCircleAngle="30"
+            app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
+            app:srcCompat="@drawable/edit" />
+
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:backgroundTint="#00FFFFFF"
+            app:layout_constraintCircle="@+id/circular_menu"
+            app:layout_constraintCircleAngle="330"
+            app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
+            app:srcCompat="@drawable/delete" />
+    </com.oleaf.eighthours.CMenu>
 
 
 </android.support.constraint.ConstraintLayout>

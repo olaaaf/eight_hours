@@ -88,7 +88,6 @@ public class Circle extends View{
             protected void onTap(float x, float y) {
                 int tindex = touchActivity(x, y);
                 if (tindex != -1){
-                    home.showOptions(tindex);
                 }
             }
             @Override

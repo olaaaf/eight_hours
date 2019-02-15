@@ -2,8 +2,10 @@ package com.oleaf.eighthours;
 
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.constraint.ConstraintLayout;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,8 +25,8 @@ public class Home extends AppCompatActivity {
     private int color_pressed, color_normal, color_inactive;
 
     private TextView hoursText, desc, cancel_button, confirm_button, add_button;
-    private Options play_button;
-
+    public ImageView[] cmenuButtons;
+    public int[] cmenuOrder;
     private Animation popUpMenu, downMenu;
     private Menu menu;
     private Circle circle;
@@ -48,7 +50,6 @@ public class Home extends AppCompatActivity {
         cancel_button = findViewById(R.id.cancel);
         confirm_button = findViewById(R.id.confirm);
         add_button = findViewById(R.id.addButton);
-        play_button = findViewById(R.id.play_button);
         popUpMenu = AnimationUtils.loadAnimation(this, R.anim.menu_popup);
         downMenu = AnimationUtils.loadAnimation(this, R.anim.menu_down);
         // TODO: check which solution is better performance-wise
@@ -110,10 +111,28 @@ public class Home extends AppCompatActivity {
         };
         confirm_button.setOnFocusChangeListener(onFocusChangeListener);
         cancel_button.setOnFocusChangeListener(onFocusChangeListener);
+        cmenuOrder = new int[3];
+        cmenuButtons = new ImageView[3];
+        cmenuButtons[0] = findViewById(R.id.playButton);
+        cmenuButtons[1] = findViewById(R.id.editButton);
+        cmenuButtons[2] = findViewById(R.id.deleteButton);
+
+        for (int ix = 0; ix < cmenuButtons.length; ++ix){
+            cmenuOrder[ix] = (int)((ConstraintLayout.LayoutParams) cmenuButtons[ix].getLayoutParams()).circleAngle;
+        }
     }
     public int addActivity(int min, int color){
         return activities.newActivity(min, color);
         //indicator.update(activities.getLength());
+    }
+
+    public void rotateCMenu(int alpha){
+    ConstraintLayout.LayoutParams params;
+        for (int ix = 0; ix < cmenuButtons.length; ++ix){
+            params = (ConstraintLayout.LayoutParams) cmenuButtons[ix].getLayoutParams();
+            params.circleAngle = (alpha + cmenuOrder[ix]) % 360;
+            cmenuButtons[ix].setLayoutParams(params);
+        }
     }
 
     //Activity changing
@@ -219,25 +238,5 @@ public class Home extends AppCompatActivity {
             return !(x < -width * button_bounds) && !(y < -height * button_bounds) && !(x > width * (1f + button_bounds)) && !(y > height * (1 + button_bounds));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void playClick(View view){
-        play_button.onClick();
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void animateClick(View view){
-        Drawable d = ((ImageView) view).getDrawable();
-        if (d instanceof  AnimatedVectorDrawableCompat){
-            AnimatedVectorDrawableCompat avd = (AnimatedVectorDrawableCompat) d;
-            avd.start();
-        }else if(d instanceof AnimatedVectorDrawable){
-            AnimatedVectorDrawable avd = (AnimatedVectorDrawable) d;
-            avd.start();
-        }
-    }
-
-    public void showOptions(int tindex){
-        hoursText.setVisibility(View.INVISIBLE);
-        play_button.show();
-    }
 }
