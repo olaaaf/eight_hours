@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="trash"
+    android:width="12dp"
+    android:height="12dp"
+    android:viewportWidth="12"
+    android:viewportHeight="12">
+    <path
+        android:name="trash_1"
+        android:pathData="M 4.8 8.7 L 7.2 8.7 L 7.5 6 L 4.5 6 Z M 4.5 5 L 7 4 M 4.9 4.6 L 6.5 3.98"
+        android:fillColor="#FFF"
+        android:strokeColor="#FFF"
+        android:strokeWidth="0.7"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+</vector>
