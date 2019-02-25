@@ -10,8 +10,8 @@
     <path
         android:name="trash_1"
         android:pathData="M 4.8 8.7 L 7.2 8.7 L 7.5 6 L 4.5 6 Z M 4.5 5 L 7 4 M 4.9 4.6 L 6.5 3.98"
-        android:fillColor="#FFF"
-        android:strokeColor="#FFF"
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="0.7"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"/>

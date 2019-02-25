@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <vector
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:name="edit_1"
+    android:name="vector"
     android:width="12dp"
     android:height="12dp"
     android:viewportWidth="12"
     android:viewportHeight="12">
     <path
         android:name="edit"
-        android:pathData="M 3.5 6 L 3.5 6 M 6 6 L 6 6 M 8.5 6 L 8.5 6"
+        android:pathData="M 3.5 6 L 3.51 6 M 6 6 L 6.01 6 M 8.5 6 L 8.51 6"
+        android:fillColor="#FFFFFF"
         android:strokeColor="#FFFFFF"
         android:strokeWidth="1.5"
-        android:strokeLineCap="round"/>
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
 </vector>

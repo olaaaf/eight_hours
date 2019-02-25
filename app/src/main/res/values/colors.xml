@@ -13,4 +13,6 @@
     <color name="button">#FFF48FB1</color>
     <color name="button_text">#FAFAFA</color>
     <color name="inactive_text">#90a4ae</color>
+    <color name="cmenu_foreground">#f48fb1</color>
+    <color name="cmenu_background">#FFFFFF</color>
 </resources>

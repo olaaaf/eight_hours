@@ -237,37 +237,49 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/circle"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
         <ImageButton
             android:id="@+id/playButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:backgroundTint="#00FFFFFF"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/cmenu_background"
+            android:elevation="@dimen/cmenu_elevation"
+            android:scaleType="fitXY"
             app:layout_constraintCircle="@+id/circular_menu"
             app:layout_constraintCircleAngle="0"
             app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
-            app:srcCompat="@drawable/circle" />
+            android:tint="@color/cmenu_foreground"
+            app:srcCompat="@drawable/play_na" />
 
         <ImageView
             android:id="@+id/editButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:backgroundTint="#00FFFFFF"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/cmenu_background"
+            android:scaleType="fitXY"
+            android:elevation="@dimen/cmenu_elevation"
             app:layout_constraintCircle="@+id/circular_menu"
             app:layout_constraintCircleAngle="30"
             app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
-            app:srcCompat="@drawable/edit" />
+            android:tint="@color/cmenu_foreground"
+            app:srcCompat="@drawable/edit_button" />
 
         <ImageButton
             android:id="@+id/deleteButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:backgroundTint="#00FFFFFF"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/cmenu_background"
+            android:scaleType="fitXY"
+            android:elevation="@dimen/cmenu_elevation"
             app:layout_constraintCircle="@+id/circular_menu"
             app:layout_constraintCircleAngle="330"
             app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
-            app:srcCompat="@drawable/delete" />
+            android:tint="@color/cmenu_foreground"
+            app:srcCompat="@drawable/trash" />
     </com.oleaf.eighthours.CMenu>
 
 
