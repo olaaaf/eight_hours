@@ -1,6 +1,7 @@
 package com.oleaf.eighthours;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.*;
@@ -27,6 +28,8 @@ public class Circle extends View{
     Resources resources;
     RectF rectangle;
     Home home;
+    Vibrator vibrator;
+    Selected selected;
     Gestures gestures;
     float alpha, start_alpha;
     boolean dragging, onRight, full;        //full - whether there's some time left
@@ -70,7 +73,7 @@ public class Circle extends View{
         paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
-
+        selected = new Selected();
         if (!rounded)
             paint.setStrokeWidth(resources.getDimension(R.dimen.circle_stroke));
         else
@@ -80,6 +83,7 @@ public class Circle extends View{
         float height = resources.getDimension(R.dimen.circle_height)-paint.getStrokeWidth() / 2.0f;
 
         alpha_pause = resources.getDimension(R.dimen.alpha_break);
+        vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
         rectangle = new RectF(paint.getStrokeWidth() / 2.0f, paint.getStrokeWidth() / 2.0f, width, height);
         colors = resources.obtainTypedArray(R.array.colors);
         animation = AnimationUtils.loadAnimation(c, R.anim.circle_up);
@@ -88,7 +92,9 @@ public class Circle extends View{
             protected void onTap(float x, float y) {
                 int tindex = touchActivity(x, y);
                 if (tindex != -1){
-                }
+                    home.showCMenu(tindex);
+                }else
+                    home.hideCMenu();
             }
             @Override
             protected void onDragStop(float x, float y) {
@@ -105,6 +111,8 @@ public class Circle extends View{
                     calculateAlpha(x, y);
                     home.updateText(convertAlpha(alpha-(start_alpha+90)));
                     invalidate();
+                } else if (home.activities.getSpans().length > 0 && touchActivity(x, y) > -1) {
+
                 }
             }
             @Override
@@ -147,14 +155,14 @@ public class Circle extends View{
         return (float) (Math.sqrt(x*x + y*y));
     }
 
-    private int convertAlpha(float ... a)   {
+    public int convertAlpha(float ... a)   {
         if (a.length > 0){
             return Math.round(Math.round(a[0]/360f * home.activities.maximum) / Home.grid) * Home.grid;
         }else{
             return Math.round(Math.round(alpha/360f * home.activities.maximum) / Home.grid) * Home.grid;
         }
     }
-    private float convertMinutes(int a){
+    public float convertMinutes(int a){
         return ((float)a)/((float)home.activities.maximum)*360.0f;
     }
     private void drawBaseCircle(Canvas canvas){
@@ -169,7 +177,7 @@ public class Circle extends View{
         start_alpha = -90;
         int add_alpha = 0;
         for (int index=0; index < home.activities.getLength(); ++index){
-            paint.setColor(colors.getColor(home.activities.getSpans()[index].color_index, 0));
+            paint.setColor(selected.colorDim(colors.getColor(home.activities.getSpans()[index].color_index, 0), index));
             if (index == home.activities.getLength() - 1)
                 add_alpha = 0;
             float a = add_alpha+convertMinutes((int) home.activities.getSpans()[index].minutes);
@@ -177,7 +185,7 @@ public class Circle extends View{
             if (find > -1)
                 a = add_alpha + arcAnimations.get(find).getAlpha();
             drawArcRounded(canvas, start_alpha, a, true);
-            start_alpha += home.activities.getSpans()[index].minutes/home.activities.maximum * 360.0f;
+            start_alpha += convertMinutes((int) home.activities.getSpans()[index].minutes);
         }
     }
     private void drawDragging(Canvas canvas){
@@ -317,9 +325,20 @@ public class Circle extends View{
         alpha = 0;
         invalidate();
     }
-
+    public float getAngleBefore(int span_index){
+        if (span_index < 1)
+            return 0;
+        float start = 0;
+        Span[] sp = home.activities.getSpans();
+        for (int ix = 0; ix <= (span_index - 1) && ix < sp.length; ++ix){
+            start += convertMinutes((int) sp[ix].minutes);
+        }
+        return start;
+    }
     public void addNew(){
         checkAnimations();
+        if (home.activities.time_left <= 0)
+            return;
         if (!dragging && !handlerWorking){
             dragging = true;
             alpha = convertMinutes((int) clamp(home.activities.time_left, Activities.grid,Activities.grid*3));
@@ -387,6 +406,53 @@ public class Circle extends View{
         void stop(){ startTime = -1; }
         boolean launched(){ return (startTime > -1);}
     }
+    private class Selected{
+        float perc;
+        float multipliedPerc;
+        int indexChosen = -1;
+        static final float default_perc = 0.6f;
 
+        Selected(){
+            perc = default_perc;
+            multipliedPerc = perc;
+        }
+
+        Selected(float perc){
+            this.perc = perc;
+            multipliedPerc = perc;
+        }
+
+        void choseIndex(int x){
+            indexChosen = x;
+        }
+
+        void multiplyFromMax(float m){
+            multipliedPerc = 1 - (1 - perc) * m;
+        }
+
+        void reset(){
+            multipliedPerc = perc;
+            indexChosen = -1;
+        }
+
+        int colorDim(int color, int index){
+            if (index > -1)
+                return manipulateColor(color, (index == indexChosen) ? 1 : multipliedPerc);
+            else
+                return color;
+        }
+
+        int manipulateColor(int color, float factor) {
+            int a = Color.alpha(color);
+            int r = Math.round(Color.red(color) * factor);
+            int g = Math.round(Color.green(color) * factor);
+            int b = Math.round(Color.blue(color) * factor);
+            return Color.argb(a,
+                    Math.min(r,255),
+                    Math.min(g,255),
+                    Math.min(b,255));
+        }
+    }
     //TODO: after play button show animation change the drawable
+
 }

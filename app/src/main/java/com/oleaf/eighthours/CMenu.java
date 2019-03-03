@@ -15,10 +15,7 @@ import android.widget.ImageView;
 public class CMenu extends ConstraintLayout {
     //Animation drawables
     //Describes timer state with: 0 - timer off, 1 - timer running, 2 - timer paused
-    public int timerState;
-    public int[] order;
     private Home home;
-    public ImageView[] buttons;
     public CMenu(Context context) {
         super(context);
         init(context);
@@ -36,26 +33,19 @@ public class CMenu extends ConstraintLayout {
     protected void init(Context context){
         Resources resources = context.getResources();
         home = (Home) getContext();
-
     }
-
-    //Public functions
-    public boolean isVisible(){
-        return (getVisibility() == VISIBLE);
-    }
-
 
     public void show(int index){
-        if (index < home.activities.getLength())
-            show (home.activities.getSpan(index));
+        home.rotateCMenu((int) (home.circle.getAngleBefore(index)
+                + home.circle.convertMinutes((int)home.activities.getSpan(index).minutes) / 2.0f));
+        setVisibility(VISIBLE);
+        //TODO: animation
     }
 
-    public void show(Span span){
-
-    }
 
     public void hide(){
-        //TODO: hide animations of all buttons
+        home.rotateCMenu(0);
+        setVisibility(INVISIBLE);
     }
 
 }

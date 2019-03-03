@@ -23,14 +23,14 @@ public class Home extends AppCompatActivity {
 
     private boolean menuUp, colorChosen;
     private int color_pressed, color_normal, color_inactive;
-
+    private ConstraintLayout layout;
     private TextView hoursText, desc, cancel_button, confirm_button, add_button;
     public ImageView[] cmenuButtons;
     public int[] cmenuOrder;
     private Animation popUpMenu, downMenu;
     private Menu menu;
-    private Circle circle;
-
+    public Circle circle;
+    private CMenu cMenu;
     public Activities activities;
 
     @Override
@@ -50,6 +50,7 @@ public class Home extends AppCompatActivity {
         cancel_button = findViewById(R.id.cancel);
         confirm_button = findViewById(R.id.confirm);
         add_button = findViewById(R.id.addButton);
+        cMenu = findViewById(R.id.circular_menu);
         popUpMenu = AnimationUtils.loadAnimation(this, R.anim.menu_popup);
         downMenu = AnimationUtils.loadAnimation(this, R.anim.menu_down);
         // TODO: check which solution is better performance-wise
@@ -134,7 +135,10 @@ public class Home extends AppCompatActivity {
             cmenuButtons[ix].setLayoutParams(params);
         }
     }
-
+    public void showCMenu(int index){
+        cMenu.show(index);
+    }
+    public void hideCMenu() { cMenu.hide(); }
     //Activity changing
     private boolean getExtras(){
         Bundle bundle = getIntent().getExtras();
