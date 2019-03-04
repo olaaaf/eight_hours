@@ -52,7 +52,7 @@ public abstract class Gestures{
             stop();
             return;
         }
-        //drag and long Press detection
+        //dragArc and long Press detection
         if ((currentDifference >= dif || drag) && !timePassed()){
             onDrag(newX, newY);
             drag = true;

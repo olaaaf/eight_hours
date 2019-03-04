@@ -25,27 +25,6 @@
 
     </view>
 
-    <com.oleaf.eighthours.NumberIndicatorText
-        android:id="@+id/indicator"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="4dp"
-        android:gravity="center"
-        android:textColor="@color/indicator_text"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.754"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="254dp"
@@ -232,6 +211,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/circle"
         app:layout_constraintEnd_toEndOf="@+id/circle"
         app:layout_constraintHorizontal_bias="1.0"
@@ -247,10 +227,10 @@
             android:backgroundTint="@color/cmenu_background"
             android:elevation="@dimen/cmenu_elevation"
             android:scaleType="fitXY"
+            android:tint="@color/cmenu_foreground"
             app:layout_constraintCircle="@+id/circular_menu"
             app:layout_constraintCircleAngle="0"
             app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
-            android:tint="@color/cmenu_foreground"
             app:srcCompat="@drawable/play_na" />
 
         <ImageView
@@ -259,12 +239,12 @@
             android:layout_height="38dp"
             android:background="@drawable/circle"
             android:backgroundTint="@color/cmenu_background"
-            android:scaleType="fitXY"
             android:elevation="@dimen/cmenu_elevation"
+            android:scaleType="fitXY"
+            android:tint="@color/cmenu_foreground"
             app:layout_constraintCircle="@+id/circular_menu"
             app:layout_constraintCircleAngle="30"
             app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
-            android:tint="@color/cmenu_foreground"
             app:srcCompat="@drawable/edit_button" />
 
         <ImageButton
@@ -273,12 +253,12 @@
             android:layout_height="38dp"
             android:background="@drawable/circle"
             android:backgroundTint="@color/cmenu_background"
-            android:scaleType="fitXY"
             android:elevation="@dimen/cmenu_elevation"
+            android:scaleType="fitXY"
+            android:tint="@color/cmenu_foreground"
             app:layout_constraintCircle="@+id/circular_menu"
             app:layout_constraintCircleAngle="330"
             app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
-            android:tint="@color/cmenu_foreground"
             app:srcCompat="@drawable/trash" />
     </com.oleaf.eighthours.CMenu>
 
