@@ -9,18 +9,17 @@
     <view
         android:id="@+id/circle"
         class="com.oleaf.eighthours.Circle"
-        android:layout_width="320dp"
-        android:layout_height="320dp"
+        android:layout_width="@dimen/circle_view_width"
+        android:layout_height="@dimen/circle_view_height"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:adjustViewBounds="true"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:layout_constraintVertical_bias="0.445" >
+        app:layout_constraintVertical_bias="0.52">
 
 
     </view>
@@ -207,17 +206,11 @@
         android:id="@+id/circular_menu"
         android:layout_width="@dimen/circle_width"
         android:layout_height="@dimen/circle_height"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/circle"
         app:layout_constraintEnd_toEndOf="@+id/circle"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/circle"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintStart_toStartOf="@+id/circle"
+        app:layout_constraintTop_toTopOf="@+id/circle">
 
         <ImageButton
             android:id="@+id/playButton"

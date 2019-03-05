@@ -230,6 +230,7 @@ public class Home extends AppCompatActivity {
     }
     //TODO: change activities animation
     //TODO: better activities changing
+    //TODO: accenting color pick
     /**
      * @param x ought to be the local position derived form the view
      * @param y ought to be the local position derived form the view

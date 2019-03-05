@@ -3,14 +3,15 @@
     <dimen name="circle_width">310dp</dimen>
     <dimen name="circle_menu_radius">100dp</dimen>
     <dimen name="circle_height">310dp</dimen>
-    <dimen name="circle_view_width">320dp</dimen>
-    <dimen name="circle_view_height">320dp</dimen>
+    <dimen name="circle_view_width">340dp</dimen>
+    <dimen name="circle_view_height">340dp</dimen>
     <dimen name="circle_stroke">10dp</dimen>
     <dimen name="circle_rounded">22dp</dimen>
     <dimen name="cmenu_elevation">4dp</dimen>
     <dimen name="alpha_break">6px</dimen>  <!-- TODO: clean up -->
     <dimen name="menu_button_height">13dp</dimen>
     <dimen name="arc_stroke">11dp</dimen>
+    <dimen name="arc_sh_stroke">5dp</dimen>
     <array name="colors">
         <item>#f8bbd0</item>
         <item>#607d8b</item>
