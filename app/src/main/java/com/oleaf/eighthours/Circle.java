@@ -26,7 +26,7 @@ public class Circle extends View{
     Home home;
     Vibrator vibrator;
     Gestures gestures;
-    float alpha, start_alpha;
+    float start_alpha;
     boolean dragging, onRight, full;        //full - whether there's some time left
     Animation animation;
     Arcs arcs;
@@ -136,7 +136,7 @@ public class Circle extends View{
     }
     private float calculateAlpha(float x, float y){
         float alpha = -1f * (float)(Math.toDegrees(Math.atan2(x-rectangle.width()/2.0f, y-rectangle.height()/2.0f))-180f);
-        alpha = clampAlpha();
+        alpha = clampAlpha(alpha);
         return alpha;
     }
     private float calculateAlphaNC(float x, float y){
@@ -169,11 +169,15 @@ public class Circle extends View{
         canvas.drawArc(rectangle, startAngle, sweepAngle, false, paint);
     }
 
-    private float clampAlpha(){
-        return clampAlpha(false);
+    private float clampAlpha(float ... alpha){
+        return clampAlpha(false, alpha);
     }
-    private float clampAlpha(boolean tap){
-        float alpha = dragArc.α + start_alpha;
+    private float clampAlpha(boolean tap, float ... a){
+        float alpha;
+        if (a.length == 0)
+            alpha = dragArc.α + start_alpha;
+        else
+            alpha = a[0];
         if (tap)
             return alpha;
         if (alpha >= (360 - alpha_threshold * 2) && alpha < (360-alpha_threshold)){
@@ -198,13 +202,13 @@ public class Circle extends View{
         return alpha;
     }
     private int touchActivity(float x, float y){
-        calculateAlphaNC(x, y);
+        float a = calculateAlphaNC(x, y);
         float alphas[] = home.activities.getAlphas();
         float radius = (float) Math.sqrt(x*x + y*y);
         float a_start= 0;
         if (radius > touchRadius*(rectangle.width()/2.0f)){
             for (int ix = 0; ix < alphas.length; ++ix){
-                if (alpha <= a_start + alphas[ix])
+                if (a <= a_start + alphas[ix])
                     return ix;
                 a_start += alphas[ix];
             }
@@ -249,9 +253,7 @@ public class Circle extends View{
         home.updateText(home.activities.time_left);
     }
     public void confirm() {
-        int id = home.addActivity(convertAlpha(dragArc.α), home.getChosen());
-        //arcAnimations.add(new ArcAnimation(id, ArcAnimation.default_time, convertMinutes(convertAlpha(alp)), alp));
-        //arcAnimation();
+        home.addActivity(convertAlpha(dragArc.α), home.getChosen());
         arcs.addNewAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α);
         home.updateText(home.activities.time_left);
         if (home.activities.time_left <= 0)
@@ -275,9 +277,7 @@ public class Circle extends View{
         if (home.activities.time_left <= 0)
             return;
         if (!dragging && !handlerWorking){
-            dragging = true;
-            dragArc.α = convertMinutes((int) clamp(home.activities.time_left, Activities.grid,Activities.grid*3));
-            dragArc.animate(Activities.grid);
+            startDragging();
             invalidate();
             menuUp();
             home.updateText(convertAlpha(dragArc.α));
@@ -285,6 +285,12 @@ public class Circle extends View{
     }
     public static float clamp(float v, float min, float max){
         return ((v > max) ? max : ((v < min) ? min : v));
+    }
+
+    private void startDragging(){
+        dragging = true; onRight = true;
+        dragArc.α = convertMinutes((int) clamp(home.activities.time_left, Activities.grid,Activities.grid*3));
+        dragArc.animate(Activities.grid);
     }
 
     private class ArcAnimation{
