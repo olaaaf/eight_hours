@@ -1,16 +1,9 @@
 package com.oleaf.eighthours;
 
-import android.graphics.drawable.AnimatedVectorDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
-import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,8 +16,7 @@ public class Home extends AppCompatActivity {
 
     private boolean menuUp, colorChosen;
     private int color_pressed, color_normal, color_inactive;
-    private ConstraintLayout layout;
-    private TextView hoursText, desc, cancel_button, confirm_button, add_button;
+    public TextView hoursText, desc, cancel_button, confirm_button, add_button;
     public ImageView[] cmenuButtons;
     public int[] cmenuOrder;
     private Animation popUpMenu, downMenu;
@@ -41,6 +33,7 @@ public class Home extends AppCompatActivity {
             activities = new Activities(this);
 
         setContentView(R.layout.activity_home);
+
         color_normal = ContextCompat.getColor(this, R.color.cancel); color_pressed = ContextCompat.getColor(this, R.color.cancel_pressed);
         color_inactive = ContextCompat.getColor(this, R.color.inactive_text);
         hoursText = findViewById(R.id.textView);
@@ -136,7 +129,9 @@ public class Home extends AppCompatActivity {
         }
     }
     public void showCMenu(int index){
-        cMenu.show(index);
+        cMenu.show();
+        add_button.setText(R.string.playactivity);
+        updateText((int) activities.getSpan(index).minutes);
     }
     public void hideCMenu() { cMenu.hide(); }
     //Activity changing
@@ -157,7 +152,7 @@ public class Home extends AppCompatActivity {
     }
     public void popup(){
         menuUp = true;
-        menu.popUp();
+        //popup
         animation(true);
     }
     public void confirm(){
@@ -183,14 +178,14 @@ public class Home extends AppCompatActivity {
             cancel_button.startAnimation(popUpMenu);
             confirm_button.startAnimation(popUpMenu);
             confirm_button.setTextColor(color_inactive);
-            menu.startAnimation(popUpMenu);
+            //animation
             desc.setText(R.string.drag_to_edit);
         }else{
-            menu.popUp();
+            //popup
             colorChosen = false;
             confirm_button.startAnimation(downMenu);
             cancel_button.startAnimation(downMenu);
-            menu.startAnimation(downMenu);
+            //animation
             desc.setText(R.string.drag_to_add);
         }
     }
@@ -219,7 +214,7 @@ public class Home extends AppCompatActivity {
         hoursText.setText(text, 0, characters);
     }
     public int getChosen(){
-        return menu.getChosen();
+        return 1;
     }
     public void colorChosen(){
         colorChosen = true;
@@ -231,6 +226,7 @@ public class Home extends AppCompatActivity {
     //TODO: change activities animation
     //TODO: better activities changing
     //TODO: accenting color pick
+    //TODO: when trying to click confirm without picked color shake the menu_layout
     /**
      * @param x ought to be the local position derived form the view
      * @param y ought to be the local position derived form the view

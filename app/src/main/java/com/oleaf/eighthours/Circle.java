@@ -12,8 +12,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Circle extends View{
     public TypedArray colors;
@@ -82,8 +80,9 @@ public class Circle extends View{
             @Override
             protected void onTap(float x, float y) {
                 int tindex = touchActivity(x, y);
-                if (tindex != -1){
+                if (tindex != -1 && !dragging){
                     arcs.select(tindex);
+                    home.showCMenu(arcs.findIndex(tindex));
                 }
                 invalidate();
             }
@@ -95,6 +94,11 @@ public class Circle extends View{
                         menuUp();
                     invalidate();
                 }
+                int tindex = touchActivity(x, y);
+                if (tindex != -1 && !dragging){
+                    arcs.select(tindex);
+                    home.showCMenu(arcs.findIndex(tindex));
+                }
                 arcs.deselect();
             }
             @Override
@@ -105,7 +109,11 @@ public class Circle extends View{
                     invalidate();
                 } else if (home.activities.getSpans().length > 0 && touchActivity(x, y) > -1) {
                     int tindex = touchActivity(x, y);
-                    arcs.select(tindex);
+                    if (tindex != -1 && !dragging){
+                        if (arcs.select(tindex))
+                            Vibrate.v(50,vibrator);
+                        home.showCMenu(arcs.findIndex(tindex));
+                    }
                     invalidate();
                 }
             }
@@ -172,10 +180,6 @@ public class Circle extends View{
         paint.setStrokeWidth(stroke_width);
     }
 
-    private void drawArc(Canvas canvas, float startAngle, float sweepAngle){
-
-    }
-
     private float clampAlpha(float ... alpha){
         return clampAlpha(false, alpha);
     }
@@ -203,6 +207,7 @@ public class Circle extends View{
         if (alpha < start_alpha + 90){
             alpha = start_alpha + 90;
         }
+
         if (convertAlpha(alpha - (start_alpha + 90)) < Activities.grid) {
             alpha = convertMinutes(Activities.grid) + start_alpha + 90;
         }
@@ -242,10 +247,11 @@ public class Circle extends View{
     }
 
     /*
-    menu functions
+    menu_layout functions
         TODO: deleting with the account of [full]
         TODO: add background circle
         TODO: direction detection (on the circle)
+        TODO: fix selecting
      */
     public void menuUp(){
         if (convertAlpha() > 0)
@@ -260,8 +266,7 @@ public class Circle extends View{
         home.updateText(home.activities.time_left);
     }
     public void confirm() {
-        home.addActivity(convertAlpha(dragArc.α), home.getChosen());
-        arcs.addNewAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α);
+        arcs.addNewAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α, home.addActivity(convertAlpha(dragArc.α), home.getChosen()));
         home.updateText(home.activities.time_left);
         if (home.activities.time_left <= 0)
             full = true;
@@ -354,7 +359,7 @@ public class Circle extends View{
 
     //TODO: after play button show animation change the drawable
 
-    private class Arcs{
+    public class Arcs{
         private  Arc[] arcs;
         int draggingIndex = -1;
         float shadowStroke;
@@ -371,15 +376,15 @@ public class Circle extends View{
         }
 
 
-        public void addNew(float alpha, int color_index){
+        public void addNew(float alpha, int color_index, int index){
             Arc[] cp = arcs.clone();
             arcs = new Arc[cp.length + 1];
             System.arraycopy(cp, 0, arcs, 0, cp.length);
-            arcs[arcs.length - 1] = new Arc(alpha, color_index);
+            arcs[arcs.length - 1] = new Arc(alpha, color_index, index);
         }
 
-        public void addNewAnimation(float alpha, int color_index, float alphaNow){
-            addNew(alpha, color_index);
+        public void addNewAnimation(float alpha, int color_index, float alphaNow, int index){
+            addNew(alpha, color_index, index);
             arcs[arcs.length - 1].animate(alphaNow);
         }
 
@@ -388,12 +393,30 @@ public class Circle extends View{
             for (int ix = 0; ix < arcs.length; ++ix){
                 if (ix == draggingIndex){
                     paint.setStrokeWidth(paint.getStrokeWidth() + shadowStroke);
+                    shadow.color = arcs[ix].color;
                     shadow.drawRounded(start_alpha, canvas);
                     paint.setStrokeWidth(paint.getStrokeWidth() - shadowStroke);
                 }
                 start_alpha += arcs[ix].drawRounded(start_alpha, canvas);
             }
             return start_alpha;
+        }
+        //animation
+        public boolean delete(int activityIndex){
+            int find = findIndex(activityIndex);
+            if (find > -1) {
+                arcs = (Arc[]) Tools.removeIndex(arcs, find);
+                return true;
+            }
+            return false;
+        }
+
+        public int findIndex(int activityIndex){
+            for (int i = 0; i < arcs.length; ++i){
+                if (arcs[i].index == activityIndex)
+                    return i;
+            }
+            return -1;
         }
 
         public boolean checkAnimations(){
@@ -404,9 +427,11 @@ public class Circle extends View{
             return true;
         }
 
-        public void select(int index){
+        public boolean select(int index){
+            boolean r = (draggingIndex < 0) ? false : ((draggingIndex != index) ? true : false);
             draggingIndex = (int) clamp(index, 0, arcs.length-1);
             shadow.α = arcs[index].α;
+            return r;
         }
 
         public void deselect(){
@@ -416,6 +441,7 @@ public class Circle extends View{
         public class Arc{
             int color;
             float α;
+            int index;
             ArcAnimation animation;
 
             Arc(float α, int color_index){
@@ -426,6 +452,12 @@ public class Circle extends View{
             Arc(float α, int color, boolean t){
                 this.α = α;
                 this.color = color;
+            }
+
+            Arc(float α, int color_index, int index){
+                this.α = α;
+                color = colors.getColor(color_index, 0);
+                this.index = index;
             }
 
             public void animate( float fromAlpha){

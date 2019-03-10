@@ -5,7 +5,7 @@
     <color name="colorAccent">#f48fb1</color>
     <color name="circle_color">#47525E</color>
     <color name="drag_color">#e25033</color>
-    <color name="cancel">#47525E</color>
+    <color name="cancel">#263238</color>
     <color name="cancel_pressed">#a5bad1</color>
     <color name="indicator_circle">#fdd835</color>
     <color name="indicator_text">#101e70</color>

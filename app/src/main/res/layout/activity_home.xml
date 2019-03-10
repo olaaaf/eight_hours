@@ -24,18 +24,70 @@
 
     </view>
 
+    <com.oleaf.eighthours.CMenu
+        android:id="@+id/circular_menu"
+        android:layout_width="@dimen/circle_width"
+        android:layout_height="@dimen/circle_height"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/circle"
+        app:layout_constraintEnd_toEndOf="@+id/circle"
+        app:layout_constraintStart_toStartOf="@+id/circle"
+        app:layout_constraintTop_toTopOf="@+id/circle">
+
+        <ImageButton
+            android:id="@+id/playButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/cmenu_background"
+            android:elevation="@dimen/cmenu_elevation"
+            android:scaleType="fitXY"
+            android:tint="@color/cmenu_foreground"
+            app:layout_constraintCircle="@+id/circular_menu"
+            app:layout_constraintCircleAngle="0"
+            app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
+            app:srcCompat="@drawable/play_na" />
+
+        <ImageView
+            android:id="@+id/editButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/cmenu_background"
+            android:elevation="@dimen/cmenu_elevation"
+            android:scaleType="fitXY"
+            android:tint="@color/cmenu_foreground"
+            app:layout_constraintCircle="@+id/circular_menu"
+            app:layout_constraintCircleAngle="30"
+            app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
+            app:srcCompat="@drawable/edit_button" />
+
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/cmenu_background"
+            android:elevation="@dimen/cmenu_elevation"
+            android:scaleType="fitXY"
+            android:tint="@color/cmenu_foreground"
+            app:layout_constraintCircle="@+id/circular_menu"
+            app:layout_constraintCircleAngle="330"
+            app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
+            app:srcCompat="@drawable/trash" />
+    </com.oleaf.eighthours.CMenu>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="254dp"
         android:layout_height="152dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
         android:text="8 hours\n0 min"
         android:textColor="@color/primary_text"
-        android:textSize="60sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         android:typeface="normal"
         app:fontFamily="@font/roboto_thin"
@@ -51,7 +103,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
-        android:text="@string/drag_to_add"
+        android:text="@string/timeleft"
         android:textSize="15sp"
         android:textStyle="bold|italic"
         app:fontFamily="@font/roboto_thin"
@@ -62,69 +114,68 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.0" />
 
-    <view
-        android:id="@+id/menu_view"
-        class="com.oleaf.eighthours.Menu"
-        android:layout_width="329dp"
-        android:layout_height="37dp"
-        android:layout_marginBottom="8dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+    <com.oleaf.eighthours.MenuLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintVertical_bias="0.788" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/cancel"
-        android:layout_width="122dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:alpha="1"
-        android:background="#00000000"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:text="@string/cancel"
-        android:textColor="@color/cancel"
-        android:textSize="24sp"
-        android:typeface="normal"
-        android:visibility="invisible"
-        app:fontFamily="@font/roboto_thin"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintHorizontal_bias="0.507"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:layout_constraintVertical_bias="0.8" />
+        <com.oleaf.eighthours.Menu
+            android:id="@+id/menu_view"
+            android:layout_width="329dp"
+            android:layout_height="45dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline" />
 
-    <TextView
-        android:id="@+id/confirm"
-        android:layout_width="122dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:alpha="1"
-        android:background="#00000000"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:text="@string/confirm"
-        android:textColor="@color/cancel"
-        android:textSize="24sp"
-        android:typeface="normal"
-        android:visibility="invisible"
-        app:fontFamily="@font/roboto_thin"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.446"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:layout_constraintVertical_bias="0.477" />
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="122dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="284dp"
+            android:layout_marginBottom="27dp"
+            android:alpha="1"
+            android:background="#00000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/cancel"
+            android:textSize="24sp"
+            android:typeface="normal"
+            android:visibility="invisible"
+            app:fontFamily="@font/roboto_thin"
+            app:layout_constraintBottom_toTopOf="@+id/menu_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/confirm"
+            android:layout_width="122dp"
+            android:layout_height="36dp"
+            android:layout_marginBottom="27dp"
+            android:alpha="1"
+            android:background="#00000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/confirm"
+            android:textColor="@color/cancel"
+            android:textSize="24sp"
+            android:typeface="normal"
+            android:visibility="invisible"
+            app:fontFamily="@font/roboto_thin"
+            app:layout_constraintBottom_toTopOf="@+id/menu_view"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintHorizontal_bias="0.446"
+            app:layout_constraintStart_toStartOf="@+id/guideline2" />
+    </com.oleaf.eighthours.MenuLayout>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"
@@ -202,58 +253,8 @@
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
-    <com.oleaf.eighthours.CMenu
-        android:id="@+id/circular_menu"
-        android:layout_width="@dimen/circle_width"
-        android:layout_height="@dimen/circle_height"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/circle"
-        app:layout_constraintEnd_toEndOf="@+id/circle"
-        app:layout_constraintStart_toStartOf="@+id/circle"
-        app:layout_constraintTop_toTopOf="@+id/circle">
 
-        <ImageButton
-            android:id="@+id/playButton"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:background="@drawable/circle"
-            android:backgroundTint="@color/cmenu_background"
-            android:elevation="@dimen/cmenu_elevation"
-            android:scaleType="fitXY"
-            android:tint="@color/cmenu_foreground"
-            app:layout_constraintCircle="@+id/circular_menu"
-            app:layout_constraintCircleAngle="0"
-            app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
-            app:srcCompat="@drawable/play_na" />
 
-        <ImageView
-            android:id="@+id/editButton"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:background="@drawable/circle"
-            android:backgroundTint="@color/cmenu_background"
-            android:elevation="@dimen/cmenu_elevation"
-            android:scaleType="fitXY"
-            android:tint="@color/cmenu_foreground"
-            app:layout_constraintCircle="@+id/circular_menu"
-            app:layout_constraintCircleAngle="30"
-            app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
-            app:srcCompat="@drawable/edit_button" />
-
-        <ImageButton
-            android:id="@+id/deleteButton"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:background="@drawable/circle"
-            android:backgroundTint="@color/cmenu_background"
-            android:elevation="@dimen/cmenu_elevation"
-            android:scaleType="fitXY"
-            android:tint="@color/cmenu_foreground"
-            app:layout_constraintCircle="@+id/circular_menu"
-            app:layout_constraintCircleAngle="330"
-            app:layout_constraintCircleRadius="@dimen/circle_menu_radius"
-            app:srcCompat="@drawable/trash" />
-    </com.oleaf.eighthours.CMenu>
 
 
 </android.support.constraint.ConstraintLayout>

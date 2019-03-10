@@ -42,6 +42,10 @@ public class CMenu extends ConstraintLayout {
         //TODO: animation
     }
 
+    public void show(){
+        home.rotateCMenu(0);
+        setVisibility(VISIBLE);
+    }
 
     public void hide(){
         home.rotateCMenu(0);
