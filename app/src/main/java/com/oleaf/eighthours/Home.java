@@ -14,13 +14,11 @@ public class Home extends AppCompatActivity {
     public static final int grid = 20;
     public static final float button_bounds = 0.1f;
 
-    private boolean menuUp, colorChosen;
-    private int color_pressed, color_normal, color_inactive;
-    public TextView hoursText, desc, cancel_button, confirm_button, add_button;
+    public TextView hoursText, desc, add_button;
     public ImageView[] cmenuButtons;
     public int[] cmenuOrder;
-    private Animation popUpMenu, downMenu;
-    private Menu menu;
+    private MenuLayout colorMenu;
+    private Menu colorMenuView;
     public Circle circle;
     private CMenu cMenu;
     public Activities activities;
@@ -34,77 +32,22 @@ public class Home extends AppCompatActivity {
 
         setContentView(R.layout.activity_home);
 
-        color_normal = ContextCompat.getColor(this, R.color.cancel); color_pressed = ContextCompat.getColor(this, R.color.cancel_pressed);
-        color_inactive = ContextCompat.getColor(this, R.color.inactive_text);
         hoursText = findViewById(R.id.textView);
-        menu = findViewById(R.id.menu_view);
+        colorMenu = findViewById(R.id.color_menu);
         desc = findViewById(R.id.textView3);
         circle = findViewById(R.id.circle);
-        cancel_button = findViewById(R.id.cancel);
-        confirm_button = findViewById(R.id.confirm);
         add_button = findViewById(R.id.addButton);
         cMenu = findViewById(R.id.circular_menu);
-        popUpMenu = AnimationUtils.loadAnimation(this, R.anim.menu_popup);
-        downMenu = AnimationUtils.loadAnimation(this, R.anim.menu_down);
+        colorMenuView = findViewById(R.id.menu_view);
         // TODO: check which solution is better performance-wise
-        cancel_button.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP){
-                    if (viewContains(cancel_button, event.getX(), event.getY())){
-                        cancel();
-                    }
-                    cancel_button.setTextColor(color_normal);
-                }
-                else if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    cancel_button.setTextColor(color_pressed);
-                }
-                return true;
-            }
-        });
-        confirm_button.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP && colorChosen){
-                    if(viewContains(confirm_button, event.getX(), event.getY())){
-                        confirm();
-                    }
-                    confirm_button.setTextColor(color_normal);
-                }
-                else if(event.getAction() == MotionEvent.ACTION_DOWN && colorChosen){
-                    confirm_button.setTextColor(color_pressed);
-                }
-                return true;
-            }
-        });
+
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 circle.addNew();
             }
         });
-        View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    if (v.getId() == R.id.cancel){
-                        cancel_button.setTextColor(color_pressed);
-                    }else{
-                        if (colorChosen)
-                            confirm_button.setTextColor(color_pressed);
-                    }
-                }else{
-                    if (v.getId() == R.id.cancel){
-                        cancel_button.setTextColor(color_normal);
-                    }else{
-                        if (colorChosen)
-                            confirm_button.setTextColor(color_normal);
-                    }
-                }
-            }
-        };
-        confirm_button.setOnFocusChangeListener(onFocusChangeListener);
-        cancel_button.setOnFocusChangeListener(onFocusChangeListener);
+
         cmenuOrder = new int[3];
         cmenuButtons = new ImageView[3];
         cmenuButtons[0] = findViewById(R.id.playButton);
@@ -148,47 +91,19 @@ public class Home extends AppCompatActivity {
     }
 
     public boolean isMenuUp(){
-        return menuUp;
+        return colorMenu.isShown();
     }
     public void popup(){
-        menuUp = true;
-        //popup
-        animation(true);
+        colorMenu.show();
+        colorMenuView.noAnimation();
+        desc.setText(R.string.drag_to_edit);
     }
-    public void confirm(){
-        if (!menuUp || !colorChosen)
-            return;
-        colorChosen = false;
-        menuUp = false;
-        circle.confirm();
-        animation(false);
+
+    public void hide(){
+        updateText(activities.time_left);
+        desc.setText("");
     }
-    public void cancel(){
-        if (!menuUp)
-            return;
-        colorChosen = false;
-        menuUp = false;
-        circle.cancel();
-        animation(false);
-    }
-    private void animation(boolean show){
-        if (show){
-            confirm_button.setVisibility(View.VISIBLE);
-            cancel_button.setVisibility(View.VISIBLE);
-            cancel_button.startAnimation(popUpMenu);
-            confirm_button.startAnimation(popUpMenu);
-            confirm_button.setTextColor(color_inactive);
-            //animation
-            desc.setText(R.string.drag_to_edit);
-        }else{
-            //popup
-            colorChosen = false;
-            confirm_button.startAnimation(downMenu);
-            cancel_button.startAnimation(downMenu);
-            //animation
-            desc.setText(R.string.drag_to_add);
-        }
-    }
+
     public void chosenChanged(){
         circle.invalidate();
     }
@@ -214,12 +129,9 @@ public class Home extends AppCompatActivity {
         hoursText.setText(text, 0, characters);
     }
     public int getChosen(){
-        return 1;
+        return colorMenu.chosen;
     }
-    public void colorChosen(){
-        colorChosen = true;
-        confirm_button.setTextColor(color_normal);
-    }
+
     public boolean isAnimationDone(){
         return circle.getAnimation().hasEnded();
     }
@@ -240,4 +152,11 @@ public class Home extends AppCompatActivity {
     }
 
 
+    public void cancelPress(View view){
+        colorMenu.cancelPress(view);
+    }
+
+    public void confirmPress(View view){
+        colorMenu.confirmPress(view);
+    }
 }

@@ -19,7 +19,7 @@ public class Menu extends View {
     public float[] dimension;
     public static final int duration = 100;
     public static final float perc = 0.8f;
-    public static final float smaller = 0.4f;
+    public static final float smaller = 0.5f;
     public boolean i = false;
     public Menu(Context context) {
         super(context);
@@ -89,6 +89,16 @@ public class Menu extends View {
             }
         }
         return true;
+    }
+
+    public void noAnimation(){
+        resetDimensions();
+        dimension[((MenuLayout)getParent()).chosen] = dim / perc;
+        invalidate();
+    }
+
+    private void resetDimensions(){
+        Arrays.fill(dimension, dim);
     }
 
     @Override

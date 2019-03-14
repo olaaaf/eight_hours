@@ -267,7 +267,6 @@ public class Circle extends View{
     }
     public void confirm() {
         arcs.addNewAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α, home.addActivity(convertAlpha(dragArc.α), home.getChosen()));
-        home.updateText(home.activities.time_left);
         if (home.activities.time_left <= 0)
             full = true;
         dragging = false;
@@ -306,7 +305,7 @@ public class Circle extends View{
     }
 
     private class ArcAnimation{
-        private static final int default_time = 50;
+        private static final int default_time = 70;
         float time;
         long startTime;
         float addAlpha;
