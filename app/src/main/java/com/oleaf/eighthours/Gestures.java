@@ -70,10 +70,7 @@ public abstract class Gestures{
         first_press = -1;
     }
     private boolean timePassed(){
-        if (System.currentTimeMillis() - first_press >= long_press && long_press > -1 && first_press > -1){
-            return true;
-        }
-        return false;
+        return (System.currentTimeMillis() - first_press >= long_press && long_press > -1 && first_press > -1);
     }
     protected abstract void onTap(float x, float y);
     protected abstract void onDragStop(float x, float y);

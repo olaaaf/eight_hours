@@ -16,8 +16,7 @@ class SpanAdapter extends RecyclerView.Adapter<SpanAdapter.SpanViewHolder>{
     public SpanViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item, parent, false); //a
-        SpanViewHolder viewHolder = new SpanViewHolder(v);
-        return viewHolder;
+        return new SpanViewHolder(v);
     }
 
     @Override

@@ -56,6 +56,7 @@ public class MenuLayout extends ConstraintLayout {
             }
         }
         shown = false;
+        setVisibility(VISIBLE);
         setAlpha(1);
         //To hide the layout effectively, set alpha to 1 and hide it with an animation
         Animation a = new AlphaAnimation(1, 0);

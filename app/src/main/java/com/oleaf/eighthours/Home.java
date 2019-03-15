@@ -15,12 +15,9 @@ public class Home extends AppCompatActivity {
     public static final float button_bounds = 0.1f;
 
     public TextView hoursText, desc, add_button;
-    public ImageView[] cmenuButtons;
-    public int[] cmenuOrder;
     private MenuLayout colorMenu;
     private Menu colorMenuView;
     public Circle circle;
-    private CMenu cMenu;
     public Activities activities;
 
     @Override
@@ -37,7 +34,6 @@ public class Home extends AppCompatActivity {
         desc = findViewById(R.id.textView3);
         circle = findViewById(R.id.circle);
         add_button = findViewById(R.id.addButton);
-        cMenu = findViewById(R.id.circular_menu);
         colorMenuView = findViewById(R.id.menu_view);
         // TODO: check which solution is better performance-wise
 
@@ -47,36 +43,12 @@ public class Home extends AppCompatActivity {
                 circle.addNew();
             }
         });
-
-        cmenuOrder = new int[3];
-        cmenuButtons = new ImageView[3];
-        cmenuButtons[0] = findViewById(R.id.playButton);
-        cmenuButtons[1] = findViewById(R.id.editButton);
-        cmenuButtons[2] = findViewById(R.id.deleteButton);
-
-        for (int ix = 0; ix < cmenuButtons.length; ++ix){
-            cmenuOrder[ix] = (int)((ConstraintLayout.LayoutParams) cmenuButtons[ix].getLayoutParams()).circleAngle;
-        }
     }
     public int addActivity(int min, int color){
         return activities.newActivity(min, color);
         //indicator.update(activities.getLength());
     }
 
-    public void rotateCMenu(int alpha){
-    ConstraintLayout.LayoutParams params;
-        for (int ix = 0; ix < cmenuButtons.length; ++ix){
-            params = (ConstraintLayout.LayoutParams) cmenuButtons[ix].getLayoutParams();
-            params.circleAngle = (alpha + cmenuOrder[ix]) % 360;
-            cmenuButtons[ix].setLayoutParams(params);
-        }
-    }
-    public void showCMenu(int index){
-        cMenu.show();
-        add_button.setText(R.string.playactivity);
-        updateText((int) activities.getSpan(index).minutes);
-    }
-    public void hideCMenu() { cMenu.hide(); }
     //Activity changing
     private boolean getExtras(){
         Bundle bundle = getIntent().getExtras();

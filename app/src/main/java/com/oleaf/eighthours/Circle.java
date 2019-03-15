@@ -79,11 +79,7 @@ public class Circle extends View{
         gestures = new Gestures(64, -1) {
             @Override
             protected void onTap(float x, float y) {
-                int tindex = touchActivity(x, y);
-                if (tindex != -1 && !dragging){
-                    arcs.select(tindex);
-                    home.showCMenu(arcs.findIndex(tindex));
-                }
+                selectActivity( touchActivity(x, y), false);
                 invalidate();
             }
             @Override
@@ -94,12 +90,8 @@ public class Circle extends View{
                         menuUp();
                     invalidate();
                 }
-                int tindex = touchActivity(x, y);
-                if (tindex != -1 && !dragging){
-                    arcs.select(tindex);
-                    home.showCMenu(arcs.findIndex(tindex));
-                }
-                arcs.deselect();
+                selectActivity( touchActivity(x, y), false);
+                //arcs.deselect();
             }
             @Override
             protected void onDrag(float x, float y) {
@@ -108,12 +100,7 @@ public class Circle extends View{
                     home.updateText(convertAlpha(dragArc.α));
                     invalidate();
                 } else if (home.activities.getSpans().length > 0 && touchActivity(x, y) > -1) {
-                    int tindex = touchActivity(x, y);
-                    if (tindex != -1 && !dragging){
-                        if (arcs.select(tindex))
-                            Vibrate.v(50,vibrator);
-                        home.showCMenu(arcs.findIndex(tindex));
-                    }
+                    selectActivity( touchActivity(x, y), true);
                     invalidate();
                 }
             }
@@ -245,7 +232,16 @@ public class Circle extends View{
         if (!handlerWorking)
             handlerUpdater.removeCallbacks(runnable);
     }
-
+    private boolean selectActivity(int index, boolean vibrate){
+        if (index != -1 && !dragging){
+            if (arcs.select(index)){
+                if (vibrate) Vibrate.v(50,vibrator);
+                //show Options
+                return true;
+            }
+        }
+        return false;
+    }
     /*
     menu_layout functions
         TODO: deleting with the account of [full]
@@ -427,7 +423,7 @@ public class Circle extends View{
         }
 
         public boolean select(int index){
-            boolean r = (draggingIndex < 0) ? false : ((draggingIndex != index) ? true : false);
+            boolean r = (draggingIndex < 0) ? false : (draggingIndex !=index);
             draggingIndex = (int) clamp(index, 0, arcs.length-1);
             shadow.α = arcs[index].α;
             return r;
