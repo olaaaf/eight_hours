@@ -84,8 +84,16 @@ public class Options extends LinearLayout {
     public void deletePress() {
         if (index < 0)
             return;
-        //delete arc
-        ((Home) getContext()).activities.deleteActivity(index);
-        //hide
+        Home home = (Home) getContext();
+        home.circle.arcs.deselect();
+        home.circle.arcs.delete(index);
+        home.circle.update();
+        home.activities.deleteActivity(index);
+        home.updateText(home.activities.time_left);
+        hide();
+    }
+
+    public boolean isShown(){
+        return (index > -1);
     }
 }

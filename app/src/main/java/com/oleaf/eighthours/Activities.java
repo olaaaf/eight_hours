@@ -59,6 +59,8 @@ public class Activities implements Parcelable {
             else if (ix > index)
                 cp[ix-1] = spans[ix];
         }
+        time_left += spans[index].minutes;
+        spans = cp;
         return true;
     }
 

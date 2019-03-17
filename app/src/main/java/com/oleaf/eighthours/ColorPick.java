@@ -82,6 +82,7 @@ public class ColorPick extends View {
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP){
             before = ((ColorMenu)getParent()).chosen;
+            //TODO: Fix that
             ((ColorMenu)getParent()).chosen = Tools.clamp((int) ((event.getX() / getWidth()) * (dimension.length)), 0, dimension.length);
             if (before != ((ColorMenu)getParent()).chosen) {
                 animation.end();

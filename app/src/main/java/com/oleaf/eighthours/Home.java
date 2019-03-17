@@ -32,14 +32,6 @@ public class Home extends AppCompatActivity {
         options = findViewById(R.id.options);
         add_button = findViewById(R.id.addButton);
         colorPick = findViewById(R.id.menu_view);
-        // TODO: check which solution is better performance-wise
-
-        add_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                circle.addNew();
-            }
-        });
     }
     public int addActivity(int min, int color){
         return activities.newActivity(min, color);
@@ -127,7 +119,6 @@ public class Home extends AppCompatActivity {
             return !(x < -width * button_bounds) && !(y < -height * button_bounds) && !(x > width * (1f + button_bounds)) && !(y > height * (1 + button_bounds));
     }
 
-
     public void cancelPress(View view){
         colorMenu.cancelPress(view);
     }
@@ -145,6 +136,10 @@ public class Home extends AppCompatActivity {
     }
 
     public void editPress(View view){
-        options.deletePress();
+        options.editPress();
+    }
+
+    public void addPress(View view){
+        if (!options.isShown()) circle.addNew();
     }
 }

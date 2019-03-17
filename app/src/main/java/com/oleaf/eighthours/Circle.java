@@ -263,13 +263,22 @@ public class Circle extends View{
         home.updateText(home.activities.time_left);
     }
     public void confirm() {
-        arcs.addNewAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α, home.addActivity(convertAlpha(dragArc.α), home.getChosen()));
+        home.addActivity(convertAlpha(dragArc.α), home.getChosen());
+        arcs.addNewAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α);
         if (home.activities.time_left <= 0)
             full = true;
         dragging = false;
         dragArc.α = 0;
         invalidate();
     }
+
+    public void update(){
+        if (home.activities.time_left <= 0)
+            full = true;
+        else
+            full = false;
+    }
+
     public float getAngleBefore(int span_index){
         if (span_index < 1)
             return 0;
@@ -281,6 +290,7 @@ public class Circle extends View{
         return start;
     }
     public void addNew(){
+        update();
         checkAnimations();
         if (home.activities.time_left <= 0)
             return;
@@ -302,7 +312,7 @@ public class Circle extends View{
     }
 
     private class ArcAnimation{
-        private static final int default_time = 70;
+        private static final int default_time = 100;
         float time;
         long startTime;
         float addAlpha;
@@ -372,15 +382,15 @@ public class Circle extends View{
         }
 
 
-        public void addNew(float alpha, int color_index, int index){
+        public void addNew(float alpha, int color_index){
             Arc[] cp = arcs.clone();
             arcs = new Arc[cp.length + 1];
             System.arraycopy(cp, 0, arcs, 0, cp.length);
-            arcs[arcs.length - 1] = new Arc(alpha, color_index, index);
+            arcs[arcs.length - 1] = new Arc(alpha, color_index);
         }
 
-        public void addNewAnimation(float alpha, int color_index, float alphaNow, int index){
-            addNew(alpha, color_index, index);
+        public void addNewAnimation(float alpha, int color_index, float alphaNow){
+            addNew(alpha, color_index);
             arcs[arcs.length - 1].animate(alphaNow);
         }
 
@@ -397,28 +407,40 @@ public class Circle extends View{
             }
             return start_alpha;
         }
-        //animation
+
+        //Just remove the index (no animation)
+        private void remove(int activityIndex){
+            Arc[] a = new Arc[arcs.length-1];
+            System.arraycopy(arcs, 0, a, 0, activityIndex);
+            System.arraycopy(arcs, activityIndex+1, a, activityIndex, arcs.length-activityIndex-1);
+            arcs = a;
+        }
+
         public boolean delete(int activityIndex){
-            int find = findIndex(activityIndex);
-            if (find > -1) {
-                arcs = (Arc[]) Tools.removeIndex(arcs, find);
+            //TODO: removing animation
+            if (activityIndex > -1 && activityIndex < arcs.length) {
+                float x = arcs[activityIndex].α;
+                arcs[activityIndex].α = convertMinutes(Activities.grid/2);
+                arcs[activityIndex].animate(x);
+                invalidate();
                 return true;
             }
             return false;
         }
 
-        public int findIndex(int activityIndex){
-            for (int i = 0; i < arcs.length; ++i){
-                if (arcs[i].index == activityIndex)
-                    return i;
-            }
-            return -1;
-        }
-
         public boolean checkAnimations(){
-            for (Arc arc : arcs){
-                if (!arc.animation.finished())
+            int remove = -1;
+            for (int index = 0; index < arcs.length; ++index){
+                if (!arcs[index].animation.finished())
                     return false;
+                else{
+                    if (arcs[index].α < Activities.grid / 1.5f)
+                        remove = index;
+                }
+            }
+            if (remove > -1){
+                remove(remove);
+                invalidate();
             }
             return true;
         }
@@ -437,23 +459,16 @@ public class Circle extends View{
         public class Arc{
             int color;
             float α;
-            int index;
             ArcAnimation animation;
-
-            Arc(float α, int color_index){
-                this.α = α;
-                this.color = colors.getColor(color_index, 0);
-            }
 
             Arc(float α, int color, boolean t){
                 this.α = α;
                 this.color = color;
             }
 
-            Arc(float α, int color_index, int index){
+            Arc(float α, int color_index){
                 this.α = α;
                 color = colors.getColor(color_index, 0);
-                this.index = index;
             }
 
             public void animate( float fromAlpha){
@@ -477,8 +492,11 @@ public class Circle extends View{
             public float drawRounded(float startAlpha, Canvas canvas){
                 paint.setColor(color);
                 float a = (animation != null) ? ((animation.launched() && !animation.finished()) ? animation.getAlpha() : α) : α;
+
                 float startAngle = alpha_pause + startAlpha;
                 float sweepAngle = a - alpha_pause * 2;
+                sweepAngle = (sweepAngle < 0) ? 0 : sweepAngle;
+
                 paint.setStyle(Paint.Style.FILL);
                 canvas.drawCircle(rectangle.width()/2f * (float) Math.cos(Math.toRadians(startAngle+alpha_rounded)) + rectangle.left + rectangle.width()/2.0f, rectangle.height()/2f + rectangle.top + rectangle.width()/2f * (float) Math.sin(Math.toRadians(startAngle+alpha_rounded)), paint.getStrokeWidth() / 2f, paint);
                 canvas.drawCircle(rectangle.width()/2f * (float) Math.cos(Math.toRadians(sweepAngle-alpha_rounded+startAngle)) + rectangle.left + rectangle.width()/2.0f, rectangle.height()/2.0f + rectangle.top + rectangle.width()/2f * (float) Math.sin(Math.toRadians(sweepAngle-alpha_rounded+startAngle)), paint.getStrokeWidth() / 2f, paint);

@@ -222,7 +222,7 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/clickable_circle"
             android:clickable="true"
-            android:onClick="editPress"
+            android:onClick="deletePress"
             android:backgroundTint="@color/cmenu_background"
             android:elevation="@dimen/cmenu_elevation"
             android:scaleType="fitXY"
@@ -284,6 +284,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
 
+    <!-- TODO: add ripple effect -->
     <TextView
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
@@ -294,7 +295,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/menu_rect"
-
+        android:onClick="addPress"
         android:backgroundTint="@color/button"
         android:clickable="true"
         android:elevation="6dp"
