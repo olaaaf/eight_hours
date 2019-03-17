@@ -1,13 +1,8 @@
 package com.oleaf.eighthours;
 
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.*;
 
 public class Home extends AppCompatActivity {
@@ -15,8 +10,9 @@ public class Home extends AppCompatActivity {
     public static final float button_bounds = 0.1f;
 
     public TextView hoursText, desc, add_button;
-    private MenuLayout colorMenu;
-    private Menu colorMenuView;
+    private ColorMenu colorMenu;
+    private ColorPick colorPick;
+    private Options options;
     public Circle circle;
     public Activities activities;
 
@@ -33,8 +29,9 @@ public class Home extends AppCompatActivity {
         colorMenu = findViewById(R.id.color_menu);
         desc = findViewById(R.id.textView3);
         circle = findViewById(R.id.circle);
+        options = findViewById(R.id.options);
         add_button = findViewById(R.id.addButton);
-        colorMenuView = findViewById(R.id.menu_view);
+        colorPick = findViewById(R.id.menu_view);
         // TODO: check which solution is better performance-wise
 
         add_button.setOnClickListener(new View.OnClickListener() {
@@ -62,18 +59,25 @@ public class Home extends AppCompatActivity {
         return true;
     }
 
-    public boolean isMenuUp(){
+    public boolean colorUp(){
         return colorMenu.isShown();
     }
-    public void popup(){
+    public void colorShow(){
         colorMenu.show();
-        colorMenuView.noAnimation();
+        colorPick.noAnimation();
         desc.setText(R.string.drag_to_edit);
     }
-
-    public void hide(){
+    public void colorHide(){
         updateText(activities.time_left);
         desc.setText("");
+    }
+
+    public void optionsShow(int index){
+        options.show(index);
+    }
+
+    public void optionsHide(){
+        options.hide();
     }
 
     public void chosenChanged(){
@@ -130,5 +134,17 @@ public class Home extends AppCompatActivity {
 
     public void confirmPress(View view){
         colorMenu.confirmPress(view);
+    }
+
+    public void playPress(View view){
+        options.playPress();
+    }
+
+    public void deletePress(View view){
+        options.deletePress();
+    }
+
+    public void editPress(View view){
+        options.deletePress();
     }
 }

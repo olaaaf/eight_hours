@@ -12,12 +12,14 @@ public class Activities implements Parcelable {
     int time_left = maximum;
     private Span[] spans;
 
+
     Activities(boolean a){
         spans = new Span[0];
     }
 
     Activities(Context context){
-        spans = new Span[0];
+        //Recovery and file management
+        this(false);
     }
 
     private Activities(Parcel in){
@@ -58,6 +60,30 @@ public class Activities implements Parcelable {
                 cp[ix-1] = spans[ix];
         }
         return true;
+    }
+
+    public void startActivity(int index){
+        if (index < 0 || index > spans.length -1)
+            return;
+        spans[index].start();
+    }
+
+    public void pauseActivity(int index){
+        if (index < 0 || index > spans.length -1)
+            return;
+        spans[index].pause();
+    }
+
+    public void activityDone(int index){
+        if (index < 0 || index > spans.length -1)
+            return;
+        spans[index].startTime = (long) (System.currentTimeMillis() - spans[index].minutes * 60000L);
+    }
+
+    public void editActivity(int index){
+        if (index < 0 || index > spans.length -1)
+            return;
+
     }
 
     @Override

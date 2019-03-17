@@ -86,7 +86,7 @@ public class Circle extends View{
             protected void onDragStop(float x, float y) {
                 if (!full && dragging){
                     calculateAlpha(x, y);
-                    if (!home.isMenuUp())
+                    if (!home.colorUp())
                         menuUp();
                     invalidate();
                 }
@@ -239,6 +239,7 @@ public class Circle extends View{
                 //show Options
                 return true;
             }
+            home.optionsShow(index);
         }
         return false;
     }
@@ -251,7 +252,7 @@ public class Circle extends View{
      */
     public void menuUp(){
         if (convertAlpha() > 0)
-            home.popup();
+            home.colorShow();
         else
             dragging = false;
     }

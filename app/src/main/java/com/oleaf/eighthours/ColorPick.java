@@ -11,7 +11,7 @@ import android.view.View;
 
 import java.util.Arrays;
 
-public class Menu extends View {
+public class ColorPick extends View {
     Paint paint;
     ValueAnimator animation;
     private int before;
@@ -21,25 +21,25 @@ public class Menu extends View {
     public static final float perc = 0.8f;
     public static final float smaller = 0.5f;
     public boolean i = false;
-    public Menu(Context context) {
+    public ColorPick(Context context) {
         super(context);
     }
 
-    public Menu(Context context, @Nullable AttributeSet attrs) {
+    public ColorPick(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public Menu(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ColorPick(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public Menu(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ColorPick(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     public void init() {
-        dimension = new float[((MenuLayout)getParent()).colors.length()];
-        dim = perc * Tools.clamp(getWidth() / (float) (((MenuLayout)getParent()).colors.length() * 2 - 1),0f, (float) getHeight());
+        dimension = new float[((ColorMenu)getParent()).colors.length()];
+        dim = perc * Tools.clamp(getWidth() / (float) (((ColorMenu)getParent()).colors.length() * 2 - 1),0f, (float) getHeight());
         Arrays.fill(dimension, dim);
         y_addition = (getHeight() - dim) / 2.0f;
 
@@ -52,7 +52,7 @@ public class Menu extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 for (int ix = 0; ix < dimension.length; ++ix){
-                    if (ix == ((MenuLayout)getParent()).chosen){
+                    if (ix == ((ColorMenu)getParent()).chosen){
                         dimension[ix] = (dim / perc) * (float) animation.getAnimatedValue();
                     }else if (ix == before){
                         dimension[ix] = (dim / perc) * (perc + (1 - (float) animation.getAnimatedValue()));
@@ -69,11 +69,11 @@ public class Menu extends View {
             init();
         }
 
-        for (int ix = 0; ix < ((MenuLayout)getParent()).colors.length(); ++ix){
-            paint.setColor(((MenuLayout)getParent()).colors.getColor(ix, 0));
+        for (int ix = 0; ix < ((ColorMenu)getParent()).colors.length(); ++ix){
+            paint.setColor(((ColorMenu)getParent()).colors.getColor(ix, 0));
             canvas.drawCircle(ix * 2 * dim/perc + dim / (2.0f * perc), (dim/( perc * 2.0f)) + y_addition, dimension[ix] / 2.0f, paint);
             paint.setColor(android.graphics.Color.WHITE);
-            if (ix == ((MenuLayout)getParent()).chosen)
+            if (ix == ((ColorMenu)getParent()).chosen)
                 canvas.drawCircle(ix * 2 * dim/perc + dim / (2.0f * perc), (dim/(perc*2.0f)) + y_addition, dimension[ix] / 2.0f * smaller , paint);
         }
     }
@@ -81,9 +81,9 @@ public class Menu extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP){
-            before = ((MenuLayout)getParent()).chosen;
-            ((MenuLayout)getParent()).chosen = Tools.clamp((int) ((event.getX() / getWidth()) * (dimension.length)), 0, dimension.length);
-            if (before != ((MenuLayout)getParent()).chosen) {
+            before = ((ColorMenu)getParent()).chosen;
+            ((ColorMenu)getParent()).chosen = Tools.clamp((int) ((event.getX() / getWidth()) * (dimension.length)), 0, dimension.length);
+            if (before != ((ColorMenu)getParent()).chosen) {
                 animation.end();
                 animation.start();
             }
@@ -93,7 +93,7 @@ public class Menu extends View {
 
     public void noAnimation(){
         resetDimensions();
-        dimension[((MenuLayout)getParent()).chosen] = dim / perc;
+        dimension[((ColorMenu)getParent()).chosen] = dim / perc;
         invalidate();
     }
 

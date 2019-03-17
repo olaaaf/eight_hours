@@ -11,7 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-public class MenuLayout extends ConstraintLayout {
+public class ColorMenu extends ConstraintLayout {
     private TextView confirm, cancel;
     private Animation showA, hideA;
     private Resources resources;
@@ -19,17 +19,16 @@ public class MenuLayout extends ConstraintLayout {
     private int normalColor, inactiveColor;
     TypedArray colors;
     int chosen;
-    Menu menu;
 
-    public MenuLayout(Context context) {
+    public ColorMenu(Context context) {
         super(context);
     }
 
-    public MenuLayout(Context context, AttributeSet attrs) {
+    public ColorMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MenuLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ColorMenu(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -58,7 +57,7 @@ public class MenuLayout extends ConstraintLayout {
         shown = false;
         setVisibility(VISIBLE);
         setAlpha(1);
-        //To hide the layout effectively, set alpha to 1 and hide it with an animation
+        //To colorHide the layout effectively, set alpha to 1 and colorHide it with an animation
         Animation a = new AlphaAnimation(1, 0);
         a.setFillAfter(true);
         a.setDuration(1);
@@ -91,9 +90,9 @@ public class MenuLayout extends ConstraintLayout {
 
     public int hide(){
         shown = false;
-        //Play hide animation
+        //Play colorHide animation
         startAnimation(hideA);
-        ((Home) getContext()).hide();
+        ((Home) getContext()).colorHide();
         return chosen;
     }
 
