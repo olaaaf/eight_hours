@@ -37,7 +37,9 @@ public class Home extends AppCompatActivity {
         return activities.newActivity(min, color);
         //indicator.update(activities.getLength());
     }
-
+    public void editActivity(int index, int min, int color){
+        activities.editActivity(index, min, (byte) color);
+    }
     //Activity changing
     private boolean getExtras(){
         Bundle bundle = getIntent().getExtras();
@@ -98,6 +100,10 @@ public class Home extends AppCompatActivity {
     }
     public int getChosen(){
         return colorMenu.chosen;
+    }
+
+    public void editEnd(){
+        options.editEnd();
     }
 
     public boolean isAnimationDone(){

@@ -82,10 +82,11 @@ public class Activities implements Parcelable {
         spans[index].startTime = (long) (System.currentTimeMillis() - spans[index].minutes * 60000L);
     }
 
-    public void editActivity(int index){
+    public void editActivity(int index, int minutes, byte color){
         if (index < 0 || index > spans.length -1)
             return;
-
+        spans[index].minutes = minutes;
+        spans[index].color_index = color;
     }
 
     @Override

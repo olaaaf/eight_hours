@@ -53,6 +53,10 @@ public class Options extends LinearLayout {
 
     public void hide() {
         this.index = -1;
+        hideN();
+    }
+
+    private void hideN(){
         setElevation(0f);
         startAnimation(hide);
     }
@@ -67,9 +71,9 @@ public class Options extends LinearLayout {
         if (index < 0)
             return;
         //colorHide options menu
-
+        hideN();
         //copy arc.alpha to alpha of dragging (Circle)
-
+        ((Home) getContext()).circle.edit();
         //selected = 0 (Circle)
 
         //delete arc
@@ -79,6 +83,10 @@ public class Options extends LinearLayout {
         //get confirm button > when pressed don't add activity
         //change span[index].minutes
         //add arc (with animation) (Circle)
+    }
+
+    public void editEnd(){
+        index = -1;
     }
 
     public void deletePress() {

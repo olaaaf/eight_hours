@@ -18,6 +18,7 @@ public class Circle extends View{
     public static final float alpha_threshold = 45;
     private float alpha_pause;
     private float alpha_rounded;
+    private boolean editing;
     Paint paint;
     Resources resources;
     RectF rectangle;
@@ -305,10 +306,19 @@ public class Circle extends View{
         return ((v > max) ? max : ((v < min) ? min : v));
     }
 
+    public void edit() {
+        if (arcs.draggingIndex > 0){
+            editing = true;
+            dragging = true; onRight = true;
+            dragArc.α = 0;
+            invalidate();
+        }
+    }
+
     private void startDragging(){
         dragging = true; onRight = true;
         dragArc.α = convertMinutes((int) clamp(home.activities.time_left, Activities.grid,Activities.grid*3));
-        dragArc.animate(Activities.grid);
+        dragArc.animate(convertMinutes(Activities.grid));
     }
 
     private class ArcAnimation{
@@ -382,7 +392,6 @@ public class Circle extends View{
             this(resources.getColor(R.color.arc_shadow), resources.getDimension(R.dimen.arc_sh_stroke));
         }
 
-
         public void addNew(float alpha, int color_index){
             Arc[] cp = arcs.clone();
             arcs = new Arc[cp.length + 1];
@@ -396,7 +405,10 @@ public class Circle extends View{
         }
 
         public float drawAll(Canvas canvas){
-            float start_alpha = -90;
+            return drawAll(canvas, -90);
+        }
+
+        public float drawAll(Canvas canvas, float start_alpha){
             for (int ix = 0; ix < arcs.length; ++ix){
                 if (ix == draggingIndex){
                     paint.setStrokeWidth(paint.getStrokeWidth() + shadowStroke);
@@ -415,6 +427,18 @@ public class Circle extends View{
             System.arraycopy(arcs, 0, a, 0, activityIndex);
             System.arraycopy(arcs, activityIndex+1, a, activityIndex, arcs.length-activityIndex-1);
             arcs = a;
+        }
+
+        public float alphaAfter(int index){
+            float ret = 0;
+            for (++index; index < arcs.length; ++index){
+                ret += arcs[index].α;
+            }
+            return ret;
+        }
+
+        public float alphaAfter(){
+            return alphaAfter(draggingIndex);
         }
 
         public boolean delete(int activityIndex){
