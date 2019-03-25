@@ -17,7 +17,7 @@ public class Calendar {
     Calendar(Context context){
         this.context = context;
         calendar = java.util.Calendar.getInstance();
-       //if (dateExists(calendar.getTime()) > -1){
+        //if (dateExists(calendar.getTime()) > -1){
 
         //}
     }

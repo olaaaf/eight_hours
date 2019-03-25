@@ -313,6 +313,7 @@ public class Circle extends View{
 
     private class ArcAnimation{
         private static final int default_time = 100;
+        private static final int slow_default = 2;
         float time;
         long startTime;
         float addAlpha;
@@ -421,7 +422,7 @@ public class Circle extends View{
             if (activityIndex > -1 && activityIndex < arcs.length) {
                 float x = arcs[activityIndex].α;
                 arcs[activityIndex].α = convertMinutes(Activities.grid/2);
-                arcs[activityIndex].animate(x);
+                arcs[activityIndex].animateAlpha(x);
                 invalidate();
                 return true;
             }
@@ -472,8 +473,21 @@ public class Circle extends View{
             }
 
             public void animate( float fromAlpha){
-                animation = new ArcAnimation(ArcAnimation.default_time, α, fromAlpha);
+                animate(ArcAnimation.default_time, fromAlpha);
+            }
+
+            public void animate(int time, float fromAlpha){
+                animation = new ArcAnimation(time, α, fromAlpha);
                 arcAnimation();
+            }
+
+            public void animateAlpha(int timePer1, float fromAlpha){
+                int time = (int) (Math.abs(fromAlpha - α) * timePer1);
+                animate(time, fromAlpha);
+            }
+
+            public void animateAlpha(float fromAlpha){
+                animateAlpha(ArcAnimation.slow_default, fromAlpha);
             }
 
             public void stop(){
