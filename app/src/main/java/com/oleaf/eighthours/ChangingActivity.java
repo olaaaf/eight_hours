@@ -17,7 +17,6 @@ public final class ChangingActivity {
                 intent = new Intent(current, Circle.class);
                 break;
             case "List":
-                intent = new Intent(current, ListActivity.class);
                 break;
             case "Timer":
                 //TODO

@@ -1,5 +1,7 @@
 package com.oleaf.eighthours;
 
+import android.util.Log;
+
 public class BasicAnimation {
     long startTime;
     long duration;
@@ -16,6 +18,12 @@ public class BasicAnimation {
     }
 
     float getValue(){
-        return value * Tools.clamp((System.currentTimeMillis() - startTime) / duration, 0f, 1f);
+        Log.println(Log.DEBUG, "value", "" + (value * Tools.clamp((System.currentTimeMillis() - startTime) / (float) duration, 0f, 1f)));
+        return value * Tools.clamp((System.currentTimeMillis() - startTime) / (float) duration, 0f, 1f);
     }
+
+    boolean animationFinished(){
+        return (System.currentTimeMillis() - startTime > duration);
+    }
+
 }

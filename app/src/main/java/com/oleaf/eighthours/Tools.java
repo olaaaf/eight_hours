@@ -39,6 +39,11 @@ public final class Tools{
         System.arraycopy(array, 0, a, 0, array.length + 1);
         return a;
     }
+
+    public static int bool(boolean b){
+        return b ? 1 : 0;
+    }
+
     public static int clamp(int v, int min, int max){ return (v < min) ? min : ((v > max) ? max : v);}
     public static float clamp(float v, float min, float max) {return (v < min) ? min : ((v > max) ? max : v);}
 }

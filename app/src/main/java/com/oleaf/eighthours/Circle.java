@@ -1,5 +1,6 @@
 package com.oleaf.eighthours;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -18,8 +19,9 @@ public class Circle extends View{
     public static final float alpha_threshold = 45;
     private float alpha_pause;
     private float alpha_rounded;
-    private boolean editing;
+    private int editing=-1;
     Paint paint;
+    BasicAnimation basicEdit;
     Resources resources;
     RectF rectangle;
     Home home;
@@ -58,6 +60,7 @@ public class Circle extends View{
             @Override
             public void run() {
                 invalidate();
+                checkAnimations();
                 handlerUpdater.postDelayed(runnable, millisUpdate);
             }
         };
@@ -120,16 +123,16 @@ public class Circle extends View{
         alpha_rounded = (float) Math.asin(paint.getStrokeWidth() / (height / 2f));
         arcs = new Arcs();
         dragArc = arcs.new Arc(0, resources.getColor(R.color.drag_color), false);
+        basicEdit = new BasicAnimation(1);
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(final Canvas canvas) {
         //drawBaseCircle(canvas);
         start_alpha = arcs.drawAll(canvas);
-        if (dragging){
+        if (dragging && editing < 0){
             dragArc.drawRounded(start_alpha, canvas);
         }
-        checkAnimations();
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -230,6 +233,8 @@ public class Circle extends View{
             return;
         if (handlerWorking = !arcs.checkAnimations())
             return;
+        if (handlerWorking = !basicEdit.animationFinished())
+            return;
         if (!handlerWorking)
             handlerUpdater.removeCallbacks(runnable);
     }
@@ -259,16 +264,28 @@ public class Circle extends View{
     }
     public void cancel(){
         dragging = false;
+        editing = -1;
+        home.editEnd();
         dragArc.α = 0;
         invalidate();
         home.updateText(home.activities.time_left);
     }
     public void confirm() {
-        home.addActivity(convertAlpha(dragArc.α), home.getChosen());
-        arcs.addNewAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α);
+        if (editing > -1){
+            home.editActivity(editing, convertAlpha(dragArc.α), home.getChosen());
+            arcs.insertAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α, editing);
+            float draggingAlpha = dragArc.α;
+            dragArc.α = 0;
+            dragArc.animate(draggingAlpha);
+
+        }else{
+            home.addActivity(convertAlpha(dragArc.α), home.getChosen());
+            arcs.addNewAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α);
+        }
         if (home.activities.time_left <= 0)
             full = true;
         dragging = false;
+        editing = -1;
         dragArc.α = 0;
         invalidate();
     }
@@ -307,18 +324,25 @@ public class Circle extends View{
     }
 
     public void edit() {
-        if (arcs.draggingIndex > 0){
-            editing = true;
-            dragging = true; onRight = true;
-            dragArc.α = 0;
+        if (arcs.draggingIndex > -1){
+            editing = arcs.draggingIndex;
+            startDragging(arcs.arcs[arcs.draggingIndex].α, false);
+            basicEdit = new BasicAnimation(ArcAnimation.default_time * 3);
+            arcAnimation();
             invalidate();
+            menuUp();
         }
     }
 
     private void startDragging(){
+        startDragging(convertMinutes(Activities.grid), true);
+    }
+
+    private void startDragging(float a, boolean animate){
         dragging = true; onRight = true;
         dragArc.α = convertMinutes((int) clamp(home.activities.time_left, Activities.grid,Activities.grid*3));
-        dragArc.animate(convertMinutes(Activities.grid));
+        if (animate)
+            dragArc.animate(a);
     }
 
     private class ArcAnimation{
@@ -399,9 +423,34 @@ public class Circle extends View{
             arcs[arcs.length - 1] = new Arc(alpha, color_index);
         }
 
+        /**
+         * Insert new arc instead of adding it on the end of the list
+         */
+        public void insertNew(float alpha, int color_index, int atIndex){
+            atIndex = (int) clamp(atIndex, 0, arcs.length-1);
+            Arc[] cp = arcs.clone();
+            arcs = new Arc[cp.length + 1];
+            for (int ix = 0; ix < cp.length; ++ix){
+                if (ix < atIndex)
+                    arcs[ix] = cp[ix];
+                else if (ix > atIndex)
+                    arcs[ix+1] = cp[ix];
+            }
+            arcs[atIndex] = new Arc(alpha, color_index);
+        }
+
         public void addNewAnimation(float alpha, int color_index, float alphaNow){
             addNew(alpha, color_index);
             arcs[arcs.length - 1].animate(alphaNow);
+        }
+
+        /**
+         * Insert new arc instead of adding it on the end of the list
+         * (with animation)
+         */
+        public void insertAnimation(float alpha, int color_index, float alphaNow, int atIndex) {
+            insertNew(alpha, color_index, atIndex);
+            arcs[atIndex].animate(alphaNow);
         }
 
         public float drawAll(Canvas canvas){
@@ -410,18 +459,24 @@ public class Circle extends View{
 
         public float drawAll(Canvas canvas, float start_alpha){
             for (int ix = 0; ix < arcs.length; ++ix){
-                if (ix == draggingIndex){
+                if (ix == draggingIndex && ix != editing){
                     paint.setStrokeWidth(paint.getStrokeWidth() + shadowStroke);
                     shadow.color = arcs[ix].color;
                     shadow.drawRounded(start_alpha, canvas);
                     paint.setStrokeWidth(paint.getStrokeWidth() - shadowStroke);
                 }
-                start_alpha += arcs[ix].drawRounded(start_alpha, canvas);
+                if (ix == editing){
+                    start_alpha += arcs[ix].α + basicEdit.getValue() * (convertMinutes(home.activities.time_left));
+                }else{
+                    start_alpha += arcs[ix].drawRounded(start_alpha, canvas);
+                }
             }
-            return start_alpha;
+            return start_alpha - alphaAfter(editing) * Tools.bool(editing > -1);
         }
 
-        //Just remove the index (no animation)
+        /**
+         * Remove an arc without the shrinking animation
+         */
         private void remove(int activityIndex){
             Arc[] a = new Arc[arcs.length-1];
             System.arraycopy(arcs, 0, a, 0, activityIndex);
@@ -441,8 +496,10 @@ public class Circle extends View{
             return alphaAfter(draggingIndex);
         }
 
+        /**
+         * Removing an arc with the shrinking animation
+         */
         public boolean delete(int activityIndex){
-            //TODO: removing animation
             if (activityIndex > -1 && activityIndex < arcs.length) {
                 float x = arcs[activityIndex].α;
                 arcs[activityIndex].α = convertMinutes(Activities.grid/2);
