@@ -6,6 +6,7 @@ pipelines:
       deployment: test
       script:
       - chmod +x gradlew
+      - chmod -R +x .bb
       - ./gradlew assembleDebug
       - ./.bb/zipalign -v -p 4 app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/app-aligned.apk
       - ./.bb/apksigner sign -v -ks keystore.jks -ks-pass pass:k3yS0re8 --out app/build/outputs/apk/debug/app-release.apk app/build/outputs/apk/debug/app-aligned.apk
