@@ -2,11 +2,12 @@ image: mingc/android-build-box:latest
 
 pipelines:
   default:
-  - step:
+  -   step:
       deployment: test
       script:
       - chmod +x gradlew
       - ./gradlew assembleDebug
-      - ls -R
-      - curl -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"app/build/outputs/apk/debug/app-debug.apk"
+      - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore keystore.jks -storepass k3yS0re8 -keypass KV4lidate app/build/outputs/apk/debug/app-debug.apk key0
+      - zipalign 4 app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/app-aligned.apk
+      - curl -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"app/build/outputs/apk/debug/app-aligned.apk";filename="eighthours.apk"
 
