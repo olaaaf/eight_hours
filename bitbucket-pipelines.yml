@@ -2,7 +2,7 @@ image: mingc/android-build-box:latest
 
 pipelines:
   default:
-  -   step:
+  - step:
       deployment: test
       script:
       - chmod +x gradlew
