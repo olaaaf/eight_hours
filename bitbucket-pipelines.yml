@@ -8,7 +8,7 @@ pipelines:
       - chmod +x gradlew
       - chmod -R +x .bb
       - ./gradlew assembleDebug
-      - ./.bb/zipalign -v -p 4 app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/app-aligned.apk
+      - ./.bb/zipalign -v 4 app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/app-aligned.apk
       - ./.bb/apksigner sign -v -ks keystore.jks -ks-pass pass:k3yS0re8 --out app/build/outputs/apk/debug/app-release.apk app/build/outputs/apk/debug/app-aligned.apk
       - curl -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"app/build/outputs/apk/debug/app-release.apk";filename="eighthours.apk"
 
