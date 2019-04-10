@@ -49,9 +49,9 @@ public class Activities implements Parcelable {
         }
         return -1;
     }
-    public boolean deleteActivity(int index){
+    public void deleteActivity(int index){
         if (index >= spans.length || index < 0)
-            return false;
+            return;
         Span[] cp = new Span[spans.length-1];
         for (int ix=0; ix < spans.length; ++ix){
             if (ix < index)
@@ -61,7 +61,6 @@ public class Activities implements Parcelable {
         }
         time_left += spans[index].minutes;
         spans = cp;
-        return true;
     }
 
     public void startActivity(int index){

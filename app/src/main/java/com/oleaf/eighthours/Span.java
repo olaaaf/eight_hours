@@ -18,7 +18,7 @@ public class Span implements Parcelable {
         name = "";
     }
     private int round_up(int time) {
-        return Math.round(time / grid) * grid;
+        return Math.round(time / (float) grid) * grid;
     }
     //no built in clamp function
     private int clamp(int time, int time_left){

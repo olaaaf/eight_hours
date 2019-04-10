@@ -7,7 +7,6 @@ public abstract class Gestures{
     public static long def_longpress=400;
     private float lastX, lastY;
     private float dif;
-    private float currentDifference;
     private boolean drag;
     private long first_press;
     private long long_press;
@@ -34,7 +33,7 @@ public abstract class Gestures{
             start();
             return;
         }
-        currentDifference = (float)Math.sqrt(Math.pow(newX-lastX, 2) + Math.pow(newY-lastY, 2));
+        float currentDifference = (float)Math.sqrt(Math.pow(newX-lastX, 2) + Math.pow(newY-lastY, 2));
         if (event.getActionMasked() == MotionEvent.ACTION_UP){
             if (drag){
                 onDragStop(newX, newY);

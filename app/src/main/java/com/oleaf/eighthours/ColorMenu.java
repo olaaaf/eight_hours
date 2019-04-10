@@ -14,7 +14,6 @@ import android.widget.TextView;
 public class ColorMenu extends ConstraintLayout {
     private TextView confirm, cancel;
     private Animation showA, hideA;
-    private Resources resources;
     private boolean shown;
     private int normalColor, inactiveColor;
     TypedArray colors;
@@ -34,7 +33,7 @@ public class ColorMenu extends ConstraintLayout {
 
     private void init(Context c) {
         //Load resources
-        resources = c.getResources();
+        Resources resources = c.getResources();
         showA = AnimationUtils.loadAnimation(c, R.anim.menu_popup);
         hideA = AnimationUtils.loadAnimation(c, R.anim.menu_down);
         colors = resources.obtainTypedArray(R.array.colors);

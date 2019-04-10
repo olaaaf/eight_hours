@@ -1,6 +1,5 @@
 package com.oleaf.eighthours;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -100,8 +99,8 @@ public class Circle extends View{
             @Override
             protected void onDrag(float x, float y) {
                 if (!full && dragging && dragArc.animationFinished()){
-                    dragArc.α = clamp(calculateAlpha(x, y) - (start_alpha+90), convertMinutes(Activities.grid), convertMinutes(home.activities.time_left) + arcs.editingAlpha());
-                    home.updateText(convertAlpha(dragArc.α));
+                    dragArc.alpha = clamp(calculateAlpha(x, y) - (start_alpha+90), convertMinutes(Activities.grid), convertMinutes(home.activities.time_left) + arcs.editingAlpha());
+                    home.updateText(convertAlpha(dragArc.alpha));
                     invalidate();
                 } else if (home.activities.getSpans().length > 0 && touchActivity(x, y) > -1) {
                     selectActivity( touchActivity(x, y), true);
@@ -158,14 +157,14 @@ public class Circle extends View{
         return (float) (Math.sqrt(x*x + y*y));
     }
 
-    public int convertAlpha(float ... a)   {
+    private int convertAlpha(float ... a)   {
         if (a.length > 0){
-            return Math.round(Math.round(a[0]/360f * home.activities.maximum) / Home.grid) * Home.grid;
+            return Math.round(Math.round(a[0]/360f * home.activities.maximum) / (float) Home.grid) * Home.grid;
         }else{
-            return Math.round(Math.round(dragArc.α/360f * home.activities.maximum) / Home.grid) * Home.grid;
+            return Math.round(Math.round(dragArc.alpha /360f * home.activities.maximum) / (float) Home.grid) * Home.grid;
         }
     }
-    public float convertMinutes(int a){
+    private float convertMinutes(int a){
         return ((float)a)/((float)home.activities.maximum)*360.0f;
     }
     private void drawBaseCircle(Canvas canvas){
@@ -183,7 +182,7 @@ public class Circle extends View{
     private float clampAlpha(boolean tap, float ... a){
         float alpha;
         if (a.length == 0)
-            alpha = dragArc.α + start_alpha;
+            alpha = dragArc.alpha + start_alpha;
         else
             alpha = a[0];
         if (tap)
@@ -262,7 +261,7 @@ public class Circle extends View{
         TODO: direction detection (on the circle)
         TODO: fix selecting
      */
-    public void menuUp(){
+    private void menuUp(){
         if (convertAlpha() > 0)
             home.colorShow();
         else
@@ -271,7 +270,7 @@ public class Circle extends View{
     public void cancel(){
         dragging = false;
         home.editEnd();
-        dragArc.α = 0;
+        dragArc.alpha = 0;
         editingOff();
         toEdit = false;
         invalidate();
@@ -279,18 +278,18 @@ public class Circle extends View{
     }
     public void confirm() {
         if (editing > -1){
-            home.editActivity(editing, convertAlpha(dragArc.α), home.getChosen());
-            arcs.changeAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α, editing);
+            home.editActivity(editing, convertAlpha(dragArc.alpha), home.getChosen());
+            arcs.changeAnimation(convertMinutes(convertAlpha(dragArc.alpha)), home.getChosen(), dragArc.alpha, editing);
             home.optionsHide();
             editingOff();
         }else{
-            home.addActivity(convertAlpha(dragArc.α), home.getChosen());
-            arcs.addNewAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α);
+            home.addActivity(convertAlpha(dragArc.alpha), home.getChosen());
+            arcs.addNewAnimation(convertMinutes(convertAlpha(dragArc.alpha)), home.getChosen(), dragArc.alpha);
         }
         if (home.activities.time_left <= 0)
             full = true;
         dragging = false;
-        dragArc.α = 0;
+        dragArc.alpha = 0;
         toEdit = false;
         arcs.deselect();
         home.updateText(home.activities.time_left);
@@ -298,10 +297,7 @@ public class Circle extends View{
     }
 
     public void update(){
-        if (home.activities.time_left <= 0)
-            full = true;
-        else
-            full = false;
+        full = (home.activities.time_left <= 0);
     }
 
     public float getAngleBefore(int span_index){
@@ -323,17 +319,17 @@ public class Circle extends View{
             startDragging();
             invalidate();
             menuUp();
-            home.updateText(convertAlpha(dragArc.α));
+            home.updateText(convertAlpha(dragArc.alpha));
         }
     }
-    public static float clamp(float v, float min, float max){
+    private static float clamp(float v, float min, float max){
         return ((v > max) ? max : ((v < min) ? min : v));
     }
 
     public void edit() {
         if (arcs.draggingIndex > -1){
             editing = arcs.draggingIndex;
-            startDragging(arcs.arcs[arcs.draggingIndex].α, false);
+            startDragging(arcs.arcs[arcs.draggingIndex].alpha, false);
             editingOn();
             invalidate();
             home.colorShow(home.activities.getSpan(editing).color_index);
@@ -360,7 +356,7 @@ public class Circle extends View{
 
     private void startDragging(float a, boolean animate){
         dragging = true; onRight = true;
-        dragArc.α = a;
+        dragArc.alpha = a;
         if (animate)
             dragArc.animate(0);
     }
@@ -436,58 +432,32 @@ public class Circle extends View{
             this(resources.getColor(R.color.arc_shadow), resources.getDimension(R.dimen.arc_sh_stroke));
         }
 
-        public void addNew(float alpha, int color_index){
+        private void addNew(float alpha, int color_index){
             Arc[] cp = arcs.clone();
             arcs = new Arc[cp.length + 1];
             System.arraycopy(cp, 0, arcs, 0, cp.length);
             arcs[arcs.length - 1] = new Arc(alpha, color_index);
         }
-
-        /**
-         * Insert new arc instead of adding it on the end of the list
-         */
-        public void insertNew(float alpha, int color_index, int atIndex){
-            atIndex = (int) clamp(atIndex, 0, arcs.length-1);
-            Arc[] cp = arcs.clone();
-            arcs = new Arc[cp.length + 1];
-            for (int ix = 0; ix < cp.length; ++ix){
-                if (ix < atIndex)
-                    arcs[ix] = cp[ix];
-                else if (ix > atIndex)
-                    arcs[ix+1] = cp[ix];
-            }
-            arcs[atIndex] = new Arc(alpha, color_index);
-        }
-
-        public void addNewAnimation(float alpha, int color_index, float alphaNow){
+        private void addNewAnimation(float alpha, int color_index, float alphaNow){
             addNew(alpha, color_index);
             arcs[arcs.length - 1].animate(alphaNow);
         }
 
-        /**
-         * Insert new arc instead of adding it on the end of the list
-         * (with animation)
-         */
-        public void insertAnimation(float alpha, int color_index, float alphaNow, int atIndex) {
-            insertNew(alpha, color_index, atIndex);
-            arcs[atIndex].animate(alphaNow);
-        }
-
-        public void changeAnimation(float alpha, int color_index, float alphaNow, int atIndex){
+        private void changeAnimation(float alpha, int color_index, float alphaNow, int atIndex){
             change(atIndex, alpha, color_index);
             arcs[atIndex].animate(alphaNow);
         }
 
-        public void change(int index, float newAlpha, int newColor){
-            arcs[index].α = newAlpha;
+        private void change(int index, float newAlpha, int newColor){
+            arcs[index].alpha = newAlpha;
             arcs[index].updateColor(newColor);
         }
 
-        public float drawAll(Canvas canvas){
+        private float drawAll(Canvas canvas){
             return drawAll(canvas, -90);
         }
 
-        public float drawAll(Canvas canvas, float start_alpha){
+        private float drawAll(Canvas canvas, float start_alpha){
             for (int ix = 0; ix < arcs.length; ++ix){
                 if (ix == draggingIndex && ix != editing){
                     paint.setStrokeWidth(paint.getStrokeWidth() + shadowStroke);
@@ -496,7 +466,7 @@ public class Circle extends View{
                     paint.setStrokeWidth(paint.getStrokeWidth() - shadowStroke);
                 }
                 if (ix == editing && toEdit){
-                    start_alpha += arcs[ix].α + basicEdit.getValue() * (convertMinutes(home.activities.time_left));
+                    start_alpha += arcs[ix].alpha + basicEdit.getValue() * (convertMinutes(home.activities.time_left));
                 }else{
                     start_alpha += arcs[ix].drawRounded(start_alpha, canvas);
                 }
@@ -517,7 +487,7 @@ public class Circle extends View{
         public float alphaAfter(int index){
             float ret = 0;
             for (++index; index < arcs.length; ++index){
-                ret += arcs[index].α;
+                ret += arcs[index].alpha;
             }
             return ret;
         }
@@ -525,17 +495,9 @@ public class Circle extends View{
         public float alphaBefore(int index){
             float ret = 0;
             for (index--; index >= 0 && index < arcs.length; index--){
-                ret += arcs[index].α;
+                ret += arcs[index].alpha;
             }
             return ret;
-        }
-
-        public float alphaBefore(){
-            return alphaBefore(draggingIndex);
-        }
-
-        public float alphaAfter(){
-            return alphaAfter(draggingIndex);
         }
 
         /**
@@ -543,8 +505,8 @@ public class Circle extends View{
          */
         public boolean delete(int activityIndex){
             if (activityIndex > -1 && activityIndex < arcs.length) {
-                float x = arcs[activityIndex].α;
-                arcs[activityIndex].α = convertMinutes(Activities.grid/2);
+                float x = arcs[activityIndex].alpha;
+                arcs[activityIndex].alpha = convertMinutes(Activities.grid/2);
                 arcs[activityIndex].animateAlpha(x);
                 invalidate();
                 return true;
@@ -552,13 +514,13 @@ public class Circle extends View{
             return false;
         }
 
-        public boolean checkAnimations(){
+        private boolean checkAnimations(){
             int remove = -1;
             for (int index = 0; index < arcs.length; ++index){
                 if (!arcs[index].animation.finished())
                     return false;
                 else{
-                    if (arcs[index].α < Activities.grid / 1.5f)
+                    if (arcs[index].alpha < Activities.grid / 1.5f)
                         remove = index;
                 }
             }
@@ -570,9 +532,9 @@ public class Circle extends View{
         }
 
         public boolean select(int index){
-            boolean r = (draggingIndex < 0) ? false : (draggingIndex !=index);
+            boolean r = (draggingIndex >= 0) && (draggingIndex !=index);
             draggingIndex = (int) clamp(index, 0, arcs.length-1);
-            shadow.α = arcs[index].α;
+            shadow.alpha = arcs[index].alpha;
             return r;
         }
 
@@ -580,40 +542,40 @@ public class Circle extends View{
             draggingIndex = -1;
         }
 
-        public float editingAlpha(){
-            return (editing > -1) ? arcs[editing].α : 0;
+        private float editingAlpha(){
+            return (editing > -1) ? arcs[editing].alpha : 0;
         }
 
         public class Arc{
             int color;
-            float α;
+            float alpha;
             ArcAnimation animation;
 
-            Arc(float α, int color, boolean t){
-                this.α = α;
+            Arc(float alpha, int color, boolean t){
+                this.alpha = alpha;
                 this.color = color;
             }
 
-            Arc(float α, int color_index){
-                this.α = α;
+            Arc(float alpha, int color_index){
+                this.alpha = alpha;
                 color = colors.getColor(color_index, 0);
             }
 
-            public void animate( float fromAlpha){
+            private void animate( float fromAlpha){
                 animate(ArcAnimation.default_time, fromAlpha);
             }
 
-            public void animate(int time, float fromAlpha){
-                animation = new ArcAnimation(time, α, fromAlpha);
+            private void animate(int time, float fromAlpha){
+                animation = new ArcAnimation(time, alpha, fromAlpha);
                 arcAnimation();
             }
 
-            public void animateAlpha(int timePer1, float fromAlpha){
-                int time = (int) (Math.abs(fromAlpha - α) * timePer1);
+            private void animateAlpha(int timePer1, float fromAlpha){
+                int time = (int) (Math.abs(fromAlpha - alpha) * timePer1);
                 animate(time, fromAlpha);
             }
 
-            public void animateAlpha(float fromAlpha){
+            private void animateAlpha(float fromAlpha){
                 animateAlpha(ArcAnimation.slow_default, fromAlpha);
             }
 
@@ -621,18 +583,18 @@ public class Circle extends View{
                 animation.stop();
             }
 
-            public boolean animationFinished(){ return animation.finished(); }
+            private boolean animationFinished(){ return animation.finished(); }
 
             public float drawNormal(float startAlpha, Canvas canvas){
                 paint.setColor(color);
-                float a = (animation != null) ? ((animation.launched()) ? animation.getAlpha() : α) : α;
+                float a = (animation != null) ? ((animation.launched()) ? animation.getAlpha() : alpha) : alpha;
                 canvas.drawArc(rectangle, startAlpha, a, false, paint);
                 return a;
             }
 
-            public float drawRounded(float startAlpha, Canvas canvas){
+            private float drawRounded(float startAlpha, Canvas canvas){
                 paint.setColor(color);
-                float a = (animation != null) ? ((animation.launched() && !animation.finished()) ? animation.getAlpha() : α) : α;
+                float a = (animation != null) ? ((animation.launched() && !animation.finished()) ? animation.getAlpha() : alpha) : alpha;
 
                 float startAngle = alpha_pause + startAlpha;
                 float sweepAngle = a - alpha_pause * 2;
@@ -654,7 +616,7 @@ public class Circle extends View{
                 rectangle.left -= x; rectangle.right -= x;
             }
 
-            public void updateColor(int color_index){
+            private void updateColor(int color_index){
                 color = colors.getColor(color_index, 0);
             }
         }
