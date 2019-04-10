@@ -130,7 +130,7 @@ public class Circle extends View{
     protected void onDraw(final Canvas canvas) {
         //drawBaseCircle(canvas);
         start_alpha = arcs.drawAll(canvas);
-        if (dragging && editing < 0){
+        if (dragging){
             dragArc.drawRounded(start_alpha, canvas);
         }
     }
@@ -471,7 +471,7 @@ public class Circle extends View{
                     start_alpha += arcs[ix].drawRounded(start_alpha, canvas);
                 }
             }
-            return start_alpha - alphaAfter(editing) * Tools.bool(editing > -1);
+            return (editing > -1) ? alphaBefore(editing) - 90 : start_alpha;
         }
 
         /**
@@ -490,6 +490,18 @@ public class Circle extends View{
                 ret += arcs[index].α;
             }
             return ret;
+        }
+
+        public float alphaBefore(int index){
+            float ret = 0;
+            for (index--; index >= 0 && index < arcs.length; index--){
+                ret += arcs[index].α;
+            }
+            return ret;
+        }
+
+        public float alphaBefore(){
+            return alphaBefore(draggingIndex);
         }
 
         public float alphaAfter(){
