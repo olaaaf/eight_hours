@@ -61,6 +61,11 @@ public class Home extends AppCompatActivity {
         colorPick.noAnimation();
         desc.setText(R.string.drag_to_edit);
     }
+    public void colorShow(int color_index){
+        colorMenu.show(color_index);
+        colorPick.noAnimation();
+        desc.setText(R.string.drag_to_edit);
+    }
     public void colorHide(){
         updateText(activities.time_left);
         desc.setText("");

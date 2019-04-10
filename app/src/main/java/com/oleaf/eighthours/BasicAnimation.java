@@ -1,29 +1,45 @@
 package com.oleaf.eighthours;
-
-import android.util.Log;
-
-public class BasicAnimation {
-    long startTime;
-    long duration;
-    float value;
+public abstract class BasicAnimation {
+    private long startTime;
+    private long duration;
+    private float value;
+    private float startValue;
 
     BasicAnimation(long duration){
         this(duration, 1f);
     }
 
     BasicAnimation(long duration, float value){
+        this(duration, value, 0);
+    }
+
+    BasicAnimation(long duration, float value, float startValue){
         this.duration = duration;
         this.value = value;
         startTime = System.currentTimeMillis();
+        this.startValue = startValue;
+    }
+
+    public void startNew(long duration, float value, float startValue) {
+        this.duration = duration;
+        this.value = value;
+        startTime = System.currentTimeMillis();
+        this.startValue = startValue;
     }
 
     float getValue(){
-        Log.println(Log.DEBUG, "value", "" + (value * Tools.clamp((System.currentTimeMillis() - startTime) / (float) duration, 0f, 1f)));
-        return value * Tools.clamp((System.currentTimeMillis() - startTime) / (float) duration, 0f, 1f);
+        animationFinished();
+        return startValue + value * Tools.clamp((System.currentTimeMillis() - startTime) / (float) duration, 0f, 1f);
     }
 
     boolean animationFinished(){
-        return (System.currentTimeMillis() - startTime > duration);
+        if (System.currentTimeMillis() - startTime > duration){
+            afterFinish();
+            return true;
+        }
+        return false;
     }
+
+    public abstract void afterFinish();
 
 }

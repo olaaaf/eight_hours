@@ -28,7 +28,7 @@ public class Circle extends View{
     Vibrator vibrator;
     Gestures gestures;
     float start_alpha;
-    boolean dragging, onRight, full;        //full - whether there's some time left
+    boolean dragging, onRight, full, toEdit;        //full - whether there's some time left
     Animation animation;
     Arcs arcs;
     Arcs.Arc dragArc;
@@ -100,7 +100,7 @@ public class Circle extends View{
             @Override
             protected void onDrag(float x, float y) {
                 if (!full && dragging && dragArc.animationFinished()){
-                    dragArc.α = clamp(calculateAlpha(x, y) - (start_alpha+90), convertMinutes(Activities.grid), convertMinutes(home.activities.time_left));
+                    dragArc.α = clamp(calculateAlpha(x, y) - (start_alpha+90), convertMinutes(Activities.grid), convertMinutes(home.activities.time_left) + arcs.editingAlpha());
                     home.updateText(convertAlpha(dragArc.α));
                     invalidate();
                 } else if (home.activities.getSpans().length > 0 && touchActivity(x, y) > -1) {
@@ -123,7 +123,13 @@ public class Circle extends View{
         alpha_rounded = (float) Math.asin(paint.getStrokeWidth() / (height / 2f));
         arcs = new Arcs();
         dragArc = arcs.new Arc(0, resources.getColor(R.color.drag_color), false);
-        basicEdit = new BasicAnimation(1);
+        basicEdit = basicEdit = new BasicAnimation(1){
+            @Override
+            public void afterFinish() {
+                if(!toEdit)
+                    editing = -1;
+            }
+        };
     }
 
     @Override
@@ -264,20 +270,19 @@ public class Circle extends View{
     }
     public void cancel(){
         dragging = false;
-        editing = -1;
         home.editEnd();
         dragArc.α = 0;
+        editingOff();
+        toEdit = false;
         invalidate();
         home.updateText(home.activities.time_left);
     }
     public void confirm() {
         if (editing > -1){
             home.editActivity(editing, convertAlpha(dragArc.α), home.getChosen());
-            arcs.insertAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α, editing);
-            float draggingAlpha = dragArc.α;
-            dragArc.α = 0;
-            dragArc.animate(draggingAlpha);
-
+            arcs.changeAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α, editing);
+            home.optionsHide();
+            editingOff();
         }else{
             home.addActivity(convertAlpha(dragArc.α), home.getChosen());
             arcs.addNewAnimation(convertMinutes(convertAlpha(dragArc.α)), home.getChosen(), dragArc.α);
@@ -285,8 +290,10 @@ public class Circle extends View{
         if (home.activities.time_left <= 0)
             full = true;
         dragging = false;
-        editing = -1;
         dragArc.α = 0;
+        toEdit = false;
+        arcs.deselect();
+        home.updateText(home.activities.time_left);
         invalidate();
     }
 
@@ -327,22 +334,35 @@ public class Circle extends View{
         if (arcs.draggingIndex > -1){
             editing = arcs.draggingIndex;
             startDragging(arcs.arcs[arcs.draggingIndex].α, false);
-            basicEdit = new BasicAnimation(ArcAnimation.default_time * 3);
-            arcAnimation();
+            editingOn();
             invalidate();
-            menuUp();
+            home.colorShow(home.activities.getSpan(editing).color_index);
+        }
+    }
+
+    private void editingOn(){
+        toEdit = true;
+        basicEdit.startNew(ArcAnimation.default_time * 3, 1, 0);
+        arcAnimation();
+    }
+
+    private void editingOff(){
+        if (toEdit){
+            toEdit = false;
+            basicEdit.startNew(ArcAnimation.default_time * 3, -1, 1);
+            arcAnimation();
         }
     }
 
     private void startDragging(){
-        startDragging(convertMinutes(Activities.grid), true);
+        startDragging(convertMinutes((int) clamp(home.activities.time_left, Activities.grid,Activities.grid*3)), true);
     }
 
     private void startDragging(float a, boolean animate){
         dragging = true; onRight = true;
-        dragArc.α = convertMinutes((int) clamp(home.activities.time_left, Activities.grid,Activities.grid*3));
+        dragArc.α = a;
         if (animate)
-            dragArc.animate(a);
+            dragArc.animate(0);
     }
 
     private class ArcAnimation{
@@ -453,6 +473,16 @@ public class Circle extends View{
             arcs[atIndex].animate(alphaNow);
         }
 
+        public void changeAnimation(float alpha, int color_index, float alphaNow, int atIndex){
+            change(atIndex, alpha, color_index);
+            arcs[atIndex].animate(alphaNow);
+        }
+
+        public void change(int index, float newAlpha, int newColor){
+            arcs[index].α = newAlpha;
+            arcs[index].updateColor(newColor);
+        }
+
         public float drawAll(Canvas canvas){
             return drawAll(canvas, -90);
         }
@@ -465,7 +495,7 @@ public class Circle extends View{
                     shadow.drawRounded(start_alpha, canvas);
                     paint.setStrokeWidth(paint.getStrokeWidth() - shadowStroke);
                 }
-                if (ix == editing){
+                if (ix == editing && toEdit){
                     start_alpha += arcs[ix].α + basicEdit.getValue() * (convertMinutes(home.activities.time_left));
                 }else{
                     start_alpha += arcs[ix].drawRounded(start_alpha, canvas);
@@ -550,6 +580,10 @@ public class Circle extends View{
             draggingIndex = -1;
         }
 
+        public float editingAlpha(){
+            return (editing > -1) ? arcs[editing].α : 0;
+        }
+
         public class Arc{
             int color;
             float α;
@@ -618,6 +652,10 @@ public class Circle extends View{
                 drawRounded(startAlpha, canvas);
                 rectangle.top -= y; rectangle.bottom -= y;
                 rectangle.left -= x; rectangle.right -= x;
+            }
+
+            public void updateColor(int color_index){
+                color = colors.getColor(color_index, 0);
             }
         }
     }
