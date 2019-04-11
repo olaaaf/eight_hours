@@ -153,4 +153,8 @@ public class Home extends AppCompatActivity {
     public void addPress(View view){
         if (!options.isShown()) circle.addNew();
     }
+
+    public void startPress(View view){
+
+    }
 }

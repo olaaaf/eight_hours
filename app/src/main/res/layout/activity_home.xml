@@ -1,289 +1,338 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Home">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context=".Home">
 
     <view
-        android:id="@+id/circle"
-        class="com.oleaf.eighthours.Circle"
-        android:layout_width="@dimen/circle_view_width"
-        android:layout_height="@dimen/circle_view_height"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:adjustViewBounds="true"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:layout_constraintVertical_bias="0.52">
+            android:id="@+id/circle"
+            class="com.oleaf.eighthours.Circle"
+            android:layout_width="@dimen/circle_view_width"
+            android:layout_height="@dimen/circle_view_height"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:adjustViewBounds="true"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/guideline6"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintStart_toStartOf="@+id/guideline5"
+            app:layout_constraintTop_toTopOf="@+id/guideline6"
+            app:layout_constraintVertical_bias="0.52">
 
 
     </view>
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="254dp"
-        android:layout_height="152dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:text="8 hours\n0 min"
-        android:textColor="@color/primary_text"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:typeface="normal"
-        app:fontFamily="@font/roboto_bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/textView"
+            android:layout_width="254dp"
+            android:layout_height="152dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="8 hours\n0 min"
+            android:textColor="@color/primary_text"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:typeface="normal"
+            app:fontFamily="@font/roboto_bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintStart_toStartOf="@+id/guideline5"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="211dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_horizontal"
-        android:text="@string/timeleft"
-        android:textSize="15sp"
-        android:textStyle="bold|italic"
-        app:fontFamily="@font/roboto_thin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.0" />
+            android:id="@+id/textView3"
+            android:layout_width="211dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            android:text="@string/timeleft"
+            android:textSize="15sp"
+            android:textStyle="bold|italic"
+            app:fontFamily="@font/roboto_thin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintHorizontal_bias="0.488"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintVertical_bias="0.0"/>
 
     <com.oleaf.eighthours.ColorMenu
-        android:id="@+id/color_menu"
-        android:layout_width="325dp"
-        android:layout_height="81dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:alpha="1"
-        android:visibility="gone"
-        android:elevation="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintVertical_bias="0.269"
-        tools:context=".Home">
-
-        <com.oleaf.eighthours.ColorPick
-            android:id="@+id/menu_view"
-            android:layout_width="280dp"
-            android:layout_height="42dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/color_menu"
+            android:layout_width="@dimen/options_width"
+            android:layout_height="@dimen/options_height"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:alpha="1"
+            android:visibility="gone"
+            android:elevation="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.269"
+            tools:context=".Home">
+
+        <com.oleaf.eighthours.ColorPick
+                android:id="@+id/menu_view"
+                android:layout_width="280dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline"
+                app:layout_constraintVertical_bias="1.0"/>
 
         <TextView
-            android:id="@+id/cancel"
-            android:layout_width="122dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:alpha="1"
-            android:background="#00000000"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:onClick="cancelPress"
-            android:text="@string/cancel"
-            android:textColor="@color/cancel"
-            android:textSize="24sp"
-            android:typeface="normal"
-            android:visibility="visible"
-            app:fontFamily="@font/roboto_thin"
-            app:layout_constraintBottom_toTopOf="@+id/menu_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+                android:id="@+id/cancel"
+                android:layout_width="122dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:alpha="1"
+                android:background="#00000000"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:onClick="cancelPress"
+                android:text="@string/cancel"
+                android:textColor="@color/cancel"
+                android:textSize="24sp"
+                android:typeface="normal"
+                android:visibility="visible"
+                app:fontFamily="@font/roboto_thin"
+                app:layout_constraintBottom_toTopOf="@+id/menu_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"/>
 
         <TextView
-            android:id="@+id/confirm"
-            android:layout_width="122dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:alpha="1"
-            android:background="#00000000"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:onClick="confirmPress"
-            android:text="@string/confirm"
-            android:textColor="@color/cancel"
-            android:textSize="24sp"
-            android:typeface="normal"
-            android:visibility="visible"
-            app:fontFamily="@font/roboto_thin"
-            app:layout_constraintBottom_toTopOf="@+id/menu_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+                android:id="@+id/confirm"
+                android:layout_width="122dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:alpha="1"
+                android:background="#00000000"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:onClick="confirmPress"
+                android:text="@string/confirm"
+                android:textColor="@color/cancel"
+                android:textSize="24sp"
+                android:typeface="normal"
+                android:visibility="visible"
+                app:fontFamily="@font/roboto_thin"
+                app:layout_constraintBottom_toTopOf="@+id/menu_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"/>
     </com.oleaf.eighthours.ColorMenu>
 
     <com.oleaf.eighthours.Options
-        android:id="@+id/options"
-        android:layout_width="325dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="8dp"
-        android:clipToPadding="false"
-        android:gravity="bottom|clip_horizontal"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        tools:context=".Home">
+            android:id="@+id/options"
+            android:layout_width="325dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="8dp"
+            android:clipToPadding="false"
+            android:gravity="bottom|clip_horizontal"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline5"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            tools:context=".Home">
 
         <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
 
         <ImageButton
-            android:id="@+id/editButton"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/clickable_circle"
-            android:backgroundTint="@color/cmenu_background"
-            android:contentDescription="TODO" android:elevation="@dimen/cmenu_elevation"
-            android:padding="5dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/edit_button"
-            android:tint="@color/cmenu_foreground"
-            android:clickable="true"
-            android:focusable="true" android:onClick="editPress"
-            android:visibility="visible" />
+                android:id="@+id/editButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/clickable_circle"
+                android:backgroundTint="@color/cmenu_background"
+                android:tint="@color/cmenu_foreground"
+                android:focusable="true" android:onClick="editPress"
+                android:scaleType="fitXY"
+                android:contentDescription="TODO" android:elevation="@dimen/cmenu_elevation"
+                android:padding="5dp"
+                android:src="@drawable/edit_button"
+                android:clickable="true"
+                android:visibility="visible"/>
 
         <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
 
         <ImageView
-            android:id="@+id/playButton"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/clickable_circle"
-            android:backgroundTint="@color/cmenu_background"
-            android:contentDescription="TODO" android:elevation="@dimen/cmenu_elevation"
-            android:scaleType="fitXY"
-            android:tint="@color/cmenu_foreground"
-            android:visibility="visible"
-            android:clickable="true"
-            android:focusable="true" android:onClick="playPress"
-            app:srcCompat="@drawable/play_na" />
+                android:id="@+id/playButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/clickable_circle"
+                android:backgroundTint="@color/cmenu_background"
+                android:elevation="@dimen/cmenu_elevation"
+                android:scaleType="fitXY"
+                android:tint="@color/cmenu_foreground"
+                android:visibility="visible"
+                android:clickable="true"
+                android:focusable="true" android:onClick="playPress"
+                app:srcCompat="@drawable/stopwatch"/>
 
         <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
 
         <ImageButton
-            android:id="@+id/deleteButton"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/clickable_circle"
-            android:clickable="true"
-            android:focusable="true" android:onClick="deletePress"
-            android:backgroundTint="@color/cmenu_background"
-            android:contentDescription="TODO" android:elevation="@dimen/cmenu_elevation"
-            android:scaleType="fitXY"
-            android:src="@drawable/trash"
-            android:tint="@color/cmenu_foreground" />
+                android:id="@+id/deleteButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/clickable_circle"
+                android:clickable="true"
+                android:focusable="true" android:onClick="deletePress"
+                android:backgroundTint="@color/cmenu_background"
+                android:contentDescription="TODO" android:elevation="@dimen/cmenu_elevation"
+                android:scaleType="fitXY"
+                android:src="@drawable/trash"
+                android:tint="@color/cmenu_foreground"/>
 
         <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
     </com.oleaf.eighthours.Options>
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="@dimen/options_width"
+            android:layout_height="@dimen/options_height" android:id="@+id/play_menu"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="@+id/guideline5" app:layout_constraintHorizontal_bias="0.489"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline" android:gravity="center" android:visibility="invisible">
+        <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_weight="1"/>
+        <TextView
+                android:text="-30s"
+                android:layout_width="64dp"
+                android:layout_height="42dp" android:id="@+id/minus30" android:fontFamily="@font/roboto_bold"
+                android:textSize="20sp" android:gravity="center"/>
+        <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_weight="0.7"/>
+        <ImageView
+                android:id="@+id/startButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/clickable_circle"
+                android:backgroundTint="@color/cmenu_background"
+                android:elevation="@dimen/cmenu_elevation"
+                android:scaleType="fitXY"
+                android:tint="@color/cmenu_foreground"
+                android:visibility="visible"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="startPress"
+                app:srcCompat="@drawable/play_na"/>
+        <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_weight="0.7"/>
+        <TextView
+                android:text="+30s"
+                android:layout_width="64dp"
+                android:layout_height="42dp" android:id="@+id/plus15" android:textSize="20sp"
+                android:fontFamily="@font/roboto_bold" android:gravity="center"/>
+        <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_weight="1"/>
+    </LinearLayout>
+    <android.support.constraint.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.75"/>
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75" />
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"/>
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.8"/>
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+            android:id="@+id/guideline7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1"/>
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.85"/>
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5"/>
 
     <!-- TODO: add ripple effect -->
     <TextView
@@ -311,9 +360,6 @@
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/guideline7" app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.0"/>
-
-
-
 
 
 </android.support.constraint.ConstraintLayout>
