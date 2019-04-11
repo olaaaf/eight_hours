@@ -84,6 +84,7 @@ public class Activities implements Parcelable {
     public void editActivity(int index, int minutes, byte color){
         if (index < 0 || index > spans.length -1)
             return;
+        time_left += spans[index].minutes - minutes;
         spans[index].minutes = minutes;
         spans[index].color_index = color;
     }
