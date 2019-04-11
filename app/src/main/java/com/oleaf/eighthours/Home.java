@@ -12,6 +12,7 @@ public class Home extends AppCompatActivity {
     public TextView hoursText, desc, add_button;
     private ColorMenu colorMenu;
     private ColorPick colorPick;
+    private PlayMenu playMenu;
     private Options options;
     public Circle circle;
     public Activities activities;
@@ -32,6 +33,7 @@ public class Home extends AppCompatActivity {
         options = findViewById(R.id.options);
         add_button = findViewById(R.id.addButton);
         colorPick = findViewById(R.id.menu_view);
+        playMenu = findViewById(R.id.play_menu);
     }
     public int addActivity(int min, int color){
         return activities.newActivity(min, color);
