@@ -244,7 +244,7 @@ public class Circle extends View{
             handlerUpdater.removeCallbacks(runnable);
     }
     private boolean selectActivity(int index, boolean vibrate){
-        if (index != -1 && !dragging){
+        if (index != -1 && !dragging && editing < 0){
             if (arcs.select(index)){
                 if (vibrate) Vibrate.v(50,vibrator);
                 //show Options
@@ -271,8 +271,9 @@ public class Circle extends View{
         dragging = false;
         home.editEnd();
         dragArc.alpha = 0;
-        editingOff();
         toEdit = false;
+        editingOff();
+        arcs.deselect();
         invalidate();
         home.updateText(home.activities.time_left);
     }
@@ -465,13 +466,15 @@ public class Circle extends View{
                     shadow.drawRounded(start_alpha, canvas);
                     paint.setStrokeWidth(paint.getStrokeWidth() - shadowStroke);
                 }
-                if (ix == editing && toEdit){
+                if (ix == editing && toEdit) {
                     start_alpha += arcs[ix].alpha + basicEdit.getValue() * (convertMinutes(home.activities.time_left));
+                }else if(ix == editing){
+                    start_alpha += arcs[ix].drawRounded(start_alpha, canvas) + basicEdit.getValue() * (convertMinutes(home.activities.time_left));
                 }else{
                     start_alpha += arcs[ix].drawRounded(start_alpha, canvas);
                 }
             }
-            return (editing > -1) ? alphaBefore(editing) - 90 : start_alpha;
+            return (editing > -1 && toEdit) ? alphaBefore(editing) - 90 : start_alpha;
         }
 
         /**
