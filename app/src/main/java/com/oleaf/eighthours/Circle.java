@@ -269,10 +269,10 @@ public class Circle extends View{
     }
     public void cancel(){
         dragging = false;
-        home.editEnd();
+        home.optionsHide();
         dragArc.alpha = 0;
-        toEdit = false;
         editingOff();
+        toEdit = false;
         arcs.deselect();
         invalidate();
         home.updateText(home.activities.time_left);

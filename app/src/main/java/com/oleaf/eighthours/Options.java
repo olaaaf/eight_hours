@@ -70,19 +70,8 @@ public class Options extends LinearLayout {
     public void editPress() {
         if (index < 0)
             return;
-        //colorHide options menu
         hideN();
-        //copy arc.alpha to alpha of dragging (Circle)
         ((Home) getContext()).circle.edit();
-        //selected = 0 (Circle)
-
-        //delete arc
-
-        //show color menu
-
-        //get confirm button > when pressed don't add activity
-        //change span[index].minutes
-        //add arc (with animation) (Circle)
     }
 
     public void editEnd(){
