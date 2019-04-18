@@ -7,6 +7,7 @@ import android.graphics.*;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -254,6 +255,7 @@ public class Circle extends View{
         }
         return false;
     }
+
     /*
     menu_layout functions
         TODO: deleting with the account of [full]
@@ -301,6 +303,15 @@ public class Circle extends View{
         full = (home.activities.time_left <= 0);
     }
 
+    public void startSelected(){
+        Log.println(3, "Time", "onStart: " + home.activities.getSpan(arcs.draggingIndex).getMinutes());
+        home.activities.getSpan(arcs.draggingIndex).start();
+        //TODO: show percentage
+    }
+    public void stopSelected(){
+        Log.println(3, "Time", "onPause: " + home.activities.getSpan(arcs.draggingIndex).getMinutes());
+        home.activities.getSpan(arcs.draggingIndex).pause();
+    }
     public float getAngleBefore(int span_index){
         if (span_index < 1)
             return 0;

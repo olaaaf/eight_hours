@@ -54,7 +54,12 @@ public class Home extends AppCompatActivity {
             activities = new Activities(this);
         return true;
     }
-
+    public void showStopwatch(){
+        playMenu.show();
+    }
+    public void hideStopwatch(){
+        playMenu.hide();
+    }
     public boolean colorUp(){
         return colorMenu.isShown();
     }
@@ -157,6 +162,6 @@ public class Home extends AppCompatActivity {
     }
 
     public void startPress(View view){
-
+        playMenu.startPress(view);
     }
 }

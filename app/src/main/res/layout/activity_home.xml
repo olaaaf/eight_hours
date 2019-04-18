@@ -236,13 +236,69 @@
                 android:layout_weight="1"/>
     </com.oleaf.eighthours.Options>
 
+    <com.oleaf.eighthours.PlayMenu
+            android:orientation="horizontal"
+            android:layout_width="@dimen/options_width"
+            android:elevation="0dp"
+            android:layout_height="@dimen/options_height" android:id="@+id/play_menu"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="@+id/guideline5" app:layout_constraintHorizontal_bias="1.0"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline" android:gravity="center" android:visibility="visible"
+            app:layout_constraintVertical_bias="1.0">
+        <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_weight="1"/>
+        <TextView
+                android:text="-30s"
+                android:layout_width="64dp"
+                android:textColor="@drawable/text_press"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_height="42dp" android:id="@+id/minus30" android:fontFamily="@font/roboto_bold"
+                android:textSize="20sp" android:gravity="center"/>
+        <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_weight="0.7"/>
+        <ImageView
+                android:id="@+id/startButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/clickable_circle"
+                android:backgroundTint="@color/cmenu_background"
+                android:elevation="@dimen/cmenu_elevation"
+                android:scaleType="fitXY"
+                android:tint="@color/cmenu_foreground"
+                android:visibility="visible"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="startPress"
+                app:srcCompat="@drawable/play_na"/>
+        <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_weight="0.7"/>
+        <TextView
+                android:text="+30s"
+                android:layout_width="64dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:textColor="@drawable/text_press"
+                android:layout_height="42dp" android:id="@+id/plus15" android:textSize="20sp"
+                android:fontFamily="@font/roboto_bold" android:gravity="center"/>
+        <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_weight="1"/>
+    </com.oleaf.eighthours.PlayMenu>
     <android.support.constraint.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.25"/>
-
     <android.support.constraint.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
@@ -311,63 +367,6 @@
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/guideline7" app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.0"/>
-    <com.oleaf.eighthours.PlayMenu
-            android:orientation="horizontal"
-            android:layout_width="@dimen/options_width"
-            android:elevation="0"
-            android:layout_height="@dimen/options_height" android:id="@+id/play_menu"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="@+id/guideline5" app:layout_constraintHorizontal_bias="1.0"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/guideline" android:gravity="center" android:visibility="visible"
-            app:layout_constraintVertical_bias="1.0">
-        <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:layout_weight="1"/>
-        <TextView
-                android:text="-30s"
-                android:layout_width="64dp"
-                android:textColor="@drawable/text_press"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_height="42dp" android:id="@+id/minus30" android:fontFamily="@font/roboto_bold"
-                android:textSize="20sp" android:gravity="center"/>
-        <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:layout_weight="0.7"/>
-        <ImageView
-                android:id="@+id/startButton"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/clickable_circle"
-                android:backgroundTint="@color/cmenu_background"
-                android:elevation="@dimen/cmenu_elevation"
-                android:scaleType="fitXY"
-                android:tint="@color/cmenu_foreground"
-                android:visibility="visible"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="startPress"
-                app:srcCompat="@drawable/play_na"/>
-        <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:layout_weight="0.7"/>
-        <TextView
-                android:text="+30s"
-                android:layout_width="64dp"
-                android:focusable="true"
-                android:clickable="true"
-                android:textColor="@drawable/text_press"
-                android:layout_height="42dp" android:id="@+id/plus15" android:textSize="20sp"
-                android:fontFamily="@font/roboto_bold" android:gravity="center"/>
-        <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:layout_weight="1"/>
-    </com.oleaf.eighthours.PlayMenu>
 
 
 </android.support.constraint.ConstraintLayout>

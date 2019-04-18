@@ -65,6 +65,8 @@ public class Options extends LinearLayout {
         if (index < 0)
             return;
 
+        ((Home) getContext()).showStopwatch();
+        hideN();
     }
 
     public void editPress() {

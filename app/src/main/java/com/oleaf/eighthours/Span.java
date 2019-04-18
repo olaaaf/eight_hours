@@ -7,7 +7,7 @@ import static com.oleaf.eighthours.Activities.grid;
 
 public class Span implements Parcelable {
     float minutes;
-    long startTime=-1;
+    long startTime=-1, pauseTime=-1, beforePause=0;
     boolean onGoing;
     byte color_index;
     String name;
@@ -54,9 +54,9 @@ public class Span implements Parcelable {
     }
 
     public float getMinutes(){
-        if (startTime > -1)
-            return 0;
-        return (System.currentTimeMillis() - startTime) / 60000f;
+        if (startTime < 0)
+            return beforePause/ 60000f;
+        return (System.currentTimeMillis() - startTime + beforePause) / 60000f;
     }
 
     public void start(){
@@ -66,10 +66,14 @@ public class Span implements Parcelable {
 
     public void pause(){
         onGoing = false;
+        beforePause += System.currentTimeMillis() - startTime;
+        startTime = -1;
     }
 
     public void restart(){
-        pause();
+        onGoing = false;
+        pauseTime = -1;
+        beforePause = 0;
         startTime = -1;
     }
 
