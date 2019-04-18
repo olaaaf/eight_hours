@@ -77,7 +77,11 @@ public class Home extends AppCompatActivity {
         updateText(activities.time_left);
         desc.setText("");
     }
-
+    public void updateBottom(float minutesLeft, float minutes){
+        if (options.index > -1){
+            desc.setText(((int)(minutesLeft/60)+":"+(int)(minutesLeft%60)+":"+(int)Math.floor(minutesLeft%1 * 60)) + " / "+(int)(minutes/60)+":" + (int) (minutes % 60)+":00");
+        }
+    }
     public void optionsShow(int index){
         options.show(index);
     }

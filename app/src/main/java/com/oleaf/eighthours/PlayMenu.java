@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
@@ -16,10 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class PlayMenu extends LinearLayout {
-    Animation showA, hideA;
-    AnimatedVectorDrawableCompat start2pause, pause2start;
-    float elevation;
-    boolean state;      //true: onGoing, false: stopped
+    private static final long updateF = 100;
+    private Animation showA, hideA;
+    private AnimatedVectorDrawableCompat start2pause, pause2start;
+    private float elevation;
+    private boolean state;      //true: onGoing, false: stopped
+    private Handler handler;
+    private Runnable runnable;
+    private Activities activities;
+    private boolean handlerRunning;
 
     public PlayMenu(Context context) {
         super(context);
@@ -48,6 +54,7 @@ public class PlayMenu extends LinearLayout {
         start2pause = AnimatedVectorDrawableCompat.create(c, R.drawable.playtostop);
         pause2start = AnimatedVectorDrawableCompat.create(c, R.drawable.stoptoplay);
         elevation = r.getDimension(R.dimen.play_elevation);
+        activities = ((Home) getContext()).activities;
 
         //any view that is invisible or has alpha of 0 doesn't initialize at start
         //the following code helps to both: initialize and hide it with a short alpha animation
@@ -56,6 +63,16 @@ public class PlayMenu extends LinearLayout {
         quickHide.setFillAfter(true);
         quickHide.setDuration(1);
         startAnimation(quickHide);
+
+        //used to update
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                update();
+                handler.postDelayed(runnable, updateF);
+            }
+        };
     }
 
     public void show(){
@@ -68,13 +85,23 @@ public class PlayMenu extends LinearLayout {
         startAnimation(hideA);
     }
 
+    private void update(){
+        Span x = activities.getSpan(((Home)getContext()).circle.arcs.draggingIndex);
+        ((Home) getContext()).updateBottom(x.getMinutes(), x.minutes);
+    }
+
     public void startPress(View view){
         //TODO: press ghosting?, delay
+        if (handlerRunning)
+            handler.removeCallbacks(runnable);
         state = !state;
         changeButton((ImageView) view, state);
         if (state){
+            handler.postDelayed(runnable, updateF);
+            handlerRunning = true;
             ((Home) getContext()).circle.startSelected();
         }else{
+            handlerRunning = false;
             ((Home) getContext()).circle.stopSelected();
         }
     }
