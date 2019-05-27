@@ -94,25 +94,7 @@ public class Home extends AppCompatActivity {
         circle.invalidate();
     }
     public void updateText(int minutes){
-        int hours = (int) Math.floor((float)minutes/60f);
-        minutes = minutes - (hours*60);
-        char text[];
-        int characters = 13;
-
-        char x = '\0';
-        if ((int)Math.floor(minutes/10f) != 0) {
-            x = Character.forDigit((int) Math.floor(minutes / 10f), 5);
-        }
-        if (hours != 1){
-            text = new char[]{Character.forDigit(hours, 24), ' ', 'h', 'o', 'u', 'r',  's', '\n',
-                    x, Character.forDigit(minutes%10, 9),' ', 'm', 'i', 'n'};
-            characters++;
-
-        }else{
-            text = new char[]{Character.forDigit(hours, 24), ' ', 'h', 'o', 'u', 'r', '\n',
-                    x, Character.forDigit(minutes%10, 9), ' ', 'm', 'i', 'n'};
-        }
-        hoursText.setText(text, 0, characters);
+        hoursText.setText(Character.forDigit((int) Math.floor((float)minutes/60f), 24)+" hours\n" +(minutes % 60) + " min");
     }
     public int getChosen(){
         return colorMenu.chosen;

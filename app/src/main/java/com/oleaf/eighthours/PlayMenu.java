@@ -1,5 +1,6 @@
 package com.oleaf.eighthours;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.VectorDrawable;
@@ -17,15 +18,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class PlayMenu extends LinearLayout {
-    private static final long updateF = 100;
-    private Animation showA, hideA;
     private AnimatedVectorDrawableCompat start2pause, pause2start;
-    private float elevation;
-    private boolean state;      //true: onGoing, false: stopped
-    private Handler handler;
-    private Runnable runnable;
+    private boolean handlerRunning, notificationShown;
+    private static final long updateF = 100;
+    private Notification notification;
+    private Animation showA, hideA;
     private Activities activities;
-    private boolean handlerRunning;
+    private Runnable runnable;
+    private float elevation;
+    private Handler handler;
+    private boolean state;      //true: onGoing, false: stopped
 
     public PlayMenu(Context context) {
         super(context);
@@ -51,6 +53,7 @@ public class PlayMenu extends LinearLayout {
         Resources r = c.getResources();
         showA = AnimationUtils.loadAnimation(c, R.anim.menu_popup);
         hideA = AnimationUtils.loadAnimation(c, R.anim.menu_down);
+
         start2pause = AnimatedVectorDrawableCompat.create(c, R.drawable.playtostop);
         pause2start = AnimatedVectorDrawableCompat.create(c, R.drawable.stoptoplay);
         elevation = r.getDimension(R.dimen.play_elevation);

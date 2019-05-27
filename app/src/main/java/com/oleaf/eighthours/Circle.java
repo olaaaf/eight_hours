@@ -99,7 +99,7 @@ public class Circle extends View{
             }
             @Override
             protected void onDrag(float x, float y) {
-                if (!full && dragging && dragArc.animationFinished()){
+                if ((!full || editing > -1) && dragging && dragArc.animationFinished()){
                     dragArc.alpha = clamp(calculateAlpha(x, y) - (start_alpha+90), convertMinutes(Activities.grid), convertMinutes(home.activities.time_left) + arcs.editingAlpha());
                     home.updateText(convertAlpha(dragArc.alpha));
                     invalidate();
@@ -429,13 +429,15 @@ public class Circle extends View{
     //TODO: after play button show animation change the drawable
 
     public class Arcs{
-        private  Arc[] arcs;
+        private Arc[] arcs;
+        private Arc[] playing;
         int draggingIndex = -1;
         float shadowStroke;
         Arc shadow;
 
         Arcs(int shadow_color, float shadowStroke){
             arcs = new Arc[0];
+            playing = new Arc[0];
             shadow = new Arc(0, shadow_color, false);
             this.shadowStroke = shadowStroke;
         }
@@ -449,7 +451,12 @@ public class Circle extends View{
             arcs = new Arc[cp.length + 1];
             System.arraycopy(cp, 0, arcs, 0, cp.length);
             arcs[arcs.length - 1] = new Arc(alpha, color_index);
+            Arc[] cx = playing.clone();
+            playing = new Arc[cx.length + 1];
+            System.arraycopy(cx, 0, playing, 0, cx.length);
+            playing[playing.length - 1] = new Arc(alpha, color_index);
         }
+
         private void addNewAnimation(float alpha, int color_index, float alphaNow){
             addNew(alpha, color_index);
             arcs[arcs.length - 1].animate(alphaNow);
