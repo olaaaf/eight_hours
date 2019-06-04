@@ -107,9 +107,6 @@ public class Home extends AppCompatActivity {
     public boolean isAnimationDone(){
         return circle.getAnimation().hasEnded();
     }
-    /*
-    TODO:
-    */
     /**
      * @param x ought to be the local position derived form the view
      * @param y ought to be the local position derived form the view
