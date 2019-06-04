@@ -107,10 +107,9 @@ public class Home extends AppCompatActivity {
     public boolean isAnimationDone(){
         return circle.getAnimation().hasEnded();
     }
-    //TODO: change activities animation
-    //TODO: better activities changing
-    //TODO: accenting color pick
-    //TODO: when trying to click confirm without picked color shake the menu_layout
+    /*
+    TODO:
+    */
     /**
      * @param x ought to be the local position derived form the view
      * @param y ought to be the local position derived form the view
