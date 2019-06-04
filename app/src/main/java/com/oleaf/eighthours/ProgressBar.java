@@ -10,10 +10,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class ProgressBar extends View {
-    private float radius, width;
+    private float radius, width, minPart, progress;
     private int progressColor;
+    private int primaryColor;
     private Paint paint = new Paint();
-    private float minPart;
 
     public ProgressBar(Context context) {
         super(context);
@@ -36,35 +36,51 @@ public class ProgressBar extends View {
     }
 
     private void init(Context c){
-        radius = getHeight() / 2f;
-        width = getWidth();
+        paint.setAntiAlias(true);
         progressColor = ContextCompat.getColor(c, R.color.progress_color);
-        minPart = getHeight() / getWidth();
+        post(new Runnable() {
+            @Override
+            public void run() {
+                radius = getHeight() / 2f;
+                width = getWidth();
+                minPart = getHeight() / (float) getWidth();
+            }
+        });
     }
 
     @Override
     protected void onDraw(Canvas canvas){
         //Draw the background bar for reference
-        //paint.setColor(Color.WHITE);
-        //drawBar(canvas, 1f);
-
-        //Draw the actual progress
         paint.setColor(progressColor);
         drawBar(canvas, 1f);
+
+        //Draw the actual progress
+        paint.setColor(primaryColor);
+        drawBar(canvas, progress);
     }
 
     private void drawBar(Canvas canvas, float part){
+        if (part == 0)
+            return;
         if (part < minPart){
             canvas.drawCircle(radius, radius, radius, paint);
         }
         else{
             canvas.drawCircle(radius, radius, radius, paint);
-            canvas.drawRect(2* radius, 0, part * (width - (2 * radius)), 2 * radius, paint);
-            canvas.drawCircle(radius + part * (width - (2 * radius)), radius, radius, paint);
+            canvas.drawRect(radius, 0, part * (width - 1 * radius), 2 * radius, paint);
+            canvas.drawCircle( part * (width - 1 *radius), radius, radius, paint);
         }
     }
 
     private void bubbleAnimation(Canvas canvas){
 
+    }
+
+    public void changeColor(int color){
+        primaryColor = color;
+    }
+
+    public void updateProgress(float progress){
+        this.progress = progress;
     }
 }
