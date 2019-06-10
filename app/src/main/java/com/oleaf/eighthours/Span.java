@@ -53,6 +53,14 @@ public class Span implements Parcelable {
         return getMinutes() / minutes;
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public int getColorIndex(){
+        return color_index;
+    }
+
     public float getMinutes(){
         if (startTime < 0)
             return beforePause/ 60000f;

@@ -5,17 +5,18 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Menu">
-    <android.support.v7.widget.RecyclerView android:layout_height="0dp"
-                                            android:layout_width="346dp"
-                                            tools:listitem="@layout/menu_item"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline8"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintHorizontal_bias="0.65"
-                                            app:layout_constraintVertical_bias="0.0"
-                                            app:layout_constraintBottom_toTopOf="@+id/guideline9"
-    android:scrollbars="vertical"/>
+        tools:context=".menu.Menu">
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/activity_list"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            tools:listitem="@layout/menu_item"
+            app:layout_constraintTop_toTopOf="@+id/guideline8"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toTopOf="@+id/guideline9"
+            android:scrollbars="vertical" app:layout_constraintEnd_toStartOf="@+id/guideline12"
+            app:layout_constraintStart_toStartOf="@+id/guideline11" app:layout_constraintHorizontal_bias="0.0"
+    />
     <android.support.constraint.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -26,6 +27,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline9"
             app:layout_constraintGuide_percent="0.85"/>
+    <android.support.constraint.Guideline
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guideline11"
+            app:layout_constraintGuide_percent="0.1"/>
+    <android.support.constraint.Guideline
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/guideline12"
+            app:layout_constraintGuide_percent="0.9"/>
 
 
 </android.support.constraint.ConstraintLayout>

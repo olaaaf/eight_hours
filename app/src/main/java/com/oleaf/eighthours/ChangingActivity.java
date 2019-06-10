@@ -3,6 +3,7 @@ package com.oleaf.eighthours;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import com.oleaf.eighthours.menu.Menu;
 
 public final class ChangingActivity {
     static void change(Context current, String currentName, String name, Parcelable activities){
@@ -16,13 +17,9 @@ public final class ChangingActivity {
             case "Circle":
                 intent = new Intent(current, Circle.class);
                 break;
-            case "List":
+            case "Menu":
+                intent = new Intent(current, Menu.class);
                 break;
-            case "Timer":
-                //TODO
-                return;
-            case "Settings":
-                return;
         }
         intent.putExtra("activities", activities);
         current.startActivity(intent);

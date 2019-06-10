@@ -86,6 +86,10 @@ public class Home extends AppCompatActivity {
         options.show(index);
     }
 
+    public void changeActivity(){
+        ChangingActivity.change(this, "Home", "Menu", activities);
+    }
+
     public void optionsHide(){
         options.hide();
     }

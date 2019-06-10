@@ -1,4 +1,4 @@
-package com.oleaf.eighthours;
+package com.oleaf.eighthours.menu;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import com.oleaf.eighthours.R;
 
 public class ProgressBar extends View {
     private float radius, width, minPart, progress;
@@ -82,5 +83,6 @@ public class ProgressBar extends View {
 
     public void updateProgress(float progress){
         this.progress = progress;
+        invalidate();
     }
 }
