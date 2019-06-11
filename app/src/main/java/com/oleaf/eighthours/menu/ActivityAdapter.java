@@ -13,6 +13,8 @@ import com.oleaf.eighthours.Home;
 import com.oleaf.eighthours.R;
 import com.oleaf.eighthours.Span;
 
+import java.util.Random;
+
 public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHolder> {
     Activities activities;
     TypedArray colors;
@@ -60,6 +62,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         viewHolder.bar.updateProgress(s.getPart());
         viewHolder.bar.changeColor(color);
         viewHolder.number.setTextColor(color);
+        viewHolder.name.setTextColor(color);
     }
 
     @Override

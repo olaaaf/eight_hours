@@ -6,16 +6,20 @@ import android.os.Parcelable;
 import static com.oleaf.eighthours.Activities.grid;
 
 public class Span implements Parcelable {
+    public static final String default_name="Activity";
     float minutes;
     long startTime=-1, pauseTime=-1, beforePause=0;
     boolean onGoing;
     byte color_index;
     String name;
 
-    Span(int _minutes, int _color_index, int time_left){
+    Span(int _minutes, int _color_index, int time_left, String _name){
         minutes = clamp(round_up(_minutes), time_left);
         color_index = (byte) _color_index;
-        name = "";
+        name = _name;
+    }
+    Span(int _minutes, int _color_index, int time_left){
+        this(_minutes, _color_index, time_left, default_name);
     }
     private int round_up(int time) {
         return Math.round(time / (float) grid) * grid;
