@@ -52,7 +52,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     @Override
     public void onBindViewHolder(ActivityAdapter.ViewHolder viewHolder, int position) {
         Span s = activities.getSpan(position);
-        int minutes = (int)s.getMinutes();
+        int minutes = (int) s.getCurrentMinutes();
         int seconds = (int) Math.floor(minutes * 60) % 60;
         int color = colors.getColor(s.getColorIndex(), 0xFF000000);
 

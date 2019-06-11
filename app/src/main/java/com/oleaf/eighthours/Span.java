@@ -54,7 +54,7 @@ public class Span implements Parcelable {
     }
 
     public float getPart(){
-        return getMinutes() / minutes;
+        return getCurrentMinutes() / minutes;
     }
 
     public String getName(){
@@ -66,6 +66,10 @@ public class Span implements Parcelable {
     }
 
     public float getMinutes(){
+        return minutes;
+    }
+
+    public float getCurrentMinutes(){
         if (startTime < 0)
             return beforePause/ 60000f;
         return (System.currentTimeMillis() - startTime + beforePause) / 60000f;

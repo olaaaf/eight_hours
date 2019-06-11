@@ -3,11 +3,8 @@ package com.oleaf.eighthours;
 import android.app.Notification;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.VectorDrawable;
-import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -90,7 +87,7 @@ public class PlayMenu extends LinearLayout {
 
     private void update(){
         Span x = activities.getSpan(((Home)getContext()).circle.arcs.draggingIndex);
-        ((Home) getContext()).updateBottom(x.getMinutes(), x.minutes);
+        ((Home) getContext()).updateBottom(x.getCurrentMinutes(), x.minutes);
     }
 
     public void startPress(View view){
