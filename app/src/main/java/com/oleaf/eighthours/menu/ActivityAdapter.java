@@ -3,6 +3,7 @@ package com.oleaf.eighthours.menu;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
+import android.support.transition.TransitionManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import java.util.Random;
 public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHolder> {
     Activities activities;
     TypedArray colors;
+    int expanded=-1;
+    RecyclerView r;
 
     //it needs to be updated every second
     //direct reference to spans
@@ -46,11 +49,12 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.menu_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
+        r = (RecyclerView) parent;
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ActivityAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ActivityAdapter.ViewHolder viewHolder, final int position) {
         Span s = activities.getSpan(position);
         int minutes = (int) s.getCurrentMinutes();
         int seconds = (int) Math.floor(minutes * 60) % 60;
@@ -63,6 +67,23 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         viewHolder.bar.changeColor(color);
         viewHolder.number.setTextColor(color);
         viewHolder.name.setTextColor(color);
+
+        //Add onClickListener - when clicked, expand the view
+        //expanded is a global variable holding the expanded position
+        final boolean isExpanded = (expanded == position);
+        //Expand the view - set visibility
+        viewHolder.itemView.findViewById(R.id.activityButton).setVisibility(!isExpanded ? View.GONE:View.VISIBLE);
+        viewHolder.itemView.findViewById(R.id.minus30).setVisibility(!isExpanded ? View.GONE:View.VISIBLE);
+        viewHolder.itemView.findViewById(R.id.plus30).setVisibility(!isExpanded ? View.GONE: View.VISIBLE);
+        viewHolder.itemView.setActivated(isExpanded);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expanded = isExpanded ? -1 : position;
+                TransitionManager.beginDelayedTransition(r);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

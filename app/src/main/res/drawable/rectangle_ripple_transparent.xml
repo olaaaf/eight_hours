@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:state_activated="false"
+            android:state_pressed="true"
+            android:drawable="@drawable/trans_rect"/>
     <item
             android:state_pressed="true"
-            android:state_enabled="true"
-            android:drawable="@drawable/trans_rect"/>
-</layer-list>
+        android:state_activated="true"
+        android:drawable="@drawable/rect_ripple"
+    />
+    <item
+        android:state_activated="true"
+        android:state_pressed="false"
+        android:drawable="@drawable/rect_ripple"
+        />
+</selector>
