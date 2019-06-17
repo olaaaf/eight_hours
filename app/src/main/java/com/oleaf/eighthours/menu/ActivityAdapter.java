@@ -20,6 +20,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     Activities activities;
     TypedArray colors;
     int expanded=-1;
+    int previous=-1;
     RecyclerView r;
 
     //it needs to be updated every second
@@ -65,13 +66,18 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         viewHolder.number.setText("#"+(position + 1));
         viewHolder.bar.updateProgress(s.getPart());
         viewHolder.bar.changeColor(color);
+        viewHolder.bar.setVisibility(View.VISIBLE);
         viewHolder.number.setTextColor(color);
         viewHolder.name.setTextColor(color);
-
+        viewHolder.bar.invalidate();
         //Add onClickListener - when clicked, expand the view
         //expanded is a global variable holding the expanded position
         final boolean isExpanded = (expanded == position);
+        if (isExpanded)
+            previous = position;
+
         //Expand the view - set visibility
+
         viewHolder.itemView.findViewById(R.id.activityButton).setVisibility(!isExpanded ? View.GONE:View.VISIBLE);
         viewHolder.itemView.findViewById(R.id.minus30).setVisibility(!isExpanded ? View.GONE:View.VISIBLE);
         viewHolder.itemView.findViewById(R.id.plus30).setVisibility(!isExpanded ? View.GONE: View.VISIBLE);
@@ -80,8 +86,9 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 expanded = isExpanded ? -1 : position;
-                TransitionManager.beginDelayedTransition(r);
-                notifyDataSetChanged();
+                //TransitionManager.beginDelayedTransition(r);
+                if (previous > -1) notifyItemChanged(previous);
+                notifyItemChanged(position);
             }
         });
     }
