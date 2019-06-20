@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.oleaf.eighthours.Activities;
 import com.oleaf.eighthours.Home;
@@ -20,22 +21,24 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     Activities activities;
     TypedArray colors;
     int expanded=-1;
-    int previous=-1;
+    int previous=0;
     RecyclerView r;
 
     //it needs to be updated every second
     //direct reference to spans
     class ViewHolder extends RecyclerView.ViewHolder{
         public TextView name, time, number;
+        public View arrow;
         public ProgressBar bar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             //initialize all the necessary views
-            name = (TextView) itemView.findViewById(R.id.activity_name);
-            time = (TextView) itemView.findViewById(R.id.ac_time);
-            number = (TextView) itemView.findViewById(R.id.number);
-            bar = (ProgressBar) itemView.findViewById(R.id.progress);
+            name = itemView.findViewById(R.id.activity_name);
+            time = itemView.findViewById(R.id.ac_time);
+            number = itemView.findViewById(R.id.number);
+            bar = itemView.findViewById(R.id.progress);
+            arrow = itemView.findViewById(R.id.arrowE);
             //add buttons:
         }
     }
@@ -66,10 +69,9 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         viewHolder.number.setText("#"+(position + 1));
         viewHolder.bar.updateProgress(s.getPart());
         viewHolder.bar.changeColor(color);
-        viewHolder.bar.setVisibility(View.VISIBLE);
         viewHolder.number.setTextColor(color);
         viewHolder.name.setTextColor(color);
-        viewHolder.bar.invalidate();
+
         //Add onClickListener - when clicked, expand the view
         //expanded is a global variable holding the expanded position
         final boolean isExpanded = (expanded == position);
@@ -82,12 +84,14 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         viewHolder.itemView.findViewById(R.id.minus30).setVisibility(!isExpanded ? View.GONE:View.VISIBLE);
         viewHolder.itemView.findViewById(R.id.plus30).setVisibility(!isExpanded ? View.GONE: View.VISIBLE);
         viewHolder.itemView.setActivated(isExpanded);
+
+        //animate the arrow - @animator/arrow
+        viewHolder.arrow.setActivated(isExpanded);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 expanded = isExpanded ? -1 : position;
-                //TransitionManager.beginDelayedTransition(r);
-                if (previous > -1) notifyItemChanged(previous);
+                notifyItemChanged(previous);
                 notifyItemChanged(position);
             }
         });

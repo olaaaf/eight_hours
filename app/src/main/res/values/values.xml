@@ -24,4 +24,6 @@
         <item>#b388ff</item>
         <item>#ea80fc</item>
     </array>
+
+    <dimen name="item_duration">1000</dimen>
 </resources>
