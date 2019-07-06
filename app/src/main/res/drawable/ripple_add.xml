@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="#1A000000">
     <item>
-        <shape android:shape="oval">
+        <shape android:shape="rectangle">
+            <corners
+                android:radius="25dp"/>
+            <size
+                    android:height="50dp"
+                    android:width="200dp"
+            />
             <solid android:color="#FFFFFFFF"/>
         </shape>
     </item>

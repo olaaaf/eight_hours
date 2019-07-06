@@ -347,7 +347,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/menu_rect"
+            android:background="@drawable/add_button_bg"
             android:onClick="addPress"
             android:backgroundTint="@color/button"
             android:clickable="true"
