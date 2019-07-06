@@ -65,7 +65,11 @@ public class Options extends LinearLayout {
         if (index < 0)
             return;
 
-        ((Home) getContext()).changeActivity();
+        Home home = ((Home) getContext());
+        home.changeActivity();
+        home.circle.arcs.deselect();
+        home.circle.update();
+        home.updateText(home.activities.time_left);
         //((Home) getContext()).showStopwatch();
         hide();
     }

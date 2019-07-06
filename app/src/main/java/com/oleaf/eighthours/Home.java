@@ -150,4 +150,8 @@ public class Home extends AppCompatActivity {
     public void startPress(View view){
         playMenu.startPress(view);
     }
+
+    public void listPress(View view){
+        changeActivity();
+    }
 }

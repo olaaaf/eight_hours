@@ -365,6 +365,23 @@
             app:layout_constraintVertical_bias="0.0" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="@+id/guideline5" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline5"/>
+    <ImageButton
+            android:layout_width="45dp"
+            android:layout_height="45dp" app:srcCompat="@drawable/ic_format_list_bulleted_black_24dp"
+            android:id="@+id/listButton"
+            android:background="@drawable/circle_ripple_transparent"
+            android:onClick="listPress"
+            app:layout_constraintTop_toTopOf="@+id/addButton" app:layout_constraintBottom_toBottomOf="@+id/addButton"
+            app:layout_constraintVertical_bias="1.0" app:layout_constraintStart_toStartOf="@+id/circle"/>
+    <ImageButton
+            android:layout_width="45dp"
+            android:layout_height="45dp" app:srcCompat="@drawable/ic_settings_black_24dp"
+            android:id="@+id/listButton2"
+            android:background="@drawable/circle_ripple_transparent"
+
+            app:layout_constraintTop_toTopOf="@+id/addButton" app:layout_constraintBottom_toBottomOf="@+id/addButton"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintEnd_toEndOf="@+id/circle"/>
 
 
 </android.support.constraint.ConstraintLayout>

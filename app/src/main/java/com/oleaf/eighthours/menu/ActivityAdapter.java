@@ -21,7 +21,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     Activities activities;
     TypedArray colors;
     int expanded=-1;
-    int previous=0;
+    int previous=-1;
     RecyclerView r;
 
     //it needs to be updated every second
