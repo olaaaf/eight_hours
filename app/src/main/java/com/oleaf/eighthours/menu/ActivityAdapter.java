@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.oleaf.eighthours.Activities;
@@ -31,7 +32,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         public View arrow;
         public ProgressBar bar;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             //initialize all the necessary views
             name = itemView.findViewById(R.id.activity_name);
@@ -39,7 +40,13 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
             number = itemView.findViewById(R.id.number);
             bar = itemView.findViewById(R.id.progress);
             arrow = itemView.findViewById(R.id.arrowE);
-            //add buttons:
+            //Adding buttons and initializing them
+            //convert itemView to activity - class with all the necessary functions
+            ActivityConstraint activity = (ActivityConstraint) itemView;
+
+            itemView.findViewById(R.id.activityButton).setOnClickListener(activity.play);
+            itemView.findViewById(R.id.minus30).setOnClickListener(activity.minus);
+            itemView.findViewById(R.id.plus30).setOnClickListener(activity.plus);
         }
     }
     ActivityAdapter(Activities a, TypedArray c){
@@ -60,23 +67,30 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     @Override
     public void onBindViewHolder(ActivityAdapter.ViewHolder viewHolder, final int position) {
         Span s = activities.getSpan(position);
-        int minutes = (int) s.getCurrentMinutes();
-        int seconds = (int) Math.floor(minutes * 60) % 60;
         int color = colors.getColor(s.getColorIndex(), 0xFF000000);
 
-        viewHolder.name.setText(s.getName());
-        viewHolder.time.setText(((int) Math.floor(minutes / 60f)) + ":" + ((minutes < 10) ? "0"+minutes : ""+minutes) + ":" + ((seconds < 10) ? "0"+seconds : ""+seconds));
-        viewHolder.number.setText("#"+(position + 1));
-        viewHolder.bar.updateProgress(s.getPart());
-        viewHolder.bar.changeColor(color);
-        viewHolder.number.setTextColor(color);
-        viewHolder.name.setTextColor(color);
 
         //Add onClickListener - when clicked, expand the view
         //expanded is a global variable holding the expanded position
         final boolean isExpanded = (expanded == position);
         if (isExpanded)
             previous = position;
+
+        //Assign values to the  itemView
+        ActivityConstraint a = (ActivityConstraint) viewHolder.itemView;
+        a.bar = viewHolder.bar;
+        a.span = s;
+        a.time = viewHolder.time;
+
+        //initialize the whole item
+        a.update();
+        viewHolder.name.setText(s.getName());
+        viewHolder.number.setText("#"+(position + 1));
+        viewHolder.bar.updateProgress(s.getPart());
+        viewHolder.bar.changeColor(color);
+        viewHolder.number.setTextColor(color);
+        viewHolder.name.setTextColor(color);
+
 
         //Expand the view - set visibility
 
