@@ -87,10 +87,11 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         viewHolder.name.setText(s.getName());
         viewHolder.number.setText("#"+(position + 1));
         viewHolder.bar.updateProgress(s.getPart());
+        //TODO: Draw the bar
         viewHolder.bar.changeColor(color);
         viewHolder.number.setTextColor(color);
         viewHolder.name.setTextColor(color);
-
+        
 
         //Expand the view - set visibility
 
