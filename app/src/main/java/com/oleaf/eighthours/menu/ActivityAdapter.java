@@ -19,6 +19,7 @@ import com.oleaf.eighthours.Span;
 import java.util.Random;
 
 public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHolder> {
+    ActivityUpdater updater;
     Activities activities;
     TypedArray colors;
     int expanded=-1;
@@ -49,9 +50,10 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
             itemView.findViewById(R.id.plus30).setOnClickListener(activity.plus);
         }
     }
-    ActivityAdapter(Activities a, TypedArray c){
+    ActivityAdapter(Activities a, TypedArray c, ActivityUpdater u){
         activities = a;
         colors = c;
+        updater = u;
     }
 
     @Override
@@ -82,23 +84,23 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         a.span = s;
         a.time = viewHolder.time;
 
+        //Add the item to activity updater - a global timer
+        updater.addCall(position, (ActivityConstraint) viewHolder.itemView);
         //initialize the whole item
         a.update();
         viewHolder.name.setText(s.getName());
         viewHolder.number.setText("#"+(position + 1));
         viewHolder.bar.updateProgress(s.getPart());
-        //TODO: Draw the bar
         viewHolder.bar.changeColor(color);
         viewHolder.number.setTextColor(color);
         viewHolder.name.setTextColor(color);
-        
-
+        ((ActivityConstraint) viewHolder.itemView).position = position;
+        ((ActivityConstraint) viewHolder.itemView).updater = updater;
         //Expand the view - set visibility
-
-        viewHolder.itemView.findViewById(R.id.activityButton).setVisibility(!isExpanded ? View.GONE:View.VISIBLE);
-        viewHolder.itemView.findViewById(R.id.minus30).setVisibility(!isExpanded ? View.GONE:View.VISIBLE);
-        viewHolder.itemView.findViewById(R.id.plus30).setVisibility(!isExpanded ? View.GONE: View.VISIBLE);
         viewHolder.itemView.setActivated(isExpanded);
+        viewHolder.itemView.findViewById(R.id.activityButton).setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        viewHolder.itemView.findViewById(R.id.minus30).setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        viewHolder.itemView.findViewById(R.id.plus30).setVisibility(isExpanded ? View.VISIBLE : View.GONE);
 
         //animate the arrow - @animator/arrow
         viewHolder.arrow.setActivated(isExpanded);

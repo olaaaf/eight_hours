@@ -83,6 +83,13 @@
             android:layout_marginTop="40dp" app:layout_constraintHorizontal_bias="0.496" android:gravity="center"
             android:fontFamily="@font/roboto_thin" android:textSize="20sp" android:visibility="invisible"
             android:layout_width="wrap_content" android:layout_marginEnd="8dp"/>
+    <com.oleaf.eighthours.menu.ActivityUpdater
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:id="@+id/updater" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="135dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginEnd="103dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="16dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
 
 
 </android.support.constraint.ConstraintLayout>

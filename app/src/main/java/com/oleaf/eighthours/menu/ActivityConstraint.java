@@ -6,22 +6,16 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 import com.oleaf.eighthours.Span;
-import android.os.Handler;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ActivityConstraint extends ConstraintLayout {
-    boolean handlerRunning = false;
+    boolean playing = false;
     Span span;
     ProgressBar bar;
     TextView time;
-    Handler handler;
-    final static long msUpdate = 1000;
-    final Runnable r = new Runnable() {
-        @Override
-        public void run() {
-            update();
-            handler.postDelayed(r, msUpdate);
-        }
-    };
+    int position;
+    ActivityUpdater updater;
     final OnClickListener play = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -57,7 +51,7 @@ public class ActivityConstraint extends ConstraintLayout {
     }
 
     public void init(Context c){
-        handler = new Handler();
+
     }
 
     public void update(){
@@ -67,7 +61,7 @@ public class ActivityConstraint extends ConstraintLayout {
     }
 
     public void pressPlay(View view){
-        if (!handlerRunning) {
+         if (!playing) {
             update();
             startTimer();
             span.start();
@@ -76,7 +70,7 @@ public class ActivityConstraint extends ConstraintLayout {
             stopTimer();
             span.pause();
         }
-        handlerRunning = !handlerRunning;
+        playing = !playing;
     }
 
     public void pressMinus(View view){
@@ -88,12 +82,11 @@ public class ActivityConstraint extends ConstraintLayout {
     }
 
     private void startTimer(){
-        handler.postDelayed(r, msUpdate);
+        updater.start(position);
     }
 
     private void stopTimer(){
-        if (handlerRunning)
-            handler.removeCallbacks(r);
+        updater.stop(position);
     }
 
     private void updateText(float min){
@@ -101,4 +94,6 @@ public class ActivityConstraint extends ConstraintLayout {
         int sec = (int) ((min % 1.0f) * 60);
         time.setText((h/10.0f < 1.0f ? "0" : "") + h + ":" + ((min%60) / 10f < 1f ? "0" :"") + ((int) min % 60) +":" + (sec / 10.0f < 1.0f ? "0" : "") + sec);
     }
+
+
 }

@@ -25,7 +25,8 @@ public class Menu extends AppCompatActivity {
         Intent intent = getIntent();
         activities = (Activities) intent.getParcelableExtra("activities");
         TypedArray colors = getResources().obtainTypedArray(R.array.colors);
-        aAdapter = new ActivityAdapter(activities, colors);
+        ActivityUpdater updater = findViewById(R.id.updater);
+        aAdapter = new ActivityAdapter(activities, colors, updater);
         RecyclerView recyclerView = findViewById(R.id.activity_list);
         recyclerView.setAdapter(aAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
