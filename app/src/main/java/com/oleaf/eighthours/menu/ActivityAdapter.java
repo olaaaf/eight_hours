@@ -74,28 +74,30 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
 
         //Add onClickListener - when clicked, expand the view
         //expanded is a global variable holding the expanded position
-        final boolean isExpanded = (expanded == position);
+        final boolean isExpanded = true;//(expanded == position);
         if (isExpanded)
             previous = position;
 
-        //Assign values to the  itemView
-        ActivityConstraint a = (ActivityConstraint) viewHolder.itemView;
-        a.bar = viewHolder.bar;
-        a.span = s;
-        a.time = viewHolder.time;
-
-        //Add the item to activity updater - a global timer
-        updater.addCall(position, (ActivityConstraint) viewHolder.itemView);
-        //initialize the whole item
-        a.update();
-        viewHolder.name.setText(s.getName());
-        viewHolder.number.setText("#"+(position + 1));
-        viewHolder.bar.updateProgress(s.getPart());
-        viewHolder.bar.changeColor(color);
-        viewHolder.number.setTextColor(color);
-        viewHolder.name.setTextColor(color);
-        ((ActivityConstraint) viewHolder.itemView).position = position;
-        ((ActivityConstraint) viewHolder.itemView).updater = updater;
+        //the following happens only once; only on initialization
+        if (((ActivityConstraint) viewHolder.itemView).position == -1){
+            //Assign values to the  itemView
+            ActivityConstraint a = (ActivityConstraint) viewHolder.itemView;
+            a.bar = viewHolder.bar;
+            a.span = s;
+            a.time = viewHolder.time;
+            //Add the item to activity updater - a global timer
+            updater.addCall(position, (ActivityConstraint) viewHolder.itemView);
+            //initialize the whole item
+            ((ActivityConstraint) viewHolder.itemView).position = position;
+            ((ActivityConstraint) viewHolder.itemView).updater = updater;
+            a.update();
+            viewHolder.name.setText(s.getName());
+            viewHolder.number.setText("#"+(position + 1));
+            viewHolder.bar.updateProgress(s.getPart());
+            viewHolder.bar.changeColor(color);
+            viewHolder.number.setTextColor(color);
+            viewHolder.name.setTextColor(color);
+        }
         //Expand the view - set visibility
         viewHolder.itemView.setActivated(isExpanded);
         viewHolder.itemView.findViewById(R.id.activityButton).setVisibility(isExpanded ? View.VISIBLE : View.GONE);

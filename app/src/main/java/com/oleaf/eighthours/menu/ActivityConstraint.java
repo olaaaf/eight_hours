@@ -14,8 +14,8 @@ public class ActivityConstraint extends ConstraintLayout {
     Span span;
     ProgressBar bar;
     TextView time;
-    int position;
-    ActivityUpdater updater;
+    int position=-1;
+    ActivityUpdater updater=null;
     final OnClickListener play = new OnClickListener() {
         @Override
         public void onClick(View v) {

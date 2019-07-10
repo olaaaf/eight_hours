@@ -6,7 +6,7 @@
         android:background="@drawable/rectangle_ripple_transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" android:minHeight="85dp"
-        android:clickable="true"
+        android:clickable="false"
         android:stateListAnimator="@animator/item_bg"
         android:layout_marginTop="2dp"
         android:layout_marginLeft="5dp"
@@ -61,6 +61,7 @@
             android:shadowDx="1" android:shadowDy="1" android:shadowRadius="1" android:textSize="24sp"
             android:gravity="center"/>
     <ImageView
+            android:visibility="gone"
             android:stateListAnimator="@animator/arrow"
             android:layout_width="42dp"
             android:scaleY="1"
