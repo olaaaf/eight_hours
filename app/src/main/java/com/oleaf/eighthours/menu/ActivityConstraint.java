@@ -57,7 +57,12 @@ public class ActivityConstraint extends ConstraintLayout {
     }
 
     public void init(Context c){
-
+        post(new Runnable() {
+            @Override
+            public void run() {
+                bar.updateProgress(span.getPart());
+            }
+        });
     }
 
     public void update(){
