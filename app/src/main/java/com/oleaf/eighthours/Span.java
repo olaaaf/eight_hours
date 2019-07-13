@@ -9,7 +9,8 @@ import static com.oleaf.eighthours.Activities.grid;
 public class Span implements Parcelable {
     public static final String default_name="Activity";
     float minutes;
-    long startTime=-1, pauseTime=-1, beforePause=0, additionalTime=0;
+    long startTime=-1, pauseTime=-1, beforePause=0;
+    float additionalTime=0;
     boolean onGoing;
     byte color_index;
     String name;
@@ -72,7 +73,7 @@ public class Span implements Parcelable {
 
     public void addActiveMinutes(float min){
         min = Tools.clamp(min, -getCurrentMinutes(), minutes -getCurrentMinutes());
-        additionalTime += min *60000;
+        additionalTime += min;
     }
 
     public float getCurrentMinutes(){

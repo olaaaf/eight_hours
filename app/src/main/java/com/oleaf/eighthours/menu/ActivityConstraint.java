@@ -82,10 +82,12 @@ public class ActivityConstraint extends ConstraintLayout {
 
     public void pressMinus(View view){
         span.addActiveMinutes(-0.5f);
+        update();
     }
 
     public void pressPlus(View view){
         span.addActiveMinutes(0.5f);
+        update();
     }
 
     private void startTimer(){
