@@ -2,13 +2,14 @@ package com.oleaf.eighthours;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import static com.oleaf.eighthours.Activities.grid;
 
 public class Span implements Parcelable {
     public static final String default_name="Activity";
     float minutes;
-    long startTime=-1, pauseTime=-1, beforePause=0;
+    long startTime=-1, pauseTime=-1, beforePause=0, additionalTime=0;
     boolean onGoing;
     byte color_index;
     String name;
@@ -69,10 +70,15 @@ public class Span implements Parcelable {
         return minutes;
     }
 
+    public void addActiveMinutes(float min){
+        min = Tools.clamp(min, -getCurrentMinutes(), minutes -getCurrentMinutes());
+        additionalTime += min *60000;
+    }
+
     public float getCurrentMinutes(){
         if (startTime < 0)
             return beforePause/ 60000f;
-        return (System.currentTimeMillis() - startTime + beforePause) / 60000f;
+        return (System.currentTimeMillis() - startTime + beforePause) / 60000f + additionalTime;
     }
 
     public void start(){

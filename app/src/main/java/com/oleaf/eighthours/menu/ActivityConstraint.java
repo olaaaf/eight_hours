@@ -5,21 +5,27 @@ import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+import com.oleaf.eighthours.R;
 import com.oleaf.eighthours.Span;
-
-import java.util.concurrent.atomic.AtomicBoolean;
+import android.widget.ImageView;
 
 public class ActivityConstraint extends ConstraintLayout {
     boolean playing = false;
     Span span;
     ProgressBar bar;
     TextView time;
+    final int playd = R.drawable.play_na, stopd = R.drawable.stop_na;
     int position=-1;
     ActivityUpdater updater=null;
+
     final OnClickListener play = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            pressPlay(v);
+            if(pressPlay(v))
+                ((ImageView) v).setImageResource(stopd);
+            else
+                ((ImageView) v).setImageResource(playd);
+
         }
     };
     final OnClickListener minus = new OnClickListener() {
@@ -60,8 +66,9 @@ public class ActivityConstraint extends ConstraintLayout {
         updateText(span.getMinutes() - span.getCurrentMinutes());
     }
 
-    public void pressPlay(View view){
-         if (!playing) {
+    public boolean pressPlay(View view){
+        playing = !playing;
+        if (playing) {
             update();
             startTimer();
             span.start();
@@ -70,15 +77,15 @@ public class ActivityConstraint extends ConstraintLayout {
             stopTimer();
             span.pause();
         }
-        playing = !playing;
+        return playing;
     }
 
     public void pressMinus(View view){
-
+        span.addActiveMinutes(-0.5f);
     }
 
     public void pressPlus(View view){
-
+        span.addActiveMinutes(0.5f);
     }
 
     private void startTimer(){

@@ -22,8 +22,6 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     ActivityUpdater updater;
     Activities activities;
     TypedArray colors;
-    int expanded=-1;
-    int previous=-1;
     RecyclerView r;
 
     //it needs to be updated every second
@@ -71,13 +69,6 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         Span s = activities.getSpan(position);
         int color = colors.getColor(s.getColorIndex(), 0xFF000000);
 
-
-        //Add onClickListener - when clicked, expand the view
-        //expanded is a global variable holding the expanded position
-        final boolean isExpanded = true;//(expanded == position);
-        if (isExpanded)
-            previous = position;
-
         //the following happens only once; only on initialization
         if (((ActivityConstraint) viewHolder.itemView).position == -1){
             //Assign values to the  itemView
@@ -98,22 +89,6 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
             viewHolder.number.setTextColor(color);
             viewHolder.name.setTextColor(color);
         }
-        //Expand the view - set visibility
-        viewHolder.itemView.setActivated(isExpanded);
-        viewHolder.itemView.findViewById(R.id.activityButton).setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-        viewHolder.itemView.findViewById(R.id.minus30).setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-        viewHolder.itemView.findViewById(R.id.plus30).setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-
-        //animate the arrow - @animator/arrow
-        viewHolder.arrow.setActivated(isExpanded);
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                expanded = isExpanded ? -1 : position;
-                notifyItemChanged(previous);
-                notifyItemChanged(position);
-            }
-        });
     }
 
     @Override
