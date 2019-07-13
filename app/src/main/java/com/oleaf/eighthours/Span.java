@@ -41,6 +41,7 @@ public class Span implements Parcelable {
         color_index = in.readByte();
         name = in.readString();
         startTime = in.readLong();
+        additionalTime = in.readFloat();
         boolean a[] = new boolean[1];
         in.readBooleanArray(a);
         onGoing = a[0];
@@ -52,6 +53,7 @@ public class Span implements Parcelable {
         dest.writeByte(color_index);
         dest.writeString(name);
         dest.writeLong(startTime);
+        dest.writeFloat(additionalTime);
         dest.writeBooleanArray(new boolean[]{onGoing});
     }
 
@@ -76,10 +78,14 @@ public class Span implements Parcelable {
         additionalTime += min;
     }
 
+    public boolean shouldStop(){
+        return (getCurrentMinutes() == minutes);
+    }
+
     public float getCurrentMinutes(){
         if (startTime < 0)
             return beforePause/ 60000f;
-        return (System.currentTimeMillis() - startTime + beforePause) / 60000f + additionalTime;
+        return Tools.clamp((System.currentTimeMillis() - startTime + beforePause) / 60000f + additionalTime, 0, minutes);
     }
 
     public void start(){

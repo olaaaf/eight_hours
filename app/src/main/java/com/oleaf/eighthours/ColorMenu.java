@@ -85,6 +85,7 @@ public class ColorMenu extends ConstraintLayout {
         //zero out the buttons
         cancel.setText(R.string.cancel);
         confirm.setText(R.string.confirm);
+        ((Home) getContext()).showClose();
     }
 
     public int hide(){
@@ -92,6 +93,7 @@ public class ColorMenu extends ConstraintLayout {
         //Play colorHide animation
         startAnimation(hideA);
         ((Home) getContext()).colorHide();
+        ((Home) getContext()).showHide();
         return chosen;
     }
 
@@ -112,6 +114,14 @@ public class ColorMenu extends ConstraintLayout {
 
     public boolean isShown(){
         return shown;
+    }
+
+    public void close(){
+        if (!shown)
+            return;
+        ((Home) getContext()).circle.cancel();
+        hide();
+        chosen = -1;
     }
 
 }

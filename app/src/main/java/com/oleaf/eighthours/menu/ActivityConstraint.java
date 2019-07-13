@@ -4,10 +4,10 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.oleaf.eighthours.R;
 import com.oleaf.eighthours.Span;
-import android.widget.ImageView;
 
 public class ActivityConstraint extends ConstraintLayout {
     boolean playing = false;
@@ -69,6 +69,8 @@ public class ActivityConstraint extends ConstraintLayout {
         //Actual updating goes here
         bar.updateProgress(span.getPart());
         updateText(span.getMinutes() - span.getCurrentMinutes());
+        if (playing && span.shouldStop())
+            stopTimer();
     }
 
     public boolean pressPlay(View view){
@@ -108,6 +110,5 @@ public class ActivityConstraint extends ConstraintLayout {
         int sec = (int) ((min % 1.0f) * 60);
         time.setText((h/10.0f < 1.0f ? "0" : "") + h + ":" + ((min%60) / 10f < 1f ? "0" :"") + ((int) min % 60) +":" + (sec / 10.0f < 1.0f ? "0" : "") + sec);
     }
-
 
 }

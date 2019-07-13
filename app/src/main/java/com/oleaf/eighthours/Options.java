@@ -45,6 +45,7 @@ public class Options extends LinearLayout {
         if (this.index > -1)
             this.index = index;
         else {
+            ((Home) getContext()).showClose();
             this.index = index;
             setElevation(elevation);
             startAnimation(show);
@@ -54,24 +55,12 @@ public class Options extends LinearLayout {
     public void hide() {
         this.index = -1;
         hideN();
+        ((Home) getContext()).showHide();
     }
 
     private void hideN(){
         setElevation(0f);
         startAnimation(hide);
-    }
-
-    public void playPress() {
-        if (index < 0)
-            return;
-
-        Home home = ((Home) getContext());
-        home.changeActivity();
-        home.circle.arcs.deselect();
-        home.circle.update();
-        home.updateText(home.activities.time_left);
-        //((Home) getContext()).showStopwatch();
-        hide();
     }
 
     public void editPress() {
@@ -99,5 +88,12 @@ public class Options extends LinearLayout {
 
     public boolean isShown(){
         return (index > -1);
+    }
+
+    public void close(){
+        if (index > -1) {
+            hide();
+            ((Home) getContext()).circle.arcs.deselect();
+        }
     }
 }

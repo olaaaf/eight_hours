@@ -20,11 +20,12 @@
             android:layout_height="42dp"
             app:autoSizeMaxTextSize="20sp"
             android:id="@+id/ac_time" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginTop="8dp" android:gravity="right|center_vertical"
+            android:layout_marginTop="8dp" android:gravity="right|center_vertical"
             android:fontFamily="@font/roboto_thin" android:textSize="14sp" android:typeface="normal"
             android:textColor="@color/primary_text" android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/activity_name" app:layout_constraintEnd_toStartOf="@+id/number"
-            android:layout_marginEnd="12dp" app:layout_constraintHorizontal_bias="0.0"/>
+            app:layout_constraintEnd_toStartOf="@+id/number"
+            android:layout_marginEnd="12dp" app:layout_constraintStart_toEndOf="@+id/activity_name"
+            android:layout_marginStart="8dp"/>
     <TextView
             android:text="Activity"
             android:autoSizeTextType="uniform"

@@ -68,12 +68,12 @@ public class ProgressBar extends View {
         }
         else{
             canvas.drawCircle(radius, radius, radius, paint);
-            canvas.drawRect(radius, 0, part * (width - 1 * radius), 2 * radius, paint);
-            canvas.drawCircle( part * (width - 1 *radius), radius, radius, paint);
+            canvas.drawRect(radius, 0, part * (width - radius), 2 * radius, paint);
+            canvas.drawCircle( part * (width - radius), radius, radius, paint);
         }
     }
 
-    private void bubbleAnimation(Canvas canvas){
+    private void bubbleAnimation(){
 
     }
 

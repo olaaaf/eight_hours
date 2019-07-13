@@ -3,6 +3,7 @@ package com.oleaf.eighthours;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.*;
 
 public class Home extends AppCompatActivity {
@@ -11,6 +12,7 @@ public class Home extends AppCompatActivity {
 
     public TextView hoursText, desc, add_button;
     private ColorMenu colorMenu;
+    private ImageButton close;
     private ColorPick colorPick;
     private PlayMenu playMenu;
     private Options options;
@@ -34,6 +36,7 @@ public class Home extends AppCompatActivity {
         add_button = findViewById(R.id.addButton);
         colorPick = findViewById(R.id.menu_view);
         playMenu = findViewById(R.id.play_menu);
+        close = findViewById(R.id.closeButton);
     }
     public int addActivity(int min, int color){
         return activities.newActivity(min, color);
@@ -131,10 +134,6 @@ public class Home extends AppCompatActivity {
         colorMenu.confirmPress(view);
     }
 
-    public void playPress(View view){
-        options.playPress();
-    }
-
     public void deletePress(View view){
         options.deletePress();
     }
@@ -153,5 +152,38 @@ public class Home extends AppCompatActivity {
 
     public void listPress(View view){
         changeActivity();
+    }
+
+    public void closePress(View view){
+        options.close();
+        colorMenu.close();
+        showHide();
+    }
+
+    public void showHide(){
+        Animation a = options.hide;
+        a.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                close.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        close.startAnimation(a);
+
+    }
+
+    public void showClose(){
+        close.setVisibility(View.VISIBLE);
+        close.startAnimation(options.show);
     }
 }
