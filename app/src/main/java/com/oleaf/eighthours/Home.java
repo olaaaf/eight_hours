@@ -1,9 +1,12 @@
 package com.oleaf.eighthours;
 
+import android.animation.AnimatorInflater;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.*;
 
 public class Home extends AppCompatActivity {
@@ -11,13 +14,14 @@ public class Home extends AppCompatActivity {
     public static final float button_bounds = 0.1f;
 
     public TextView hoursText, desc, add_button;
+    public Activities activities;
+    public Circle circle;
+
     private ColorMenu colorMenu;
     private ImageButton close;
     private ColorPick colorPick;
-    private PlayMenu playMenu;
     private Options options;
-    public Circle circle;
-    public Activities activities;
+    private Animation showTwist, hideTwist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +39,25 @@ public class Home extends AppCompatActivity {
         options = findViewById(R.id.options);
         add_button = findViewById(R.id.addButton);
         colorPick = findViewById(R.id.menu_view);
-        playMenu = findViewById(R.id.play_menu);
         close = findViewById(R.id.closeButton);
+        showTwist = AnimationUtils.loadAnimation(this, R.anim.show_twist);
+        hideTwist = AnimationUtils.loadAnimation(this, R.anim.hide_twist);
+        hideTwist.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                close.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
     public int addActivity(int min, int color){
         return activities.newActivity(min, color);
@@ -56,12 +77,6 @@ public class Home extends AppCompatActivity {
         if (activities == null)
             activities = new Activities(this);
         return true;
-    }
-    public void showStopwatch(){
-        playMenu.show();
-    }
-    public void hideStopwatch(){
-        playMenu.hide();
     }
     public boolean colorUp(){
         return colorMenu.isShown();
@@ -146,10 +161,6 @@ public class Home extends AppCompatActivity {
         if (!options.isShown()) circle.addNew();
     }
 
-    public void startPress(View view){
-        playMenu.startPress(view);
-    }
-
     public void listPress(View view){
         changeActivity();
     }
@@ -161,29 +172,11 @@ public class Home extends AppCompatActivity {
     }
 
     public void showHide(){
-        Animation a = options.hide;
-        a.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                close.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        close.startAnimation(a);
-
+        close.startAnimation(hideTwist);
     }
 
     public void showClose(){
         close.setVisibility(View.VISIBLE);
-        close.startAnimation(options.show);
+        close.startAnimation(showTwist);
     }
 }
