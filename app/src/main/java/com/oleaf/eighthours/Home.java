@@ -1,6 +1,9 @@
 package com.oleaf.eighthours;
 
 import android.animation.AnimatorInflater;
+import android.content.res.Resources;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,11 +20,13 @@ public class Home extends AppCompatActivity {
     public Activities activities;
     public Circle circle;
 
+    private String confText, addText;
     private ColorMenu colorMenu;
     private ImageButton close;
     private ColorPick colorPick;
     private Options options;
     private Animation showTwist, hideTwist;
+    private boolean addState=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,10 @@ public class Home extends AppCompatActivity {
             activities = new Activities(this);
 
         setContentView(R.layout.activity_home);
+
+        Resources r = getResources();
+        confText = r.getString(R.string.confirm);
+        addText = r.getString(R.string.addnew);
 
         hoursText = findViewById(R.id.textView);
         colorMenu = findViewById(R.id.color_menu);
@@ -58,11 +67,34 @@ public class Home extends AppCompatActivity {
 
             }
         });
+
+        if (Build.VERSION.SDK_INT >= 27){
+            getWindow().setNavigationBarColor(r.getColor(R.color.colorPrimary));
+            getWindow().setStatusBarColor(r.getColor(R.color.colorPrimary));
+            View decor = getWindow().getDecorView();
+            decor.setSystemUiVisibility(decor.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR |View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR   );
+        }
     }
+
+    @RequiresApi(api = 27)
+    private void setNavBarColors(Resources r){
+
+    }
+
     public int addActivity(int min, int color){
         return activities.newActivity(min, color);
         //indicator.update(activities.getLength());
     }
+
+    /**
+     * Change the text of add button
+     * @param state: if true - add, else - confirm
+     */
+    private void changeAddButton(boolean state){
+        add_button.setText(state ? addText : confText);
+        addState = state;
+    }
+
     public void editActivity(int index, int min, int color){
         activities.editActivity(index, min, (byte) color);
     }
@@ -85,15 +117,18 @@ public class Home extends AppCompatActivity {
         colorMenu.show();
         colorPick.noAnimation();
         desc.setText(R.string.drag_to_edit);
+        changeAddButton(false);
     }
     public void colorShow(int color_index){
         colorMenu.show(color_index);
         colorPick.noAnimation();
         desc.setText(R.string.drag_to_edit);
+        changeAddButton(false);
     }
     public void colorHide(){
         updateText(activities.time_left);
         desc.setText("");
+        changeAddButton(true);
     }
     public void updateBottom(float minutesLeft, float minutes){
         if (options.index > -1){
@@ -141,14 +176,6 @@ public class Home extends AppCompatActivity {
             return !(x < -width * button_bounds) && !(y < -height * button_bounds) && !(x > width * (1f + button_bounds)) && !(y > height * (1 + button_bounds));
     }
 
-    public void cancelPress(View view){
-        colorMenu.cancelPress(view);
-    }
-
-    public void confirmPress(View view){
-        colorMenu.confirmPress(view);
-    }
-
     public void deletePress(View view){
         options.deletePress();
     }
@@ -158,7 +185,11 @@ public class Home extends AppCompatActivity {
     }
 
     public void addPress(View view){
-        if (!options.isShown()) circle.addNew();
+        if (addState){
+            circle.addNew();
+        }else{
+            colorMenu.confirmPress();
+        }
     }
 
     public void listPress(View view){

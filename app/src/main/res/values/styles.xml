@@ -1,11 +1,30 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextPrimary">
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+    
+    <style name="TextSecondary" parent="TextPrimary">
+        <item name="android:fontFamily">@font/roboto_thin</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textStyle">bold|italic</item>
+    </style>
+
+    <style name="TransparentBackground">
+        <item name="android:backgroundTint">@color/transparent</item>
     </style>
 
 </resources>

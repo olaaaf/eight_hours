@@ -9,7 +9,8 @@
     <color name="cancel_pressed">#a5bad1</color>
     <color name="indicator_circle">#fdd835</color>
     <color name="indicator_text">#101e70</color>
-    <color name="primary_text">#47525E</color>
+    <color name="textPrimary">#47525E</color>
+    <color name="textSecondary">#979EAA</color>
     <color name="button">#FFF48FB1</color>
     <color name="button_text">#FAFAFA</color>
     <color name="inactive_text">#90a4ae</color>
@@ -18,4 +19,5 @@
     <color name="arc_shadow">#9e9e9e</color>
     <color name="progress_color">#E7E7E7</color>
     <color name="arrow_color">#F0F0F0</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

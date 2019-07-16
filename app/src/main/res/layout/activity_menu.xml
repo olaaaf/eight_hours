@@ -13,22 +13,22 @@
             android:layout_height="wrap_content"
             android:id="@+id/guideline16" app:layout_constraintGuide_percent="0.5"/>
     <TextView
+            style="@style/TextPrimary"
             android:text="Activity list"
             android:layout_width="142dp"
             android:layout_height="40dp"
             android:id="@+id/text3"
-            android:color="@color/primary_text"
             app:layout_constraintTop_toTopOf="@+id/guideline15"
             app:layout_constraintBottom_toTopOf="@+id/guideline15" app:layout_constraintEnd_toStartOf="@+id/guideline16"
             app:layout_constraintStart_toStartOf="@+id/guideline16"
-            android:gravity="center" android:textSize="20sp" android:fontFamily="@font/roboto_bold"
+            android:textSize="20sp"
             android:layout_marginTop="8dp" app:layout_constraintVertical_bias="0.0"
             app:layout_constraintHorizontal_bias="0.0"/>
     <ImageButton
             android:src="@drawable/back_36dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:tint="@color/primary_text"
+            android:tint="@color/textPrimary"
             android:id="@+id/backList"
             android:onClick="listBack"
             android:background="@drawable/circle_ripple_transparent"

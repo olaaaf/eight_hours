@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 
 public class Options extends LinearLayout {
     Animation show, hide;
-    float elevation;
     int index=-1;
 
     public Options(Context context) {
@@ -38,7 +37,6 @@ public class Options extends LinearLayout {
         //Load basic colorShow and animation
         show = AnimationUtils.loadAnimation(c, R.anim.menu_popup);
         hide = AnimationUtils.loadAnimation(c, R.anim.menu_down);
-        elevation = c.getResources().getDimension(R.dimen.top_elevation);
     }
 
     public void show(int index) {
@@ -47,7 +45,7 @@ public class Options extends LinearLayout {
         else {
             ((Home) getContext()).showClose();
             this.index = index;
-            setElevation(elevation);
+            bringToFront();
             startAnimation(show);
         }
     }
@@ -59,7 +57,6 @@ public class Options extends LinearLayout {
     }
 
     private void hideN(){
-        setElevation(0f);
         startAnimation(hide);
     }
 

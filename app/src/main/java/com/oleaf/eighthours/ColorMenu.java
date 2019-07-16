@@ -12,10 +12,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 public class ColorMenu extends ConstraintLayout {
-    private TextView confirm, cancel;
     private Animation showA, hideA;
     private boolean shown;
-    private int normalColor, inactiveColor;
     TypedArray colors;
     int chosen;
 
@@ -37,22 +35,6 @@ public class ColorMenu extends ConstraintLayout {
         showA = AnimationUtils.loadAnimation(c, R.anim.menu_popup);
         hideA = AnimationUtils.loadAnimation(c, R.anim.menu_down);
         colors = resources.obtainTypedArray(R.array.colors);
-        normalColor = resources.getColor(R.color.primary_text);
-        inactiveColor = resources.getColor(R.color.inactive_text);
-        //Get children
-        for (int ix = 0; ix < getChildCount(); ++ix) {
-            View getChild = getChildAt(ix);
-            switch (getChild.getId()) {
-                case R.id.menu_view:
-                    break;
-                case R.id.confirm:
-                    confirm = (TextView) getChild;
-                    break;
-                case R.id.cancel:
-                    cancel = (TextView) getChild;
-                    break;
-            }
-        }
         shown = false;
         setVisibility(VISIBLE);
         setAlpha(1);
@@ -77,14 +59,13 @@ public class ColorMenu extends ConstraintLayout {
 
     public void show(int index){
         setVisibility(VISIBLE);
+        bringToFront();
         chosen = index;
         shown = true;
         //Change visibility
         //Play show animation with alpha
         startAnimation(showA);
         //zero out the buttons
-        cancel.setText(R.string.cancel);
-        confirm.setText(R.string.confirm);
         ((Home) getContext()).showClose();
     }
 
@@ -97,19 +78,11 @@ public class ColorMenu extends ConstraintLayout {
         return chosen;
     }
 
-    public void confirmPress(View view){
+    public void confirmPress(){
         if (!shown)
             return;
         ((Home) getContext()).circle.confirm();
         hide();
-    }
-
-    public void cancelPress(View view){
-        if (!shown)
-            return;
-        ((Home) getContext()).circle.cancel();
-        hide();
-        chosen = -1;
     }
 
     public boolean isShown(){
