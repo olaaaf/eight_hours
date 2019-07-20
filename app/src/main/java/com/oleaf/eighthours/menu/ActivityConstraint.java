@@ -22,10 +22,9 @@ public class ActivityConstraint extends ConstraintLayout {
         @Override
         public void onClick(View v) {
             if(pressPlay(v))
-                ((ImageView) v).setImageResource(stopd);
+                setButtonStop(v);
             else
-                ((ImageView) v).setImageResource(playd);
-
+                setButtonStart(v);
         }
     };
     final OnClickListener minus = new OnClickListener() {
@@ -97,12 +96,21 @@ public class ActivityConstraint extends ConstraintLayout {
         update();
     }
 
-    private void startTimer(){
+    public void startTimer(){
         updater.start(position);
     }
 
-    private void stopTimer(){
+    public void stopTimer(){
         updater.stop(position);
+    }
+
+    public void setButtonStart(View v){
+        ((ImageView) v).setImageResource(playd);
+
+    }
+
+    public void setButtonStop(View v){
+        ((ImageView) v).setImageResource(stopd);
     }
 
     private void updateText(float min){

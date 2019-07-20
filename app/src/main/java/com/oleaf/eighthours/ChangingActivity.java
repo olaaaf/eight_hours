@@ -15,13 +15,12 @@ public final class ChangingActivity {
                 return;
 
             case "Circle":
-                intent = new Intent(current, Circle.class);
                 break;
             case "Menu":
                 intent = new Intent(current, Menu.class);
                 break;
         }
-        intent.putExtra("activities", activities);
+
         current.startActivity(intent);
     }
 }

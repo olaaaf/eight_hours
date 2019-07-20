@@ -7,21 +7,31 @@
                                              tools:context=".Home">
 
     <view
+            style="@style/TransparentBackground"
+            class="com.oleaf.eighthours.BackgroundCircle"
+            android:id="@+id/backgroundCircle"
+            android:layout_width="@dimen/circle_view_width"
+            android:layout_height="@dimen/circle_view_height"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/circle"
+            app:layout_constraintEnd_toEndOf="@+id/circle"
+            app:layout_constraintTop_toTopOf="@+id/circle"
+            app:layout_constraintStart_toStartOf="@+id/circle"></view>
+
+    <view
+            style="@style/TransparentBackground"
             android:id="@+id/circle"
             class="com.oleaf.eighthours.Circle"
             android:layout_width="@dimen/circle_view_width"
             android:layout_height="@dimen/circle_view_height"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:adjustViewBounds="true"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/guideline6"
+            app:layout_constraintTop_toTopOf="@+id/guideline6"
             app:layout_constraintEnd_toStartOf="@+id/guideline5"
             app:layout_constraintStart_toStartOf="@+id/guideline5"
-            app:layout_constraintTop_toTopOf="@+id/guideline6"
-            app:layout_constraintVertical_bias="0.52">
-
-
+            app:layout_constraintHorizontal_bias="0.432"
+            app:layout_constraintVertical_bias="0.476">
     </view>
 
     <TextView

@@ -74,15 +74,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/guideline12"
             app:layout_constraintGuide_percent="0.9"/>
+
     <TextView
+            style="@style/TextSecondary"
             android:text="No activities added"
-            android:layout_height="60dp"
+            android:layout_height="67dp"
             android:id="@+id/textView5"
-            app:layout_constraintTop_toTopOf="@+id/guideline8" app:layout_constraintEnd_toStartOf="@+id/guideline16"
+            app:layout_constraintTop_toTopOf="@+id/guideline8"
+            app:layout_constraintEnd_toStartOf="@+id/guideline16"
             app:layout_constraintStart_toStartOf="@+id/guideline16"
-            android:layout_marginTop="40dp" app:layout_constraintHorizontal_bias="0.496" android:gravity="center"
-            android:fontFamily="@font/roboto_thin" android:textSize="20sp" android:visibility="invisible"
-            android:layout_width="wrap_content" android:layout_marginEnd="8dp"/>
+            android:layout_marginTop="40dp"
+            app:layout_constraintHorizontal_bias="0.496"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_thin"
+            android:textSize="20sp"
+            android:visibility="invisible"
+            android:layout_width="233dp"
+            android:layout_marginEnd="8dp"/>
     <com.oleaf.eighthours.menu.ActivityUpdater
             android:layout_width="10dp"
             android:layout_height="10dp"

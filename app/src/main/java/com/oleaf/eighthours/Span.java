@@ -82,6 +82,10 @@ public class Span implements Parcelable {
         return (getCurrentMinutes() == minutes);
     }
 
+    public boolean isOnGoing(){
+        return onGoing;
+    }
+
     public float getCurrentMinutes(){
         if (startTime < 0)
             return beforePause/ 60000f;

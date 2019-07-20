@@ -76,8 +76,12 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
             a.bar = viewHolder.bar;
             a.span = s;
             a.time = viewHolder.time;
+
             //Add the item to activity updater - a global timer
-            updater.addCall(position, (ActivityConstraint) viewHolder.itemView);
+            updater.addCall(position, (ActivityConstraint) viewHolder.itemView, s.isOnGoing());
+            if (s.isOnGoing()){
+                a.setButtonStop(viewHolder.itemView.findViewById(R.id.activityButton));
+            }
             //initialize the whole item
             ((ActivityConstraint) viewHolder.itemView).position = position;
             ((ActivityConstraint) viewHolder.itemView).updater = updater;

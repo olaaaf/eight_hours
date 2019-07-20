@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import com.oleaf.eighthours.Activities;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -58,9 +59,14 @@ public class ActivityUpdater extends View{
     }
 
     public void addCall(int position, ActivityConstraint c){
+        addCall(position, c, false);
+    }
+
+    public void addCall(int position, ActivityConstraint c, boolean start){
         if (position >= activities.size()){
             calls.add(Boolean.FALSE);
             activities.add(c);
+            start(position);
         }
     }
 

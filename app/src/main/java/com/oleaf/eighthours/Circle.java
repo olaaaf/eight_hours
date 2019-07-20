@@ -134,7 +134,6 @@ public class Circle extends View{
 
     @Override
     protected void onDraw(final Canvas canvas) {
-        drawDots(canvas, 12);
         start_alpha = arcs.drawAll(canvas);
         if (dragging){
             dragArc.drawRounded(start_alpha, canvas);
@@ -176,23 +175,6 @@ public class Circle extends View{
         canvas.drawArc(rectangle, 0, 360, true, paint);
         paint.setStrokeWidth(stroke_width);
     }
-
-    private void drawDots(Canvas canvas, int numberOfDots){
-        float cover = (360 - start_alpha) / 360f;
-        float r = paint.getStrokeWidth()/2f;
-        float radius = rectangle.width() / 2.0f ;
-        float degreeDot =(float) Math.asin(r / radius);
-        float degreePause =  (360 - (numberOfDots * degreeDot)) / (2 * numberOfDots +1);
-        paint.setStyle(Paint.Style.FILL);
-        float a = start_alpha;
-        for (int i = (int) (numberOfDots * (1-Math.floor(cover))); i < numberOfDots ; ++i){
-            canvas.drawCircle(rectangle.left + rectangle.width()/2.0f +radius * (float) Math.cos(a), rectangle.top + rectangle.height()/2.0f+radius * (float) Math.sin(a), r, paint);
-            a += degreeDot + degreePause;
-        }
-        paint.setStyle(Paint.Style.STROKE);
-    }
-
-
 
     private float clampAlpha(float ... alpha){
         return clampAlpha(false, alpha);

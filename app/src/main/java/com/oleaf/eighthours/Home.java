@@ -1,11 +1,15 @@
 package com.oleaf.eighthours;
 
 import android.animation.AnimatorInflater;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -140,7 +144,9 @@ public class Home extends AppCompatActivity {
     }
 
     public void changeActivity(){
-        ChangingActivity.change(this, "Home", "Menu", activities);
+        Intent intent = new Intent(this, com.oleaf.eighthours.menu.Menu.class);
+        intent.putExtra("activities", activities);
+        startActivityForResult(intent, 2137);
     }
 
     public void optionsHide(){
@@ -209,5 +215,16 @@ public class Home extends AppCompatActivity {
     public void showClose(){
         close.setVisibility(View.VISIBLE);
         close.startAnimation(showTwist);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2137 && resultCode == Activity.RESULT_OK){
+            Activities a = data.getParcelableExtra("activities");
+            if (a != null){
+                activities = a;
+            }
+        }
     }
 }

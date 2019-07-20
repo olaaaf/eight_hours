@@ -37,6 +37,17 @@ public class Menu extends AppCompatActivity {
     }
 
     public void listBack(View view){
+        Intent intent = new Intent();
+        intent.putExtra("activities", aAdapter.activities);
+        setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("activities", aAdapter.activities);
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
     }
 }
