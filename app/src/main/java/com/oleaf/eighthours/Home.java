@@ -218,6 +218,15 @@ public class Home extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (close.getVisibility() == View.VISIBLE)
+            closePress(null);
+        else{
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2137 && resultCode == Activity.RESULT_OK){
