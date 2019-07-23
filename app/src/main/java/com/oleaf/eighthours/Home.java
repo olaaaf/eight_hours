@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,6 +25,7 @@ public class Home extends AppCompatActivity {
     public Activities activities;
     public Circle circle;
 
+    private Calendar calendar;
     private String confText, addText;
     private ColorMenu colorMenu;
     private ImageButton close;
@@ -53,6 +55,11 @@ public class Home extends AppCompatActivity {
         add_button = findViewById(R.id.addButton);
         colorPick = findViewById(R.id.menu_view);
         close = findViewById(R.id.closeButton);
+
+        ViewPager pager = (ViewPager) findViewById(R.id.calendar);
+        calendar = new Calendar(this);
+        pager.setAdapter(calendar);
+
         showTwist = AnimationUtils.loadAnimation(this, R.anim.show_twist);
         hideTwist = AnimationUtils.loadAnimation(this, R.anim.hide_twist);
         hideTwist.setAnimationListener(new Animation.AnimationListener() {
