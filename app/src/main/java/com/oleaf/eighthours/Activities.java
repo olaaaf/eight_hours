@@ -97,7 +97,6 @@ public class Activities implements Parcelable {
     public void readParcel(Parcel in){
         maximum = in.readInt();
         time_left = in.readInt();
-        //calendar = in.readParcelable(Calendar.class.getClassLoader());
         spans = in.createTypedArray(Span.CREATOR);
     }
 

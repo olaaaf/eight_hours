@@ -8,11 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Calendar extends PagerAdapter {
+public class CalendarAdapter extends PagerAdapter {
     Context context;
     LayoutInflater inflater;
 
-    Calendar(Context c){
+    CalendarAdapter(Context c){
         context = c;
     }
 
