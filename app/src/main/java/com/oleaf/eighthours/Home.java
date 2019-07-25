@@ -18,7 +18,7 @@ public class Home extends AppCompatActivity {
     public static final int grid = 20;
     public static final float button_bounds = 0.1f;
 
-    public TextView hoursText, desc, add_button;
+    public TextView hoursText, desc, add_button, dateText;
     public Activities activities;
     public Circle circle;
 
@@ -51,6 +51,7 @@ public class Home extends AppCompatActivity {
         add_button = findViewById(R.id.addButton);
         colorPick = findViewById(R.id.menu_view);
         close = findViewById(R.id.closeButton);
+        dateText = findViewById(R.id.dateText);
 
         showTwist = AnimationUtils.loadAnimation(this, R.anim.show_twist);
         hideTwist = AnimationUtils.loadAnimation(this, R.anim.hide_twist);
@@ -142,10 +143,10 @@ public class Home extends AppCompatActivity {
         options.show(index);
     }
 
-    public void changeActivity(){
-        Intent intent = new Intent(this, com.oleaf.eighthours.menu.Menu.class);
+    public void changeActivity(Class<?> c, int req){
+        Intent intent = new Intent(this, c);
         intent.putExtra("activities", activities);
-        startActivityForResult(intent, 2137);
+        startActivityForResult(intent, req);
     }
 
     public void optionsHide(){
@@ -198,13 +199,17 @@ public class Home extends AppCompatActivity {
     }
 
     public void listPress(View view){
-        changeActivity();
+        changeActivity(com.oleaf.eighthours.menu.Menu.class, 2);
     }
 
     public void closePress(View view){
         options.close();
         colorMenu.close();
         showHide();
+    }
+
+    public void calendarPress(View view){
+        changeActivity(com.oleaf.eighthours.calendar.Calendar.class, 3);
     }
 
     public void showHide(){
@@ -228,11 +233,18 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2137 && resultCode == Activity.RESULT_OK){
-            Activities a = data.getParcelableExtra("activities");
-            if (a != null){
-                activities = a;
-            }
+        switch(requestCode){
+            case 2:
+                if (resultCode == Activity.RESULT_OK){
+                    Activities a = data.getParcelableExtra("activities");
+                    if (a != null){
+                        activities = a;
+                    }
+                }
+            case 3:
+                if (resultCode == Activity.RESULT_OK){
+
+                }
         }
     }
 }
