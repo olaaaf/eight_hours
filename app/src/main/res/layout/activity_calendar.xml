@@ -7,17 +7,23 @@
         android:layout_height="match_parent"
         tools:context=".calendar.Calendar">
 
-    <CalendarView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+    <com.snollidea.peppycalendarview.CalendarView
             android:id="@+id/calendarView"
-            android:focusedMonthDateColor="@color/cardview_dark_background"
-            app:layout_constraintEnd_toStartOf="@+id/guideline22"
-            app:layout_constraintTop_toTopOf="@+id/guideline21"
-            app:layout_constraintBottom_toTopOf="@+id/guideline21"
-            app:layout_constraintVertical_bias="0.514"
-            app:layout_constraintStart_toStartOf="@+id/guideline22"
-            app:layout_constraintHorizontal_bias="0.0"/>
+            android:layout_width="352dp"
+            android:layout_height="382dp"
+            app:backgroundColor="#ffffff"
+            app:textColor="#000000"
+            app:textInsideCircleColor="#ffffff"
+            app:weekDaysNamesColor="#9f9f9f"
+            app:currentDayCircleColor="@color/colorAccent"
+            app:selectedCircleColor="#c9c9c9"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
 
     <android.support.constraint.Guideline
             android:orientation="horizontal"
