@@ -199,17 +199,13 @@ public class Home extends AppCompatActivity {
     }
 
     public void listPress(View view){
-        changeActivity(com.oleaf.eighthours.menu.Menu.class, 2);
+        changeActivity(null/*TODO*/, 2);
     }
 
     public void closePress(View view){
         options.close();
         colorMenu.close();
         showHide();
-    }
-
-    public void calendarPress(View view){
-        changeActivity(com.oleaf.eighthours.calendar.Calendar.class, 3);
     }
 
     public void showHide(){
