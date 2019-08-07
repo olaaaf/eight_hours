@@ -5,16 +5,12 @@ import android.content.res.Resources;
 import android.graphics.*;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-import android.widget.CalendarView;
 
 public class BackgroundCircle extends View {
-    private float xCenter, yCenter;
+    private float xCenter;
     private RectF rectangle;
     private Paint paint;
-    private float startAlpha=0;
-    private float pause=0;
     private float radius;
     private float stroke;
     private int backgroundColor;
@@ -50,7 +46,6 @@ public class BackgroundCircle extends View {
                 rectangle = new RectF(x, y, w+x, h+y);
                 radius = w / 2f;
                 xCenter = getWidth()/2f;
-                yCenter = getHeight()/2f;
                 invalidate();
             }
         });
@@ -103,22 +98,18 @@ public class BackgroundCircle extends View {
     }
 
     public void drawLines(Canvas canvas, float angle, int lines){
-        float lineWidth = (2f * radius) / (float) (2f * lines + 1);       //each drawn line is followed by an invisible one (a pause)
+        float lineWidth = (2f * radius) / (2f * lines + 1);       //each drawn line is followed by an invisible one (a pause)
         paint.setStrokeWidth(lineWidth/2f);
         paint.setStyle(Paint.Style.STROKE);
         angle = (float) Math.atan(Math.tan(Math.toRadians(angle)));
         float a = (float) Math.tan(angle);
         float dX = (float) Math.cos(angle) * lineWidth;
         float startX = xCenter - (3 * radius) +dX;
-        float hsl[] = new float[]{0, 0.25f, 1f};
-        float dH = 360f / ((2* radius- startX) / (dX*2));
         final float staticY1 = startX * a;
         final float staticY2 = (startX + 4 * radius )* a;
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.WHITE & 0x99FFFFFF);
         for (; startX < 2 * radius; startX += dX*2){
-            paint.setColor(Color.HSVToColor(hsl) & 0xFFFFFFFF);
             canvas.drawLine(startX, staticY1, startX + 2*radius, staticY2, paint);
-            hsl[0] += dH;
         }
     }
 
@@ -128,17 +119,4 @@ public class BackgroundCircle extends View {
         canvas.drawCircle(rectangle.centerX(), rectangle.centerY(), radius - stroke, paint);
     }
 
-    public void setStartAlpha(float a){
-        if (a != startAlpha){
-            startAlpha = a;
-            invalidate();
-        }
-    }
-
-    public void setPause(float p){
-        if (p != pause){
-            pause = p;
-            invalidate();
-        }
-    }
 }

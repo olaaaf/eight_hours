@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+import com.oleaf.eighthours.details.Details;
 
 public class Home extends AppCompatActivity {
     public static final int grid = 20;
@@ -140,6 +141,7 @@ public class Home extends AppCompatActivity {
         }
     }
     public void optionsShow(int index){
+        add_button.setActivated(true);
         options.show(index);
     }
 
@@ -150,6 +152,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void optionsHide(){
+        add_button.setActivated(false);
         options.hide();
     }
 
@@ -199,7 +202,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void listPress(View view){
-        changeActivity(null/*TODO*/, 2);
+        changeActivity(Details.class, 2);
     }
 
     public void closePress(View view){

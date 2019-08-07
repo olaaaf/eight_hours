@@ -11,14 +11,8 @@
             android:roundIcon="@mipmap/sun_icon_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".calendar.Calendar" android:theme="@style/Translucent">
-
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
         <activity
-                android:name=".menu.Menu"
+                android:name=".details.Details"
                 android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>

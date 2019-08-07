@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true">
+        <objectAnimator
+                android:propertyName="text"
+                android:valueTo="Play"/>
+    </item>
+
+    <item>
+        <objectAnimator
+                android:propertyName="text"
+                android:valueTo="New activity"/>
+    </item>
+</set>
