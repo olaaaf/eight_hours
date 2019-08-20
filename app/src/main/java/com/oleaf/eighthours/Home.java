@@ -49,7 +49,7 @@ public class Home extends AppCompatActivity {
         desc = findViewById(R.id.textView3);
         circle = findViewById(R.id.circle);
         options = findViewById(R.id.options);
-        add_button = findViewById(R.id.addButton);
+        //add_button = findViewById(R.id.addButton);
         colorPick = findViewById(R.id.menu_view);
         close = findViewById(R.id.closeButton);
         dateText = findViewById(R.id.dateText);
@@ -96,7 +96,7 @@ public class Home extends AppCompatActivity {
      * @param state: if true - add, else - confirm
      */
     private void changeAddButton(boolean state){
-        add_button.setText(state ? addText : confText);
+        //add_button.setText(state ? addText : confText);
         addState = state;
     }
 
@@ -141,7 +141,7 @@ public class Home extends AppCompatActivity {
         }
     }
     public void optionsShow(int index){
-        add_button.setActivated(true);
+        //add_button.setActivated(true);
         options.show(index);
     }
 
@@ -152,7 +152,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void optionsHide(){
-        add_button.setActivated(false);
+        //add_button.setActivated(false);
         options.hide();
     }
 
@@ -210,6 +210,8 @@ public class Home extends AppCompatActivity {
         colorMenu.close();
         showHide();
     }
+
+
 
     public void showHide(){
         close.startAnimation(hideTwist);

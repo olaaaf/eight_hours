@@ -264,19 +264,31 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.5"/>
 
-    <!-- TODO: add ripple effect -->
+
+    <include
+            layout="@layout/add_button"
+            android:layout_height="49dp"
+            android:layout_width="203dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="@+id/guideline7"
+            app:layout_constraintVertical_bias="0.448"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintHorizontal_bias="1.0"/>
+
     <TextView
+            android:visibility="gone"
             android:id="@+id/addButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="182dp"
+            android:layout_height="35dp"
             android:layout_marginTop="8dp"
-            android:stateListAnimator="@animator/text_button"
             android:background="@drawable/add_button_bg"
             android:onClick="addPress"
             android:backgroundTint="@color/button"
             android:clickable="true"
             android:elevation="6dp"
-            android:focusable="true" android:fontFamily="@font/didact_gothic"
+            android:focusable="true"
+            android:fontFamily="@font/didact_gothic"
             android:gravity="center"
             android:text="@string/addnew"
             android:textColor="@color/button_text"
@@ -286,9 +298,11 @@
             app:fontFamily="@font/montserrat"
             app:layout_constraintBottom_toTopOf="@+id/guideline7"
             app:layout_constraintTop_toTopOf="@+id/guideline7"
-            app:layout_constraintVertical_bias="0.0" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="@+id/guideline5" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5"/>
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline5"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            android:layout_marginStart="8dp"/>
 
     <ImageButton
             android:layout_width="45dp"
