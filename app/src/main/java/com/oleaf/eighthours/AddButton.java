@@ -33,16 +33,19 @@ public class AddButton extends LinearLayout {
 
     public AddButton(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        load(context);
         post(p);
     }
 
     public AddButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        load(context);
         post(p);
     }
 
     public AddButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        load(context);
         post(p);
     }
 
@@ -52,38 +55,30 @@ public class AddButton extends LinearLayout {
                 r.getString(R.string.confirm_activity),
                 r.getString(R.string.play_activity)};
         icons = new Drawable[]{ContextCompat.getDrawable(context, R.drawable.add_white),
-                ContextCompat.getDrawable(context, R.drawable.play_not_rounded),
-                ContextCompat.getDrawable(context, R.drawable.tick)};
+                ContextCompat.getDrawable(context, R.drawable.tick),
+                ContextCompat.getDrawable(context, R.drawable.play_na)};
     }
 
     private void init(){
         for (int ix = 0; ix < getChildCount(); ++ix){
             View child = getChildAt(ix);
             switch (child.getId()){
-                case R.id.buttonIcon:
-                    icon = (ImageView) child;
-                    break;
-                case R.id.buttonText:
-                    buttonText = (TextView) child;
-                    break;
                 case R.id.buttonIconParent:
                     iconParent = (RelativeLayout) child;
+                    icon = (ImageView) iconParent.getChildAt(0);
+                    break;
+                case R.id.buttonTextParent:
+                    buttonText = (TextView) ((RelativeLayout) child).getChildAt(0);
                     break;
             }
         }
+        setState(State.ADDNEW);
     }
 
     public void setState(State state){
+        iconParent.setVisibility(VISIBLE);
         icon.setImageDrawable(icons[state.getValue()]);
         buttonText.setText(states[state.getValue()]);
-        /*switch (state){
-            case ADDNEW:
-                break;
-            case CONFIRM:
-                break;
-            case PLAY:
-                break;
-        }*/
     }
 
     enum State{

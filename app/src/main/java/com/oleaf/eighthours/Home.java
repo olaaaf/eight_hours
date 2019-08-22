@@ -23,13 +23,13 @@ public class Home extends AppCompatActivity {
     public Activities activities;
     public Circle circle;
 
-    private String confText, addText;
+    private AddButton addButton;
     private ColorMenu colorMenu;
     private ImageButton close;
     private ColorPick colorPick;
     private Options options;
     private Animation showTwist, hideTwist;
-    private boolean addState=true;
+    private AddButton.State addState = AddButton.State.ADDNEW;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +41,13 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         Resources r = getResources();
-        confText = r.getString(R.string.confirm);
-        addText = r.getString(R.string.addnew);
 
         hoursText = findViewById(R.id.textView);
         colorMenu = findViewById(R.id.color_menu);
         desc = findViewById(R.id.textView3);
         circle = findViewById(R.id.circle);
         options = findViewById(R.id.options);
-        //add_button = findViewById(R.id.addButton);
+        addButton = findViewById(R.id.addButton);
         colorPick = findViewById(R.id.menu_view);
         close = findViewById(R.id.closeButton);
         dateText = findViewById(R.id.dateText);
@@ -81,23 +79,15 @@ public class Home extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = 27)
-    private void setNavBarColors(Resources r){
-
-    }
-
     public int addActivity(int min, int color){
         return activities.newActivity(min, color);
         //indicator.update(activities.getLength());
     }
 
-    /**
-     * Change the text of add button
-     * @param state: if true - add, else - confirm
-     */
-    private void changeAddButton(boolean state){
+    private void changeAddButton(AddButton.State state){
         //add_button.setText(state ? addText : confText);
         addState = state;
+        addButton.setState(addState);
     }
 
     public void editActivity(int index, int min, int color){
@@ -122,18 +112,18 @@ public class Home extends AppCompatActivity {
         colorMenu.show();
         colorPick.noAnimation();
         desc.setText(R.string.drag_to_edit);
-        changeAddButton(false);
+        changeAddButton(AddButton.State.CONFIRM);
     }
     public void colorShow(int color_index){
         colorMenu.show(color_index);
         colorPick.noAnimation();
         desc.setText(R.string.drag_to_edit);
-        changeAddButton(false);
+        changeAddButton(AddButton.State.CONFIRM);
     }
     public void colorHide(){
         updateText(activities.time_left);
         desc.setText("");
-        changeAddButton(true);
+        changeAddButton(AddButton.State.ADDNEW);
     }
     public void updateBottom(float minutesLeft, float minutes){
         if (options.index > -1){
@@ -194,10 +184,16 @@ public class Home extends AppCompatActivity {
     }
 
     public void addPress(View view){
-        if (addState){
-            circle.addNew();
-        }else{
-            colorMenu.confirmPress();
+        switch (addState){
+            case ADDNEW:
+                circle.addNew();
+                break;
+            case CONFIRM:
+                colorMenu.confirmPress();
+                break;
+            case PLAY:
+                //TODO: PLAY Implementation
+                break;
         }
     }
 

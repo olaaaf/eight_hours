@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.oleaf.eighthours.AddButton
+        xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:backgroundTint="@color/button"
               android:clickable="true"
+              android:onClick="addPress"
               android:elevation="6dp"
               android:gravity="center"
               android:focusable="true"
               android:background="@drawable/add_button_bg"
         >
 
+
     <RelativeLayout
             style="@style/TransparentBackground"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.1"></RelativeLayout>
+            android:layout_weight="0.1">
+
+    </RelativeLayout>
     <RelativeLayout
             android:id="@+id/buttonIconParent"
-            android:visibility="gone"
+            android:visibility="visible"
             style="@style/TransparentBackground"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -27,24 +32,27 @@
                 style="@style/TransparentBackground"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/play_na"
+                android:scaleX="0.6"
+                android:scaleY="0.6"
+                app:srcCompat="@drawable/add_white"
                 android:id="@+id/buttonIcon"
-                android:layout_weight="1"/>
+                    />
     </RelativeLayout>
 
     <RelativeLayout
+            android:id="@+id/buttonTextParent"
             style="@style/TransparentBackground"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.65">
+            android:layout_height="wrap_content"
+            android:layout_weight="0.65"
+            >
 
         <TextView
                 style="@style/TransparentBackground"
                 android:fontFamily="@font/didact_gothic"
-                android:gravity="center"
+                android:gravity="left|center_vertical"
                 android:maxLines="1"
                 android:textColor="@color/button_text"
-                android:autoSizeTextType="uniform"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 app:fontFamily="@font/montserrat"
@@ -53,6 +61,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/buttonText"
                 android:layout_weight="1"/>
+
+
     </RelativeLayout>
     <RelativeLayout
             style="@style/TransparentBackground"
@@ -60,4 +70,4 @@
             android:layout_height="match_parent"
             android:layout_weight="0.1"></RelativeLayout>
 
-</LinearLayout>
+</com.oleaf.eighthours.AddButton>
