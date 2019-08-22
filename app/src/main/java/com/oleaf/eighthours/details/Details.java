@@ -12,6 +12,7 @@ public class Details extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
+        this.setFinishOnTouchOutside(true   );
 
         setContentView(R.layout.activity_details);
     }

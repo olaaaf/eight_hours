@@ -50,7 +50,7 @@
         <TextView
                 style="@style/TransparentBackground"
                 android:fontFamily="@font/didact_gothic"
-                android:gravity="left|center_vertical"
+                android:gravity="center"
                 android:maxLines="1"
                 android:textColor="@color/button_text"
                 android:textSize="17sp"

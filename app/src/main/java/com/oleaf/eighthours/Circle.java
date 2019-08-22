@@ -83,7 +83,7 @@ public class Circle extends View{
         gestures = new Gestures(64, -1) {
             @Override
             protected void onTap(float x, float y) {
-                selectActivity( touchActivity(x, y), false);
+                selectActivity( touchActivity(x, y), true);
                 invalidate();
             }
             @Override
@@ -112,6 +112,7 @@ public class Circle extends View{
             protected void longPress(float x, float y) {
                 int tindex = touchActivity(x, y);
                 if (tindex != -1){
+                    arcs.select(tindex);
                     arcs.select(tindex);
                 }
             }
@@ -251,6 +252,7 @@ public class Circle extends View{
                 return true;
             }
             home.optionsShow(index);
+            home.activitySelected(index);
         }
         return false;
     }

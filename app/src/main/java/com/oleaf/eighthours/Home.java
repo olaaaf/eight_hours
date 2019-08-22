@@ -131,8 +131,7 @@ public class Home extends AppCompatActivity {
         }
     }
     public void optionsShow(int index){
-        //add_button.setActivated(true);
-        options.show(index);
+
     }
 
     public void changeActivity(Class<?> c, int req){
@@ -192,7 +191,7 @@ public class Home extends AppCompatActivity {
                 colorMenu.confirmPress();
                 break;
             case PLAY:
-                //TODO: PLAY Implementation
+                changeActivity(Details.class, 3);
                 break;
         }
     }
@@ -207,7 +206,11 @@ public class Home extends AppCompatActivity {
         showHide();
     }
 
-
+    public void activitySelected(int index){
+        options.show(index);
+        addState = AddButton.State.PLAY;
+        addButton.setState(addState);
+    }
 
     public void showHide(){
         close.startAnimation(hideTwist);
