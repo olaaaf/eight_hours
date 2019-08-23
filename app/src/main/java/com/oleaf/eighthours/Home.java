@@ -5,15 +5,17 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
-import com.oleaf.eighthours.details.Details;
 
 public class Home extends AppCompatActivity {
     public static final int grid = 20;
@@ -23,6 +25,7 @@ public class Home extends AppCompatActivity {
     public Activities activities;
     public Circle circle;
 
+    private PopupWindow popup;
     private AddButton addButton;
     private ColorMenu colorMenu;
     private ImageButton close;
@@ -52,6 +55,13 @@ public class Home extends AppCompatActivity {
         close = findViewById(R.id.closeButton);
         dateText = findViewById(R.id.dateText);
 
+        popup = new PopupWindow(this);
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.activity_details, null);
+        layout.setElevation(0);
+
+        popup.setContentView(layout);
         showTwist = AnimationUtils.loadAnimation(this, R.anim.show_twist);
         hideTwist = AnimationUtils.loadAnimation(this, R.anim.hide_twist);
         hideTwist.setAnimationListener(new Animation.AnimationListener() {
@@ -174,6 +184,10 @@ public class Home extends AppCompatActivity {
             return !(x < -width * button_bounds) && !(y < -height * button_bounds) && !(x > width * (1f + button_bounds)) && !(y > height * (1 + button_bounds));
     }
 
+    private void popUp(int index){
+        popup.showAtLocation(findViewById(R.id.parent_home), Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, 0);
+    }
+
     public void deletePress(View view){
         options.deletePress();
     }
@@ -191,19 +205,16 @@ public class Home extends AppCompatActivity {
                 colorMenu.confirmPress();
                 break;
             case PLAY:
-                changeActivity(Details.class, 3);
+                popUp(0);
                 break;
         }
-    }
-
-    public void listPress(View view){
-        changeActivity(Details.class, 2);
     }
 
     public void closePress(View view){
         options.close();
         colorMenu.close();
         showHide();
+        changeAddButton(AddButton.State.ADDNEW);
     }
 
     public void activitySelected(int index){

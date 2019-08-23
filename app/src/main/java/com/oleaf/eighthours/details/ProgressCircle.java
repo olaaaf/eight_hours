@@ -14,10 +14,11 @@ import com.oleaf.eighthours.R;
 public class ProgressCircle extends View {
     Paint paint;
     RectF rectangle;
-    int color, greyColor;
+    int greyColor;
     static final float alpha_pause = 10;
     float alpha_rounded;
     float progress;
+    private boolean afterPost=false;
 
     public ProgressCircle(Context context) {
         super(context);
@@ -41,14 +42,17 @@ public class ProgressCircle extends View {
 
     private void init(Context c){
         Resources r = c.getResources();
-        paint.setColor(color);
+
+        final float sW = r.getDimension(R.dimen.circle_rounded);
         paint = new Paint();
-        paint.setStrokeWidth(r.getDimension(R.dimen.circle_rounded));
+        paint.setStrokeWidth(sW);
         post(new Runnable() {
             @Override
             public void run() {
-                rectangle = new RectF(0, 0, getWidth(), getHeight());
+                afterPost = true;
+                rectangle = new RectF(sW, sW, getWidth()- sW, getHeight() - sW);
                 alpha_rounded = (float) Math.asin(paint.getStrokeWidth() / (getHeight() / 2f));
+                invalidate();
             }
         });
     }
@@ -56,7 +60,8 @@ public class ProgressCircle extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         //draw progress with pause
-        drawRounded(-90, progress*360f, canvas);
+        if (afterPost)
+            drawRounded(-90, progress*360f, canvas);
     }
 
     private float drawRounded(float startAlpha, float a, Canvas canvas){
@@ -77,6 +82,6 @@ public class ProgressCircle extends View {
     }
 
     public void setColor(int c){
-        color = c;
+        paint.setColor(c);
     }
 }
