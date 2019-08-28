@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+import com.oleaf.eighthours.details.DetailsFragment;
 
 public class Home extends AppCompatActivity {
     public static final int grid = 20;
@@ -32,7 +33,7 @@ public class Home extends AppCompatActivity {
     private Options options;
     private Animation showTwist, hideTwist;
     private AddButton.State addState = AddButton.State.ADDNEW;
-
+    private DetailsFragment detailsFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,7 @@ public class Home extends AppCompatActivity {
         colorPick = findViewById(R.id.menu_view);
         close = findViewById(R.id.closeButton);
         dateText = findViewById(R.id.dateText);
+        detailsFragment = DetailsFragment.newInstance();
 
         showTwist = AnimationUtils.loadAnimation(this, R.anim.show_twist);
         hideTwist = AnimationUtils.loadAnimation(this, R.anim.hide_twist);
@@ -177,7 +179,7 @@ public class Home extends AppCompatActivity {
     }
 
     private void popUp(int index){
-
+        detailsFragment.show(getSupportFragmentManager(), "details");
     }
 
     public void deletePress(View view){
@@ -197,12 +199,16 @@ public class Home extends AppCompatActivity {
                 colorMenu.confirmPress();
                 break;
             case PLAY:
+                closePress(null);
                 popUp(0);
                 break;
         }
     }
 
     public void closePress(View view){
+        if (view != null)
+            if (view.getVisibility() != View.VISIBLE)
+                return;
         options.close();
         colorMenu.close();
         showHide();
@@ -217,6 +223,7 @@ public class Home extends AppCompatActivity {
 
     public void showHide(){
         close.startAnimation(hideTwist);
+        changeAddButton(AddButton.State.ADDNEW);
     }
 
     public void showClose(){
