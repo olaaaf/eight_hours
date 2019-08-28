@@ -25,7 +25,6 @@ public class Home extends AppCompatActivity {
     public Activities activities;
     public Circle circle;
 
-    private PopupWindow popup;
     private AddButton addButton;
     private ColorMenu colorMenu;
     private ImageButton close;
@@ -55,13 +54,6 @@ public class Home extends AppCompatActivity {
         close = findViewById(R.id.closeButton);
         dateText = findViewById(R.id.dateText);
 
-        popup = new PopupWindow(this);
-
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.activity_details, null);
-        layout.setElevation(0);
-
-        popup.setContentView(layout);
         showTwist = AnimationUtils.loadAnimation(this, R.anim.show_twist);
         hideTwist = AnimationUtils.loadAnimation(this, R.anim.hide_twist);
         hideTwist.setAnimationListener(new Animation.AnimationListener() {
@@ -185,7 +177,7 @@ public class Home extends AppCompatActivity {
     }
 
     private void popUp(int index){
-        popup.showAtLocation(findViewById(R.id.parent_home), Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, 0);
+
     }
 
     public void deletePress(View view){
