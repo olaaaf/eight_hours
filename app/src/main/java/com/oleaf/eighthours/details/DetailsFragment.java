@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import com.oleaf.eighthours.R;
 
 public class DetailsFragment extends BottomSheetDialogFragment {
-
-
     public static DetailsFragment newInstance() {
         return new DetailsFragment();
     }
@@ -26,6 +24,7 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_details, container, false);
+        View v = inflater.inflate(R.layout.activity_details, container, false);
+        return v;
     }
 }
