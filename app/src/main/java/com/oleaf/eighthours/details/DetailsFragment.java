@@ -2,6 +2,8 @@ package com.oleaf.eighthours.details;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -21,12 +23,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import com.oleaf.eighthours.R;
 
 public class DetailsFragment extends BottomSheetDialogFragment {
     public static DetailsFragment newInstance() {
         return new DetailsFragment();
     }
+    public TypedArray colors;
 
     @Override
     public int getTheme() {
@@ -36,6 +40,9 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         BottomSheetDialog d =  new BottomSheetDialog(requireContext(), getTheme());
+        Resources resources = d.getContext().getResources();
+        colors = resources.obtainTypedArray(R.array.colors);
+
         d.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -54,6 +61,9 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_details, container, false);
+        TextView activityName = v.findViewById(R.id.activity_name);
+        activityName.setText("Activity");
+        activityName.setTextColor(colors.getColor(Integer.parseInt(getTag()), 0xFFFF00FF));
         return v;
     }
 

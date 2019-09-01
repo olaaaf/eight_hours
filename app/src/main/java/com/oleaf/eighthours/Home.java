@@ -25,6 +25,8 @@ public class Home extends AppCompatActivity {
     public static final int grid = 20;
     public static final float button_bounds = 0.1f;
 
+    public int index;
+
     public TextView hoursText, desc, add_button, dateText;
     public Activities activities;
     public Circle circle;
@@ -180,7 +182,7 @@ public class Home extends AppCompatActivity {
     }
 
     private void popUp(int index){
-        detailsFragment.show(getSupportFragmentManager(), "details");
+        detailsFragment.show(getSupportFragmentManager(), ""+activities.getSpan(index).color_index);
     }
 
     public void deletePress(View view){
@@ -217,6 +219,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void activitySelected(int index){
+        this.index = index;
         options.show(index);
         addState = AddButton.State.PLAY;
         addButton.setState(addState);
