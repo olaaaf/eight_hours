@@ -17,6 +17,11 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     }
 
     @Override
+    public int getTheme() {
+        return R.style.SheetDialog;
+    }
+
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new BottomSheetDialog(requireContext(), getTheme());
     }
