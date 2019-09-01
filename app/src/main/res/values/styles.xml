@@ -35,11 +35,11 @@
 
     <style name="SheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetModal</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
     </style>
 
     <style name="BottomSheetModal" parent="@style/Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rect_rounded</item>
-        <item name="behavior_peekHeight">@dimen/peek_height</item>
     </style>
 
     <style name="ColorBackground">

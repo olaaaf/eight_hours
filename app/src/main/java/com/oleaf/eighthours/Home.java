@@ -1,10 +1,13 @@
 package com.oleaf.eighthours;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -61,17 +64,15 @@ public class Home extends AppCompatActivity {
         hideTwist.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                close.setVisibility(View.GONE);
-            }
+                        close.setVisibility(View.GONE);
+                    }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
         });
 
