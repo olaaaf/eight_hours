@@ -33,6 +33,7 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         return new DetailsFragment();
     }
     public TypedArray colors;
+    private Thread thread;
 
     @Override
     public int getTheme() {
@@ -66,6 +67,11 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         Span span = home.activities.getSpan(home.index);
         View v = inflater.inflate(R.layout.activity_details, container, false);
         TextView activityName = v.findViewById(R.id.activity_name);
+        ProgressBar progressBar = v.findViewById(R.id.progress);
+        TextView left = v.findViewById(R.id.time_left);
+        ActivityUpdater activityUpdater = v.findViewById(R.id.updater);
+        activityUpdater.init(span, progressBar, left);
+        activityUpdater.update();
         activityName.setText((span.getName().equals(Span.default_name)) ? span.getName()+ " " + (home.index+1) : span.getName());
         activityName.setTextColor(colors.getColor(span.getColorIndex(), 0xFFFF00FF));
         return v;

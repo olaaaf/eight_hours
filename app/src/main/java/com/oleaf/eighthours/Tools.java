@@ -46,4 +46,22 @@ public final class Tools{
 
     public static int clamp(int v, int min, int max){ return (v < min) ? min : ((v > max) ? max : v);}
     public static float clamp(float v, float min, float max) {return (v < min) ? min : ((v > max) ? max : v);}
+
+    public static String toDoubleDigit(int x){
+        if (x < 10)
+            return "0"+x;
+        else
+            return ""+(int)Math.floor(x/10f)+x%10;
+    }
+
+    public static String toDoubleDigit(float x){
+        if (x < 10)
+            return "0"+x;
+        else
+            return ""+(int)Math.floor(x/10f)+(int)x%10;
+    }
+
+    public static String timeMinutes(float min){
+        return toDoubleDigit((int)Math.floor(min / 60f)) +":" +toDoubleDigit((int) (min % 60)) + ":" + toDoubleDigit((int)((min % 1) * 100));
+    }
 }
