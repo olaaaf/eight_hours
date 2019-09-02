@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.oleaf.eighthours.Home;
 import com.oleaf.eighthours.R;
@@ -40,7 +41,6 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     Runnable changeDrawable = new Runnable() {
         @Override
         public void run() {
-            Log.d("Running", ""+activityUpdater.isRunning());
             if (activityUpdater.isRunning()){
                 playButton.setImageDrawable(start);
             }else{
@@ -92,8 +92,8 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         ProgressBar progressBar = v.findViewById(R.id.progress);
         activityUpdater = v.findViewById(R.id.updater);
         playButton = v.findViewById(R.id.playButton);
-        ImageButton forward = v.findViewById(R.id.right_arrow);
-        ImageButton backward = v.findViewById(R.id.left_arrow);
+        ImageView forward = v.findViewById(R.id.right_arrow);
+        ImageView backward = v.findViewById(R.id.left_arrow);
 
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,12 +124,13 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         View.OnTouchListener t = new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent motionEvent){
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_OUTSIDE){
+                int x = motionEvent.getAction();
+                if (x == MotionEvent.ACTION_UP || x == MotionEvent.ACTION_OUTSIDE ){
                     //To allow easier forwarding/backing the timer has to be updated more frequently
                     //The following command resets the update interval to default (after finger moved up)
                     activityUpdater.stopSkipping();
                 }
-                return true;
+                return false;
             }
         };
         backward.setOnTouchListener(t);
@@ -184,10 +185,12 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     }
 
     public void forward(){
+        Log.d("a", "f");
         activityUpdater.startSkipping(0.5f);
     }
 
     public void backward() {
+        Log.d("a", "b");
         activityUpdater.startSkipping(-0.5f);
     }
 }

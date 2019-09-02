@@ -88,7 +88,7 @@ public class Span implements Parcelable {
 
     public float getCurrentMinutes(){
         if (startTime < 0)
-            return beforePause/ 60000f;
+            return Tools.clamp(beforePause/ 60000f + additionalTime, 0, minutes);
         return Tools.clamp((System.currentTimeMillis() - startTime + beforePause) / 60000f + additionalTime, 0, minutes);
     }
 

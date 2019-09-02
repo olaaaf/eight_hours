@@ -45,12 +45,12 @@ public class ActivityUpdater extends View{
     public void update(){
         if (progressBar != null){
             progressBar.updateProgress(span.getPart());
+            span.addActiveMinutes(skipValue);
             if (span.shouldStop()){
                 stop();
-                left.setText(R.string.done_timer);
                 change.run();
+                left.setText(R.string.done_timer);
             }else{
-                span.addActiveMinutes(skipValue);
                 left.setText(Tools.timeMinutes(span.getMinutes() - span.getCurrentMinutes()) + " left");
                 Log.d("Time", span.getCurrentMinutes() + "");
             }
@@ -86,6 +86,7 @@ public class ActivityUpdater extends View{
     }
 
     public void start(){
+        skipValue = 0;
         thread = new Thread(runnable);
         thread.start();
         span.start();
@@ -101,11 +102,17 @@ public class ActivityUpdater extends View{
             this.msUpdate = defaultMsUpdate;
         else
             this.msUpdate = msUpdate;
-
     }
 
+    /**
+     * @param min minutes per second
+     */
     public void startSkipping(float min){
         setMsUpdate(defaultMsUpdateQuick);
+        if (min < 0 && !isRunning()){
+            change.run();
+            start();
+        }
         skipValue = min;
     }
 
@@ -113,8 +120,6 @@ public class ActivityUpdater extends View{
         setMsUpdate(defaultMsUpdate);
         skipValue = 0;
     }
-
-
 
     public boolean isRunning(){
         return running.get();
