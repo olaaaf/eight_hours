@@ -24,7 +24,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import com.oleaf.eighthours.Home;
 import com.oleaf.eighthours.R;
+import com.oleaf.eighthours.Span;
 
 public class DetailsFragment extends BottomSheetDialogFragment {
     public static DetailsFragment newInstance() {
@@ -60,10 +62,12 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Home home = (Home) getContext();
+        Span span = home.activities.getSpan(home.index);
         View v = inflater.inflate(R.layout.activity_details, container, false);
         TextView activityName = v.findViewById(R.id.activity_name);
-        activityName.setText("Activity");
-        activityName.setTextColor(colors.getColor(Integer.parseInt(getTag()), 0xFFFF00FF));
+        activityName.setText((span.getName().equals(Span.default_name)) ? span.getName()+ " " + (home.index+1) : span.getName());
+        activityName.setTextColor(colors.getColor(span.getColorIndex(), 0xFFFF00FF));
         return v;
     }
 
