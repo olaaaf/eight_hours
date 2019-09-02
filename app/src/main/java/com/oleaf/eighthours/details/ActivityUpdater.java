@@ -22,7 +22,10 @@ public class ActivityUpdater extends View{
     private Thread thread;
     private AtomicBoolean running = new AtomicBoolean(false);
     private long msUpdate = 500;
+    private float skipValue = 0;
+    private Runnable change;
     public static final long defaultMsUpdate = 500;
+    public static final long defaultMsUpdateQuick = 32;
 
     final Runnable runnable = new Runnable() {
         @Override
@@ -45,7 +48,9 @@ public class ActivityUpdater extends View{
             if (span.shouldStop()){
                 stop();
                 left.setText(R.string.done_timer);
+                change.run();
             }else{
+                span.addActiveMinutes(skipValue);
                 left.setText(Tools.timeMinutes(span.getMinutes() - span.getCurrentMinutes()) + " left");
                 Log.d("Time", span.getCurrentMinutes() + "");
             }
@@ -68,10 +73,11 @@ public class ActivityUpdater extends View{
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public void init(Span span, ProgressBar progressBar, TextView left){
+    public void init(Span span, ProgressBar progressBar, TextView left, Runnable changeDrawable){
         this.span = span;
         this.progressBar = progressBar;
         this.left = left;
+        this.change = changeDrawable;
     }
 
     private void interrupt(){
@@ -97,6 +103,18 @@ public class ActivityUpdater extends View{
             this.msUpdate = msUpdate;
 
     }
+
+    public void startSkipping(float min){
+        setMsUpdate(defaultMsUpdateQuick);
+        skipValue = min;
+    }
+
+    public void stopSkipping(){
+        setMsUpdate(defaultMsUpdate);
+        skipValue = 0;
+    }
+
+
 
     public boolean isRunning(){
         return running.get();

@@ -36,6 +36,18 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     private ActivityUpdater activityUpdater;
     private Drawable pause, start;
     private ImageButton playButton;
+    private int skipping = 0;
+    Runnable changeDrawable = new Runnable() {
+        @Override
+        public void run() {
+            Log.d("Running", ""+activityUpdater.isRunning());
+            if (activityUpdater.isRunning()){
+                playButton.setImageDrawable(start);
+            }else{
+                playButton.setImageDrawable(pause);
+            }
+        }
+    };
 
     @Override
     public int getTheme() {
@@ -112,10 +124,10 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         View.OnTouchListener t = new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent motionEvent){
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP){
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_OUTSIDE){
                     //To allow easier forwarding/backing the timer has to be updated more frequently
                     //The following command resets the update interval to default (after finger moved up)
-                    activityUpdater.setMsUpdate(-1);
+                    activityUpdater.stopSkipping();
                 }
                 return true;
             }
@@ -123,7 +135,7 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         backward.setOnTouchListener(t);
         forward.setOnTouchListener(t);
         //add views to the updater and then initialize it (on 0)
-        activityUpdater.init(span, progressBar, left);
+        activityUpdater.init(span, progressBar, left, changeDrawable);
         activityUpdater.update();
         //update name
         activityName.setText((span.getName().equals(Span.default_name)) ? span.getName()+ " " + (home.index+1) : span.getName());
@@ -159,28 +171,23 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     }
 
     public void play(){
+        changeDrawable();
         if (activityUpdater.isRunning()){
             activityUpdater.stop();
-            changeDrawable(true);
         }else{
             activityUpdater.start();
-            changeDrawable(false);
         }
     }
 
-    private void changeDrawable(boolean state){
-        if (state){
-            playButton.setImageDrawable(start);
-        }else{
-            playButton.setImageDrawable(pause);
-        }
+    private void changeDrawable(){
+        changeDrawable.run();
     }
 
     public void forward(){
-
+        activityUpdater.startSkipping(0.5f);
     }
 
     public void backward() {
-
+        activityUpdater.startSkipping(-0.5f);
     }
 }
