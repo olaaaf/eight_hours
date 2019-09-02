@@ -18,11 +18,10 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
+import android.util.Log;
+import android.view.*;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import com.oleaf.eighthours.Home;
 import com.oleaf.eighthours.R;
@@ -34,6 +33,9 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     }
     public TypedArray colors;
     private Thread thread;
+    private ActivityUpdater activityUpdater;
+    private Drawable pause, start;
+    private ImageButton playButton;
 
     @Override
     public int getTheme() {
@@ -63,17 +65,73 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //get chosen span
         Home home = (Home) getContext();
         Span span = home.activities.getSpan(home.index);
+        //inflate the view
         View v = inflater.inflate(R.layout.activity_details, container, false);
+        //load resources
+        start = ContextCompat.getDrawable(getContext(), R.drawable.play_na);
+        pause = ContextCompat.getDrawable(getContext(), R.drawable.stop_na);
+        //make layout changes
+        //get all the views
         TextView activityName = v.findViewById(R.id.activity_name);
-        ProgressBar progressBar = v.findViewById(R.id.progress);
         TextView left = v.findViewById(R.id.time_left);
-        ActivityUpdater activityUpdater = v.findViewById(R.id.updater);
+        ProgressBar progressBar = v.findViewById(R.id.progress);
+        activityUpdater = v.findViewById(R.id.updater);
+        playButton = v.findViewById(R.id.playButton);
+        ImageButton forward = v.findViewById(R.id.right_arrow);
+        ImageButton backward = v.findViewById(R.id.left_arrow);
+
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                play();
+            }
+        });
+        forward.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+            }
+        });
+        forward.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                forward();
+                return true;
+            }
+        });
+        backward.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                backward();
+                return true;
+            }
+        });
+        View.OnTouchListener t = new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent motionEvent){
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    //To allow easier forwarding/backing the timer has to be updated more frequently
+                    //The following command resets the update interval to default (after finger moved up)
+                    activityUpdater.setMsUpdate(-1);
+                }
+                return true;
+            }
+        };
+        backward.setOnTouchListener(t);
+        forward.setOnTouchListener(t);
+        //add views to the updater and then initialize it (on 0)
         activityUpdater.init(span, progressBar, left);
         activityUpdater.update();
+        //update name
         activityName.setText((span.getName().equals(Span.default_name)) ? span.getName()+ " " + (home.index+1) : span.getName());
         activityName.setTextColor(colors.getColor(span.getColorIndex(), 0xFFFF00FF));
+        //set progress bar color
+        progressBar.setColor(colors.getColor(span.getColorIndex(), 0xFFFF00FF));
+        if (span.isOnGoing())
+            play();
         return v;
     }
 
@@ -98,5 +156,31 @@ public class DetailsFragment extends BottomSheetDialogFragment {
 
             window.setBackgroundDrawable(windowBackground);
         }
+    }
+
+    public void play(){
+        if (activityUpdater.isRunning()){
+            activityUpdater.stop();
+            changeDrawable(true);
+        }else{
+            activityUpdater.start();
+            changeDrawable(false);
+        }
+    }
+
+    private void changeDrawable(boolean state){
+        if (state){
+            playButton.setImageDrawable(start);
+        }else{
+            playButton.setImageDrawable(pause);
+        }
+    }
+
+    public void forward(){
+
+    }
+
+    public void backward() {
+
     }
 }

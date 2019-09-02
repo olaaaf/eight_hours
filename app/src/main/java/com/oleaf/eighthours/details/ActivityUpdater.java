@@ -21,7 +21,9 @@ public class ActivityUpdater extends View{
     private int index;
     private Thread thread;
     private AtomicBoolean running = new AtomicBoolean(false);
-    final static long msUpdate = 1000;
+    private long msUpdate = 500;
+    public static final long defaultMsUpdate = 500;
+
     final Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -45,6 +47,7 @@ public class ActivityUpdater extends View{
                 left.setText(R.string.done_timer);
             }else{
                 left.setText(Tools.timeMinutes(span.getMinutes() - span.getCurrentMinutes()) + " left");
+                Log.d("Time", span.getCurrentMinutes() + "");
             }
         }
     }
@@ -85,5 +88,17 @@ public class ActivityUpdater extends View{
     public void stop(){
         running.set(false);
         span.pause();
+    }
+
+    public void setMsUpdate(long msUpdate){
+        if (msUpdate <= 0)
+            this.msUpdate = defaultMsUpdate;
+        else
+            this.msUpdate = msUpdate;
+
+    }
+
+    public boolean isRunning(){
+        return running.get();
     }
 }

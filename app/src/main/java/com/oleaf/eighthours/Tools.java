@@ -62,6 +62,6 @@ public final class Tools{
     }
 
     public static String timeMinutes(float min){
-        return toDoubleDigit((int)Math.floor(min / 60f)) +":" +toDoubleDigit((int) (min % 60)) + ":" + toDoubleDigit((int)((min % 1) * 100));
+        return toDoubleDigit((int)Math.floor(min / 60f)) +":" +toDoubleDigit((int) (min % 60)) + ":" + toDoubleDigit((int)((min % 1) * 60));
     }
 }

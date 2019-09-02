@@ -78,7 +78,7 @@ public class ProgressBar extends View {
 
     }
 
-    public void changeColor(int color){
+    public void setColor(int color){
         primaryColor = color;
     }
 

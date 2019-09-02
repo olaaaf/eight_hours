@@ -92,9 +92,17 @@ public class Span implements Parcelable {
         return Tools.clamp((System.currentTimeMillis() - startTime + beforePause) / 60000f + additionalTime, 0, minutes);
     }
 
-    public void start(){
-        onGoing = true;
-        startTime = System.currentTimeMillis();
+    /**
+     * Start the span
+     * @return if started correctly
+     */
+    public boolean start(){
+        if (!onGoing){
+            onGoing = true;
+            startTime = System.currentTimeMillis();
+            return true;
+        }
+        return false;
     }
 
     public void pause(){
