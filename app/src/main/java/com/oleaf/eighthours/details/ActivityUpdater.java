@@ -17,15 +17,20 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ActivityUpdater extends View{
     private Span span;
     TextView left;
+    private Runnable change;
     private ProgressBar progressBar;
     private int index;
     private Thread thread;
     private AtomicBoolean running = new AtomicBoolean(false);
     private long msUpdate = 500;
+    private long skipStart = 0;
     private float skipValue = 0;
-    private Runnable change;
+    private float minSkipValue = 0;
+    private float skipAddintion = 0;
+
     public static final long defaultMsUpdate = 500;
     public static final long defaultMsUpdateQuick = 32;
+    public static final long defaultSkipTime = 1300;
 
     final Runnable runnable = new Runnable() {
         @Override
@@ -45,6 +50,8 @@ public class ActivityUpdater extends View{
     public void update(){
         if (progressBar != null){
             progressBar.updateProgress(span.getPart());
+            //change skip value
+            skipValue = Tools.clamp((System.currentTimeMillis() - skipStart) * skipAddintion, minSkipValue, skipAddintion + minSkipValue);
             span.addActiveMinutes(skipValue);
             if (span.shouldStop()){
                 stop();
@@ -108,17 +115,39 @@ public class ActivityUpdater extends View{
      * @param min minutes per second
      */
     public void startSkipping(float min){
-        setMsUpdate(defaultMsUpdateQuick);
+        /*setMsUpdate(defaultMsUpdateQuick);
         if (min < 0 && !isRunning()){
             change.run();
             start();
         }
         skipValue = min;
+        skipStart = System.currentTimeMillis();
+        */
+        startSkipping(min, min);
+    }
+
+    public void startSkipping(float minSkipValue, float maxSkipValue, float skipTime){
+        setMsUpdate(defaultMsUpdateQuick);
+        if (minSkipValue < 0 && !isRunning()){
+            change.run();
+            start();
+        }
+        skipValue = minSkipValue;
+        this.skipAddintion = Math.signum(minSkipValue) * (Math.abs(maxSkipValue) - Math.abs(minSkipValue)) / skipTime;
+        skipStart = System.currentTimeMillis();
+        this.minSkipValue = minSkipValue;
+    }
+
+    public void startSkipping(float minSkipValue, float maxSkipValue){
+        startSkipping(minSkipValue, maxSkipValue, defaultSkipTime);
     }
 
     public void stopSkipping(){
         setMsUpdate(defaultMsUpdate);
         skipValue = 0;
+        minSkipValue = 0;
+        skipAddintion = 0;
+        skipStart = 0;
     }
 
     public boolean isRunning(){

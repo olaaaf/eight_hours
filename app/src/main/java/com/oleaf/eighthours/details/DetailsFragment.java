@@ -29,6 +29,7 @@ import com.oleaf.eighthours.R;
 import com.oleaf.eighthours.Span;
 
 public class DetailsFragment extends BottomSheetDialogFragment {
+    public static final float minPart=0.01f, maxPart=0.02f;
     public static DetailsFragment newInstance() {
         return new DetailsFragment();
     }
@@ -38,6 +39,8 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     private Drawable pause, start;
     private ImageButton playButton;
     private int skipping = 0;
+    private float minSkip=0.5f, maxSkip=0.5f;
+
     Runnable changeDrawable = new Runnable() {
         @Override
         public void run() {
@@ -145,6 +148,9 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         progressBar.setColor(colors.getColor(span.getColorIndex(), 0xFFFF00FF));
         if (span.isOnGoing())
             play();
+        //change skip values
+        minSkip = minPart * span.getMinutes();
+        maxSkip = maxPart * span.getMinutes();
         return v;
     }
 
@@ -185,12 +191,10 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     }
 
     public void forward(){
-        Log.d("a", "f");
-        activityUpdater.startSkipping(0.5f);
+        activityUpdater.startSkipping(minSkip, maxSkip);
     }
 
     public void backward() {
-        Log.d("a", "b");
-        activityUpdater.startSkipping(-0.5f);
+        activityUpdater.startSkipping(-minSkip, -maxSkip);
     }
 }
