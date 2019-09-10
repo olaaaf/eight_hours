@@ -17,6 +17,7 @@
     <dimen name="menu_button_height">13dp</dimen>
     <dimen name="arc_stroke">11dp</dimen>
     <dimen name="arc_sh_stroke">5dp</dimen>
+    <dimen name="short_skip">0.5</dimen>    <!-- Meaning what part of a minute does a short click skip -->
     <array name="colors">
         <item>#f8bbd0</item>
         <item>#607d8b</item>

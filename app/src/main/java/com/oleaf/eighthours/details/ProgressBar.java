@@ -1,5 +1,8 @@
 package com.oleaf.eighthours.details;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,9 +14,12 @@ import android.view.View;
 import com.oleaf.eighthours.R;
 
 public class ProgressBar extends View {
+    public static final float maxAlpha=0.65f;
     private float radius, width, minPart, progress;
     private int progressColor;
+    private float anim=0f;
     private int primaryColor;
+    private ValueAnimator progressAnimator;
     private Paint paint = new Paint();
 
     public ProgressBar(Context context) {
@@ -39,12 +45,33 @@ public class ProgressBar extends View {
     private void init(Context c){
         paint.setAntiAlias(true);
         progressColor = ContextCompat.getColor(c, R.color.progress_color);
+        progressAnimator = new ValueAnimator();
+        progressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                anim = logisticFunction((float) animation.getAnimatedValue());
+                invalidate();
+            }
+        });
+        progressAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+
+            }
+        });
         post(new Runnable() {
             @Override
             public void run() {
                 radius = getHeight() / 2f;
                 width = getWidth();
-                minPart = getHeight() / (float) getWidth();
+                minPart = getHeight() / ((float) getWidth() * 2);
                 updateProgress(minPart);
             }
         });
@@ -74,7 +101,7 @@ public class ProgressBar extends View {
         }
     }
 
-    private void bubbleAnimation(Canvas canvas){
+    private void progressAnimation(Canvas canvas, float alpha){
 
     }
 
@@ -85,5 +112,9 @@ public class ProgressBar extends View {
     public void updateProgress(float progress){
         this.progress = progress;
         invalidate();
+    }
+
+    public float logisticFunction(float in){
+        return 1f / (1f + 280f * (float)Math.pow(Math.E, in * -11));
     }
 }

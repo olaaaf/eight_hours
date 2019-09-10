@@ -34,12 +34,11 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         return new DetailsFragment();
     }
     public TypedArray colors;
-    private Thread thread;
     private ActivityUpdater activityUpdater;
     private Drawable pause, start;
     private ImageButton playButton;
-    private int skipping = 0;
     private float minSkip=0.5f, maxSkip=0.5f;
+    private float shortSkip=0.5f;
 
     Runnable changeDrawable = new Runnable() {
         @Override
@@ -69,6 +68,7 @@ public class DetailsFragment extends BottomSheetDialogFragment {
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
                 FrameLayout frameLayout = d.findViewById(android.support.design.R.id.design_bottom_sheet);
                 BottomSheetBehavior.from(frameLayout).setPeekHeight((int) getContext().getResources().getDimension(R.dimen.peek_height));
+                BottomSheetBehavior.from(frameLayout).setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
             }
         });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
@@ -117,11 +117,23 @@ public class DetailsFragment extends BottomSheetDialogFragment {
                 return true;
             }
         });
+        forward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shortForward();
+            }
+        });
         backward.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 backward();
                 return true;
+            }
+        });
+        backward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shortBackward();
             }
         });
         View.OnTouchListener t = new View.OnTouchListener(){
@@ -196,5 +208,13 @@ public class DetailsFragment extends BottomSheetDialogFragment {
 
     public void backward() {
         activityUpdater.startSkipping(-minSkip, -maxSkip);
+    }
+
+    public void shortForward(){
+        activityUpdater.span.addActiveMinutes(shortSkip);
+    }
+
+    public void shortBackward(){
+        activityUpdater.span.addActiveMinutes(-shortSkip);
     }
 }

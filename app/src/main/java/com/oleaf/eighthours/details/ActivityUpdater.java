@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ActivityUpdater extends View{
-    private Span span;
+    public Span span;
     TextView left;
     private Runnable change;
     private ProgressBar progressBar;
@@ -57,6 +57,7 @@ public class ActivityUpdater extends View{
                 stop();
                 change.run();
                 left.setText(R.string.done_timer);
+                progressBar.updateProgress(1f);
             }else{
                 left.setText(Tools.timeMinutes(span.getMinutes() - span.getCurrentMinutes()) + " left");
                 Log.d("Time", span.getCurrentMinutes() + "");
