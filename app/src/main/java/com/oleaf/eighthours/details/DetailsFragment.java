@@ -34,6 +34,7 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         return new DetailsFragment();
     }
     public TypedArray colors;
+    private ProgressBar progressBar;
     private ActivityUpdater activityUpdater;
     private Drawable pause, start;
     private ImageButton playButton;
@@ -92,7 +93,7 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         //get all the views
         TextView activityName = v.findViewById(R.id.activity_name);
         TextView left = v.findViewById(R.id.time_left);
-        ProgressBar progressBar = v.findViewById(R.id.progress);
+        progressBar = v.findViewById(R.id.progress);
         activityUpdater = v.findViewById(R.id.updater);
         playButton = v.findViewById(R.id.playButton);
         ImageView forward = v.findViewById(R.id.right_arrow);
@@ -193,8 +194,10 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         changeDrawable();
         if (activityUpdater.isRunning()){
             activityUpdater.stop();
+            progressBar.stopProgress();
         }else{
             activityUpdater.start();
+            progressBar.startProgress();
         }
     }
 
