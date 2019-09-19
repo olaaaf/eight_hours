@@ -159,8 +159,9 @@ public class DetailsFragment extends BottomSheetDialogFragment {
         activityName.setTextColor(colors.getColor(span.getColorIndex(), 0xFFFF00FF));
         //set progress bar color
         progressBar.setColor(colors.getColor(span.getColorIndex(), 0xFFFF00FF));
-        if (span.isOnGoing())
+        if (span.isOnGoing()){
             play();
+        }
         //change skip values
         minSkip = minPart * span.getMinutes();
         maxSkip = maxPart * span.getMinutes();

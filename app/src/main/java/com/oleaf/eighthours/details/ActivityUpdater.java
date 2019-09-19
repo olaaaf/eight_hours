@@ -116,14 +116,6 @@ public class ActivityUpdater extends View{
      * @param min minutes per second
      */
     public void startSkipping(float min){
-        /*setMsUpdate(defaultMsUpdateQuick);
-        if (min < 0 && !isRunning()){
-            change.run();
-            start();
-        }
-        skipValue = min;
-        skipStart = System.currentTimeMillis();
-        */
         startSkipping(min, min);
     }
 

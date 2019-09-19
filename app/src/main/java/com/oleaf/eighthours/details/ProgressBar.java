@@ -23,7 +23,8 @@ public class ProgressBar extends View {
     private AtomicBoolean onGoing;
     private Thread thread;
     private int progressColor;
-    private static final int animationSpeed = 2;     //1 cycle per per animationSpeed
+    private static final int animationSpeed = 4000;     //1 cycle per per animationSpeed
+    private static final float max = 0.6f;
     private long animationStart = -1;
     private float anim=0f;
     private int primaryColor;
@@ -38,9 +39,10 @@ public class ProgressBar extends View {
                 }catch (InterruptedException e){
                     Thread.currentThread().interrupt();
                 }
-                anim = ((System.currentTimeMillis() - animationStart) / (float) animationSpeed) % 2;
-                if (anim > 1)
-                    anim = 2 - anim;
+                anim = ((System.currentTimeMillis() - animationStart) / (float) animationSpeed) % (max * 2f);
+                Log.d("A", "anim: "+anim);
+                if (anim > max)
+                    anim = max * 2f - anim;
                 invalidate();
             }
         }
@@ -86,10 +88,8 @@ public class ProgressBar extends View {
         //Draw the background bar for reference
         paint.setColor(progressColor);
         drawBar(canvas, 1f);
-
-        progressAnimation(canvas, Tools.clamp(anim,0f, 1f));
-
-
+        //Draw the animation
+        progressAnimation(canvas, Tools.clamp(logisticFunction(anim),0f, 1f));
         //Draw the actual progress
         paint.setColor(primaryColor);
         drawBar(canvas, progress);
@@ -104,12 +104,17 @@ public class ProgressBar extends View {
         else{
             canvas.drawCircle(radius, radius, radius, paint);
             canvas.drawRect(radius, 0, part * (width - 1 * radius), 2 * radius, paint);
-            canvas.drawCircle( part * (width - 1 *radius), radius, radius, paint);
+
+            if (part < 0.99f){
+                canvas.drawCircle( part * (width - 1 *radius), radius, radius, paint);
+            }else{
+                canvas.drawArc(part * (width - 2 *radius), 0, part * (width),radius * 2f, -90, 180, true, paint);
+            }
         }
     }
 
     private void progressAnimation(Canvas canvas, float alpha){
-        paint.setColor(((int) alpha * 255 << 24) | progressColor);
+        paint.setColor(((int) (alpha * 255) << 24) | (0x00FFFFFF & primaryColor));
         Log.d("Ayy", onGoing+" "+anim);
 
         drawBar(canvas, 1f);
