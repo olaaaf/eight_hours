@@ -185,6 +185,10 @@ public class Home extends AppCompatActivity {
         detailsFragment.show(getSupportFragmentManager(), ""+activities.getSpan(index).color_index);
     }
 
+    public void calendarPress(View view){
+
+    }
+
     public void deletePress(View view){
         options.deletePress();
     }

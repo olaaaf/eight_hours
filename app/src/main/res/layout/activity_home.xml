@@ -345,6 +345,7 @@
             android:id="@+id/dateButton"
             android:background="@drawable/circle_ripple_transparent"
             android:tint="#FF000000"
+            android:onClick=""
             app:layout_constraintStart_toStartOf="@+id/guideline17"
             app:layout_constraintTop_toTopOf="@+id/guideline7"
             app:layout_constraintBottom_toTopOf="@+id/guideline7"
