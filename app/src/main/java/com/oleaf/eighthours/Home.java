@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+import com.oleaf.eighthours.date.EightCalendar;
 import com.oleaf.eighthours.details.DetailsFragment;
 
 public class Home extends AppCompatActivity {
@@ -30,6 +31,7 @@ public class Home extends AppCompatActivity {
     public TextView hoursText, desc, add_button, dateText;
     public Activities activities;
     public Circle circle;
+    public EightCalendar eightCalendar;
 
     private AddButton addButton;
     private ColorMenu colorMenu;
@@ -60,6 +62,7 @@ public class Home extends AppCompatActivity {
         close = findViewById(R.id.closeButton);
         dateText = findViewById(R.id.dateText);
         detailsFragment = DetailsFragment.newInstance();
+        eightCalendar = new EightCalendar();
 
         showTwist = AnimationUtils.loadAnimation(this, R.anim.show_twist);
         hideTwist = AnimationUtils.loadAnimation(this, R.anim.hide_twist);
@@ -186,7 +189,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void calendarPress(View view){
-
+        eightCalendar.showDatePicker(getSupportFragmentManager());
     }
 
     public void deletePress(View view){
