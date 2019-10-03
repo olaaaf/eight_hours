@@ -165,7 +165,7 @@ public class Circle extends View{
             return Math.round(Math.round(dragArc.alpha /360f * home.activities.maximum) / (float) Home.grid) * Home.grid;
         }
     }
-    private float convertMinutes(int a){
+    public float convertMinutes(int a){
         return ((float)a)/((float)home.activities.maximum)*360.0f;
     }
     private void drawBaseCircle(Canvas canvas){
@@ -447,7 +447,7 @@ public class Circle extends View{
             this(resources.getColor(R.color.arc_shadow), resources.getDimension(R.dimen.arc_sh_stroke));
         }
 
-        private void addNew(float alpha, int color_index){
+        public void addNew(float alpha, int color_index){
             Arc[] cp = arcs.clone();
             arcs = new Arc[cp.length + 1];
             System.arraycopy(cp, 0, arcs, 0, cp.length);
@@ -458,7 +458,7 @@ public class Circle extends View{
             playing[playing.length - 1] = new Arc(alpha, color_index);
         }
 
-        private void addNewAnimation(float alpha, int color_index, float alphaNow){
+        public void addNewAnimation(float alpha, int color_index, float alphaNow){
             addNew(alpha, color_index);
             arcs[arcs.length - 1].animate(alphaNow);
         }
@@ -576,10 +576,12 @@ public class Circle extends View{
             Arc(float alpha, int color, boolean t){
                 this.alpha = alpha;
                 this.color = color;
+                animation = new ArcAnimation(0,alpha,0);
             }
 
             Arc(float alpha, int color_index){
                 this.alpha = alpha;
+                animation = new ArcAnimation(0,alpha,0);
                 color = colors.getColor(color_index, 0);
             }
 
@@ -605,7 +607,13 @@ public class Circle extends View{
                 animation.stop();
             }
 
-            private boolean animationFinished(){ return animation.finished(); }
+            private boolean animationFinished(){
+                if (animation != null){
+                    return animation.finished();
+                }else{
+                    return true;
+                }
+            }
 
             public float drawNormal(float startAlpha, Canvas canvas){
                 paint.setColor(color);

@@ -1,12 +1,14 @@
 package com.oleaf.eighthours;
 
+import java.io.Serializable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
 import static com.oleaf.eighthours.Activities.grid;
 
-public class Span implements Parcelable {
+public class Span implements Parcelable,  Serializable{
+    private static final long serialversionUID = 44;
     public static final String default_name="Activity";
     float minutes;
     long startTime=-1, pauseTime=-1, beforePause=0;

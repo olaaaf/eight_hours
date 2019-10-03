@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
@@ -62,8 +64,8 @@ public class Home extends AppCompatActivity {
         close = findViewById(R.id.closeButton);
         dateText = findViewById(R.id.dateText);
         detailsFragment = DetailsFragment.newInstance();
-        eightCalendar = new EightCalendar();
-
+        eightCalendar = new EightCalendar(activities, this, this);
+        eightCalendar.readDate();
         showTwist = AnimationUtils.loadAnimation(this, R.anim.show_twist);
         hideTwist = AnimationUtils.loadAnimation(this, R.anim.hide_twist);
         hideTwist.setAnimationListener(new Animation.AnimationListener() {
@@ -89,6 +91,16 @@ public class Home extends AppCompatActivity {
         }
     }
 
+    public void resetActivities(){
+        activities = new Activities(this);
+    }
+    public void updateActivities(){
+        circle.arcs = circle.new Arcs();
+        for (Span s : activities.getSpans()){
+            circle.arcs.addNew(circle.convertMinutes((int) s.minutes), s.color_index);
+        }
+        circle.invalidate();
+    }
     public int addActivity(int min, int color){
         return activities.newActivity(min, color);
         //indicator.update(activities.getLength());
@@ -146,7 +158,7 @@ public class Home extends AppCompatActivity {
 
     public void changeActivity(Class<?> c, int req){
         Intent intent = new Intent(this, c);
-        intent.putExtra("activities", activities);
+        intent.putExtra("activities", (Parcelable) activities);
         startActivityForResult(intent, req);
     }
 

@@ -37,9 +37,9 @@ public class CalendarDatePicker extends DialogFragment {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     eightCalendar.changeDate(year, month, dayOfMonth);
-                    Toast.makeText(getActivity(), "Selected date: " + view.getYear() +
+                    Toast.makeText(getActivity(), "Selected date: " + view.getDayOfMonth() +
                             " / " + (view.getMonth()+1) +
-                            " / " + view.getDayOfMonth(), Toast.LENGTH_SHORT).show();
+                            " / " + view.getYear(), Toast.LENGTH_SHORT).show();
                 }
             };
 }

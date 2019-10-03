@@ -4,9 +4,12 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 import static java.util.Arrays.copyOf;
 
-public class Activities implements Parcelable {
+public class Activities implements Parcelable, Serializable {
+    private static final long serialversionUID = 22;
     public static final int grid = 20;
     public int maximum = 60 * 8;
     int time_left = maximum;
@@ -15,6 +18,7 @@ public class Activities implements Parcelable {
 
     Activities(boolean a){
         spans = new Span[0];
+        time_left = maximum;
     }
 
     Activities(Context context){
