@@ -219,6 +219,7 @@ public class Home extends AppCompatActivity {
                 break;
             case CONFIRM:
                 colorMenu.confirmPress();
+                eightCalendar.saveActivities();
                 break;
             case PLAY:
                 closePress(null);
