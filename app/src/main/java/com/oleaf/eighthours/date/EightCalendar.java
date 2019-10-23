@@ -36,6 +36,7 @@ public class EightCalendar {
     public void changeDate(int year, int month, int day){
         writeDate();
         date.set(year, month, day);
+
         readDate();
     }
 
@@ -82,6 +83,11 @@ public class EightCalendar {
             }
         }
         home.updateActivities();
+    }
+
+    public boolean isToday(){
+        Calendar currentDate = Calendar.getInstance();
+        return (currentDate.get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR) && currentDate.get(Calendar.YEAR) == date.get(Calendar.YEAR));
     }
 
 }

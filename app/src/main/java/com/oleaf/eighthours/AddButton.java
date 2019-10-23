@@ -18,7 +18,7 @@ public class AddButton extends LinearLayout {
     ImageView icon;
     String[] states;
     Drawable[] icons;
-
+    int colorInactive;
     final Runnable p = new Runnable() {
         @Override
         public void run() {
@@ -53,10 +53,13 @@ public class AddButton extends LinearLayout {
         Resources r = context.getResources();
         states = new String[]{r.getString(R.string.add_new_activity),
                 r.getString(R.string.confirm_activity),
+                r.getString(R.string.play_activity),
                 r.getString(R.string.play_activity)};
         icons = new Drawable[]{ContextCompat.getDrawable(context, R.drawable.add_white),
                 ContextCompat.getDrawable(context, R.drawable.tick),
+                ContextCompat.getDrawable(context, R.drawable.play_na),
                 ContextCompat.getDrawable(context, R.drawable.play_na)};
+        colorInactive = ContextCompat.getColor(context, R.color.inactive_text);
     }
 
     private void init(){
@@ -79,10 +82,20 @@ public class AddButton extends LinearLayout {
         iconParent.setVisibility(VISIBLE);
         icon.setImageDrawable(icons[state.getValue()]);
         buttonText.setText(states[state.getValue()]);
+        if (state == State.PLAY_INACTIVE){
+            setTint(colorInactive);
+        }else{
+            setTint(0xFFFFFFFF);
+        }
+    }
+
+    private void setTint(int color){
+        icon.setColorFilter(color);
+        buttonText.setTextColor(color);
     }
 
     enum State{
-        ADDNEW(0),CONFIRM(1),PLAY(2);
+        ADDNEW(0),CONFIRM(1),PLAY(2),PLAY_INACTIVE(3);
 
         private final int value;
         State(int v){value = v;}
