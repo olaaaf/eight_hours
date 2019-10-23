@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.widget.Toast;
 import com.oleaf.eighthours.Activities;
 import com.oleaf.eighthours.Home;
 
@@ -36,7 +37,6 @@ public class EightCalendar {
     public void changeDate(int year, int month, int day){
         writeDate();
         date.set(year, month, day);
-
         readDate();
     }
 

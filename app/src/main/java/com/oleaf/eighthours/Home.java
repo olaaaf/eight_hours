@@ -241,7 +241,7 @@ public class Home extends AppCompatActivity {
     public void activitySelected(int index){
         this.index = index;
         options.show(index);
-        addState = AddButton.State.PLAY;
+        addState = eightCalendar.isToday() ? AddButton.State.PLAY : AddButton.State.PLAY_INACTIVE;
         addButton.setState(addState);
     }
 
