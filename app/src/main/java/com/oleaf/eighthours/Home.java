@@ -35,6 +35,8 @@ public class Home extends AppCompatActivity {
     public Circle circle;
     public EightCalendar eightCalendar;
 
+
+    private EditText editText;
     private AddButton addButton;
     private ColorMenu colorMenu;
     private ImageButton close;
@@ -63,6 +65,7 @@ public class Home extends AppCompatActivity {
         colorPick = findViewById(R.id.menu_view);
         close = findViewById(R.id.closeButton);
         dateText = findViewById(R.id.dateText);
+        editText = findViewById(R.id.edit_name);
         detailsFragment = DetailsFragment.newInstance();
         eightCalendar = new EightCalendar(activities, this, this);
         eightCalendar.readDate();
@@ -82,7 +85,6 @@ public class Home extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {
             }
         });
-
         if (Build.VERSION.SDK_INT >= 27){
             getWindow().setNavigationBarColor(r.getColor(R.color.colorPrimary));
             getWindow().setStatusBarColor(r.getColor(R.color.colorPrimary));
