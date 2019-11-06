@@ -180,7 +180,7 @@ public class DetailsFragment extends BottomSheetDialogFragment {
 
             GradientDrawable navigationBarDrawable = new GradientDrawable();
             navigationBarDrawable.setShape(GradientDrawable.RECTANGLE);
-            navigationBarDrawable.setColor(ContextCompat.getColor(dialog.getContext(), R.color.colorPrimary));
+            navigationBarDrawable.setColor(ContextCompat.getColor(dialog.getContext(), R.color.appWhite));
 
             Drawable[] layers = {dimDrawable, navigationBarDrawable};
 

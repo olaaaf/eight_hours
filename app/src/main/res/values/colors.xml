@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white">#FFF</color>
-    <color name="colorPrimary">#FAFAFA</color>
+    <color name="colorPrimary">#F48FB1</color>
     <color name="colorPrimaryDark">#d4d4d4</color>
-    <color name="colorAccent">#f48fb1</color>
+    <color name="colorAccent">#FDD835</color>
     <color name="circle_color">#47525E</color>
     <color name="drag_color">#e25033</color>
     <color name="cancel">#263238</color>
@@ -20,7 +20,7 @@
     <color name="arc_shadow">#9e9e9e</color>
     <color name="progress_color">#E7E7E7</color>
     <color name="arrow_color">#F0F0F0</color>
-
+    <color name="appWhite">#FAFAFA</color>
     <color name="black">#000000</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>

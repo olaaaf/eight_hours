@@ -12,7 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 public class ColorMenu extends ConstraintLayout {
-    private Animation showA, hideA;
+    public Animation showA, hideA;
     private boolean shown;
     TypedArray colors;
     int chosen;
@@ -66,7 +66,9 @@ public class ColorMenu extends ConstraintLayout {
         //Play show animation with alpha
         startAnimation(showA);
         //zero out the buttons
-        ((Home) getContext()).showClose();
+        Home home = (Home) getContext();
+        home.showClose();
+        home.textEditLayout.setVisibility(VISIBLE);
     }
 
     public int hide(){
@@ -75,6 +77,7 @@ public class ColorMenu extends ConstraintLayout {
         startAnimation(hideA);
         ((Home) getContext()).colorHide();
         ((Home) getContext()).showHide();
+        ((Home) getContext()).textEditLayout.setVisibility(GONE);
         return chosen;
     }
 

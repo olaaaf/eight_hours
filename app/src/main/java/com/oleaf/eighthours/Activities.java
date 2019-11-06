@@ -36,12 +36,19 @@ public class Activities implements Parcelable, Serializable {
     public int getLength() { return spans.length; }
     public boolean isActivity() { return (spans.length > 0); }
     public int newActivity(int minutes, int color_index){
+        return newActivity(minutes, color_index, "");
+    }
+
+    public int newActivity(int minutes, int color_index, String name){
         if (minutes < grid/2f){
             return -1;
         }
         Span[] cp = new Span[spans.length+1];
         spans = copyOf(spans, spans.length+1);
-        spans[spans.length-1] = new Span(minutes, color_index, time_left);
+        if (name.isEmpty())
+            spans[spans.length-1] = new Span(minutes, color_index, time_left);
+        else
+            spans[spans.length-1] = new Span(minutes, color_index, time_left, name);
         time_left -= spans[spans.length-1].minutes;
         return spans.length-1;
     }
@@ -86,10 +93,18 @@ public class Activities implements Parcelable, Serializable {
     }
 
     public void editActivity(int index, int minutes, byte color){
+        editActivity(index, minutes, color, "");
+    }
+
+    public void editActivity(int index, int minutes, byte color, String name){
         if (index < 0 || index > spans.length -1)
             return;
         time_left += spans[index].minutes - minutes;
         spans[index].minutes = minutes;
+        if (name.isEmpty())
+            spans[index].name = Span.default_name;
+        else
+            spans[index].name = name;
         spans[index].color_index = color;
     }
 

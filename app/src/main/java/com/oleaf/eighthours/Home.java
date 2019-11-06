@@ -30,13 +30,13 @@ public class Home extends AppCompatActivity {
 
     public int index;
 
-    public TextView hoursText, desc, add_button, dateText;
+    public TextView hoursText, desc;
     public Activities activities;
     public Circle circle;
     public EightCalendar eightCalendar;
+    public View textEditLayout;
 
-
-    private EditText editText;
+    private TextEditor editText;
     private AddButton addButton;
     private ColorMenu colorMenu;
     private ImageButton close;
@@ -64,7 +64,7 @@ public class Home extends AppCompatActivity {
         addButton = findViewById(R.id.addButton);
         colorPick = findViewById(R.id.menu_view);
         close = findViewById(R.id.closeButton);
-        dateText = findViewById(R.id.dateText);
+        textEditLayout = findViewById(R.id.textEditLayout);
         editText = findViewById(R.id.edit_name);
         detailsFragment = DetailsFragment.newInstance();
         eightCalendar = new EightCalendar(activities, this, this);
@@ -86,8 +86,8 @@ public class Home extends AppCompatActivity {
             }
         });
         if (Build.VERSION.SDK_INT >= 27){
-            getWindow().setNavigationBarColor(r.getColor(R.color.colorPrimary));
-            getWindow().setStatusBarColor(r.getColor(R.color.colorPrimary));
+            getWindow().setNavigationBarColor(r.getColor(R.color.appWhite));
+            getWindow().setStatusBarColor(r.getColor(R.color.appWhite));
             View decor = getWindow().getDecorView();
             decor.setSystemUiVisibility(decor.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR |View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR   );
         }
@@ -104,8 +104,11 @@ public class Home extends AppCompatActivity {
         circle.invalidate();
     }
     public int addActivity(int min, int color){
-        return activities.newActivity(min, color);
-        //indicator.update(activities.getLength());
+        Toast.makeText(this, editText.getText().toString(), Toast.LENGTH_SHORT).show();
+        int ret = activities.newActivity(min, color, editText.getText().toString());
+        editText.clearFocus();
+        editText.setText("");
+        return ret;//indicator.update(activities.getLength());
     }
 
     private void changeAddButton(AddButton.State state){
@@ -115,7 +118,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void editActivity(int index, int min, int color){
-        activities.editActivity(index, min, (byte) color);
+        activities.editActivity(index, min, (byte) color, editText.getText().toString());
     }
     //Activity changing
     private boolean getExtras(){
@@ -156,6 +159,10 @@ public class Home extends AppCompatActivity {
     }
     public void optionsShow(int index){
 
+    }
+
+    public void fillEdit(int index){
+        editText.setText(activities.getSpan(index).name);
     }
 
     public void changeActivity(Class<?> c, int req){

@@ -64,7 +64,9 @@ public class Options extends LinearLayout {
         if (index < 0)
             return;
         hideN();
-        ((Home) getContext()).circle.edit();
+        Home home = (Home) getContext();
+        home.circle.edit();
+        home.fillEdit(index);
     }
 
     public void editEnd(){

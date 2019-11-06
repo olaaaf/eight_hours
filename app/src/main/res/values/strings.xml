@@ -22,4 +22,5 @@
     <string name="delete">
         <u>delete</u>
     </string>
+    <string name="name_activity">Name the activity</string>
 </resources>
