@@ -43,7 +43,6 @@ public class Home extends AppCompatActivity {
     private ColorPick colorPick;
     private Options options;
     private Animation showTwist, hideTwist;
-    private AddButton.State addState = AddButton.State.ADDNEW;
     private DetailsFragment detailsFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +112,13 @@ public class Home extends AppCompatActivity {
 
     private void changeAddButton(AddButton.State state){
         //add_button.setText(state ? addText : confText);
-        addState = state;
-        addButton.setState(addState);
+        addButton.setState(state);
+    }
+
+    public void updateButton(boolean isPast){
+        if (addButton.currentState == AddButton.State.ADDNEW && isPast){
+            changeAddButton(AddButton.State.ADDNEW_INACTIVE);
+        }
     }
 
     public void editActivity(int index, int min, int color){
@@ -222,7 +226,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void addPress(View view){
-        switch (addState){
+        switch (addButton.currentState){
             case ADDNEW:
                 circle.addNew();
                 break;
@@ -250,8 +254,8 @@ public class Home extends AppCompatActivity {
     public void activitySelected(int index){
         this.index = index;
         options.show(index);
-        addState = eightCalendar.isToday() ? AddButton.State.PLAY : AddButton.State.PLAY_INACTIVE;
-        addButton.setState(addState);
+        addButton.currentState = eightCalendar.isToday() ? AddButton.State.PLAY : AddButton.State.PLAY_INACTIVE;
+        addButton.setState(addButton.currentState);
     }
 
     public void showHide(){

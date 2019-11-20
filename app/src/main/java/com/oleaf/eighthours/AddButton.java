@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class AddButton extends LinearLayout {
+    State currentState;
     TextView buttonText;
     RelativeLayout iconParent;
     ImageView icon;
@@ -54,11 +55,13 @@ public class AddButton extends LinearLayout {
         states = new String[]{r.getString(R.string.add_new_activity),
                 r.getString(R.string.confirm_activity),
                 r.getString(R.string.play_activity),
-                r.getString(R.string.play_activity)};
+                r.getString(R.string.play_activity),
+                r.getString(R.string.add_new_activity)};
         icons = new Drawable[]{ContextCompat.getDrawable(context, R.drawable.add_white),
                 ContextCompat.getDrawable(context, R.drawable.tick),
                 ContextCompat.getDrawable(context, R.drawable.play_na),
-                ContextCompat.getDrawable(context, R.drawable.play_na)};
+                ContextCompat.getDrawable(context, R.drawable.play_na),
+                ContextCompat.getDrawable(context, R.drawable.add_white)};
         colorInactive = ContextCompat.getColor(context, R.color.inactive_text);
     }
 
@@ -79,10 +82,11 @@ public class AddButton extends LinearLayout {
     }
 
     public void setState(State state){
+        currentState = state;
         iconParent.setVisibility(VISIBLE);
         icon.setImageDrawable(icons[state.getValue()]);
         buttonText.setText(states[state.getValue()]);
-        if (state == State.PLAY_INACTIVE){
+        if (state.getValue() > 2){
             setTint(colorInactive);
         }else{
             setTint(0xFFFFFFFF);
@@ -95,7 +99,7 @@ public class AddButton extends LinearLayout {
     }
 
     enum State{
-        ADDNEW(0),CONFIRM(1),PLAY(2),PLAY_INACTIVE(3);
+        ADDNEW(0),CONFIRM(1),PLAY(2),PLAY_INACTIVE(3), ADDNEW_INACTIVE(4);
 
         private final int value;
         State(int v){value = v;}

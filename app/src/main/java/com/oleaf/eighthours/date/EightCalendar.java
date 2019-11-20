@@ -9,6 +9,7 @@ import com.oleaf.eighthours.Activities;
 import com.oleaf.eighthours.Home;
 
 import java.io.*;
+import java.time.Year;
 import java.util.Calendar;
 
 /**
@@ -38,6 +39,7 @@ public class EightCalendar {
         writeDate();
         date.set(year, month, day);
         readDate();
+        home.updateButton(isPast());
     }
 
     public void saveActivities(){
@@ -88,6 +90,11 @@ public class EightCalendar {
     public boolean isToday(){
         Calendar currentDate = Calendar.getInstance();
         return (currentDate.get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR) && currentDate.get(Calendar.YEAR) == date.get(Calendar.YEAR));
+    }
+
+    public boolean isPast(){
+        Calendar currentDate = Calendar.getInstance();
+        return !(date.get(Calendar.YEAR) > currentDate.get(Calendar.YEAR) || (date.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) && date.get(Calendar.DAY_OF_YEAR) >= currentDate.get(Calendar.DAY_OF_YEAR)));
     }
 
 }
