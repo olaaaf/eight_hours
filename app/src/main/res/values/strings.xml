@@ -2,8 +2,10 @@
     <string name="app_name">Eight Hours</string>
     <string name="drag_to_add"></string>
     <string name="play_activity">Play</string>
+    <string name="play_inactive">Can\'t play</string>
     <string name="timeleft">Time left</string>
-    <string name="add_new_activity">New activity</string>
+    <string name="add_new_activity">Add activity</string>
+    <string name="add_new_activity_inactive">Can\'t add</string>
     <string name="drag_to_edit">Drag to edit</string>
     <string name="cancel">cancel</string>
     <string name="edit">edit</string>

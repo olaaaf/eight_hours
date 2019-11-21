@@ -55,8 +55,8 @@ public class AddButton extends LinearLayout {
         states = new String[]{r.getString(R.string.add_new_activity),
                 r.getString(R.string.confirm_activity),
                 r.getString(R.string.play_activity),
-                r.getString(R.string.play_activity),
-                r.getString(R.string.add_new_activity)};
+                r.getString(R.string.play_inactive),
+                r.getString(R.string.add_new_activity_inactive)};
         icons = new Drawable[]{ContextCompat.getDrawable(context, R.drawable.add_white),
                 ContextCompat.getDrawable(context, R.drawable.tick),
                 ContextCompat.getDrawable(context, R.drawable.play_na),
