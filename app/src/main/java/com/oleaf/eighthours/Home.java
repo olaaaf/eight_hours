@@ -179,7 +179,7 @@ public class Home extends AppCompatActivity {
 
     public void optionsHide(){
         //add_button.setActivated(false);
-        options.hide();
+        options.close();
     }
 
     public void chosenChanged(){
@@ -251,6 +251,7 @@ public class Home extends AppCompatActivity {
         colorMenu.close();
         showHide();
         changeAddButton(AddButton.State.ADDNEW);
+        updateButton(eightCalendar.isPast());
     }
 
     public void activitySelected(int index){

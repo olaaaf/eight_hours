@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 public class Options extends LinearLayout {
     Animation show, hide;
     int index=-1;
+    boolean shown = false;
+
 
     public Options(Context context) {
         super(context);
@@ -48,6 +50,7 @@ public class Options extends LinearLayout {
             bringToFront();
             startAnimation(show);
         }
+        shown = true;
     }
 
     public void hide() {
@@ -58,6 +61,7 @@ public class Options extends LinearLayout {
 
     private void hideN(){
         startAnimation(hide);
+        shown = false;
     }
 
     public void editPress() {
@@ -90,7 +94,7 @@ public class Options extends LinearLayout {
     }
 
     public void close(){
-        if (index > -1) {
+        if (shown) {
             hide();
             ((Home) getContext()).circle.arcs.deselect();
         }
