@@ -42,6 +42,11 @@ public class EightCalendar {
         home.updateButton(isPast());
     }
 
+    public void setToday(){
+        Calendar today = Calendar.getInstance();
+        changeDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
+    }
+
     public void saveActivities(){
 
     }

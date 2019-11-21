@@ -118,6 +118,8 @@ public class Home extends AppCompatActivity {
     public void updateButton(boolean isPast){
         if (addButton.currentState == AddButton.State.ADDNEW && isPast){
             changeAddButton(AddButton.State.ADDNEW_INACTIVE);
+        }else if (addButton.currentState == AddButton.State.ADDNEW_INACTIVE && !isPast){
+            changeAddButton(AddButton.State.ADDNEW);
         }
     }
 

@@ -60,8 +60,8 @@ public class AddButton extends LinearLayout {
         icons = new Drawable[]{ContextCompat.getDrawable(context, R.drawable.add_white),
                 ContextCompat.getDrawable(context, R.drawable.tick),
                 ContextCompat.getDrawable(context, R.drawable.play_na),
-                ContextCompat.getDrawable(context, R.drawable.play_na),
-                ContextCompat.getDrawable(context, R.drawable.add_white)};
+                ContextCompat.getDrawable(context, R.drawable.play_inactive),
+                ContextCompat.getDrawable(context, R.drawable.add_white_inactive)};
         colorInactive = ContextCompat.getColor(context, R.color.inactive_text);
     }
 

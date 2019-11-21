@@ -2,10 +2,10 @@ package com.oleaf.eighthours.date;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -15,6 +15,12 @@ import java.util.Calendar;
 public class CalendarDatePicker extends DialogFragment {
     private Calendar date;
     private EightCalendar eightCalendar;
+    private DialogInterface.OnClickListener todayListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            eightCalendar.setToday();
+        }
+    };
 
     public static CalendarDatePicker newInstance(Calendar date, EightCalendar eightCalendar){
         CalendarDatePicker c = new CalendarDatePicker();
@@ -25,11 +31,16 @@ public class CalendarDatePicker extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        //Get today's date
         final Calendar c = Calendar.getInstance();
         if (date == null){
             date = c;
         }
-        return new DatePickerDialog(getActivity(), dateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
+        //initlialize DatePickerDialog
+        DatePickerDialog d = new DatePickerDialog(getActivity(), dateSetListener, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
+        //Add Today button with todayListener onClickListener
+        d.setButton(DialogInterface.BUTTON_NEUTRAL, "Today", todayListener);
+        return d;
     }
 
     private DatePickerDialog.OnDateSetListener dateSetListener =
