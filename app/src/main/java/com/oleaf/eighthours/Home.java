@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -23,6 +24,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.oleaf.eighthours.date.EightCalendar;
 import com.oleaf.eighthours.details.DetailsFragment;
+import com.oleaf.eighthours.settings.Settings;
 
 public class Home extends AppCompatActivity {
     public static final int grid = 20;
@@ -85,8 +87,8 @@ public class Home extends AppCompatActivity {
             }
         });
         if (Build.VERSION.SDK_INT >= 27){
-            getWindow().setNavigationBarColor(r.getColor(R.color.appWhite));
-            getWindow().setStatusBarColor(r.getColor(R.color.appWhite));
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.appWhite));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.appWhite));
             View decor = getWindow().getDecorView();
             decor.setSystemUiVisibility(decor.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR |View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR   );
         }
@@ -280,6 +282,10 @@ public class Home extends AppCompatActivity {
         }
     }
 
+    public void onSettingsPressed(View view){
+        changeActivity(Settings.class, 3);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -292,6 +298,7 @@ public class Home extends AppCompatActivity {
                     }
                 }
             case 3:
+                //Settings
                 if (resultCode == Activity.RESULT_OK){
 
                 }

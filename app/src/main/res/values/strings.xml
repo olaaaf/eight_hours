@@ -6,6 +6,7 @@
     <string name="timeleft">Time left</string>
     <string name="add_new_activity">Add activity</string>
     <string name="add_new_activity_inactive">Can\'t add</string>
+    <string name="settings_name">Settings</string>
     <string name="drag_to_edit">Drag to edit</string>
     <string name="cancel">cancel</string>
     <string name="edit">edit</string>
