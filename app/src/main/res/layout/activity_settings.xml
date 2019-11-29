@@ -22,14 +22,16 @@
         <com.oleaf.eighthours.settings.SimpleLine
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
-                app:dashed="false" />
+                app:color="@color/colorPrimaryDark"
+                app:number_of_lines="7"
+                app:rounded="true"/>
 
         <Switch
                 android:id="@+id/switch3"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:text="Switch" />
-    </LinearLayout>
+                android:text="Switch"
+                />    </LinearLayout>
 
     <TextView
             android:id="@+id/textView4"

@@ -2,6 +2,7 @@ package com.oleaf.eighthours.settings;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -11,7 +12,16 @@ import android.widget.Toast;
 import com.oleaf.eighthours.R;
 
 public class SimpleLine extends View {
-    private boolean dashed=false;
+    //Attributes
+    private int number_of_lines=1;
+    private float break_to_line=0.2f;
+    private boolean rounded=true;
+
+    //UI variables (depending on the size)
+    private float lineWidth=0;
+    private float breakWidth=0;
+    private float height=0;
+
     public SimpleLine(Context context) {
         super(context);
         init(context, null);
@@ -36,12 +46,47 @@ public class SimpleLine extends View {
         if (attributeSet != null){
             TypedArray attrs = c.getTheme().obtainStyledAttributes(attributeSet, R.styleable.SimpleLine, 0, 0);
             try{
-                dashed = attrs.getBoolean(R.styleable.SimpleLine_dashed, false);
+                number_of_lines = attrs.getInt(R.styleable.SimpleLine_number_of_lines, 1);
+                break_to_line = attrs.getFloat(R.styleable.SimpleLine_break_to_line_ratio, 0.2f);
+                rounded = attrs.getBoolean(R.styleable.SimpleLine_rounded, false);
             }finally {
                 attrs.recycle();
             }
         }
-        Toast.makeText(c, ""+dashed, Toast.LENGTH_SHORT).show();
+        //After the whole thing initialized
+        post(new Runnable() {
+            @Override
+            public void run() {
+                height = getHeight();
+                //get width
+            }
+        });
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        float x = 0;
+        for (int ix = 0; ix < number_of_lines; ++ix){
+            if (rounded)
+                drawRounded(canvas, x, lineWidth);
+            else
+                drawLine(canvas, x, lineWidth);
+            x += lineWidth + breakWidth;
+        }
+    }
+
+    private void drawLine(Canvas canvas, float startX, float width){
 
     }
+
+    private void drawRounded(Canvas canvas, float startX, float width){
+        //draw two half-circles radius = height/2
+        //left
+
+        //right
+
+        //draw line
+        drawLine(canvas, startX + height/2f, width - height/2f);
+    }
+
 }

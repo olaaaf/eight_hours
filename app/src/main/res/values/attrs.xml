@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="SimpleLine">
-        <attr name="dashed" format="boolean"/>
-
+        <attr name="number_of_lines" format="integer"/>
+        <attr name="break_to_line_ratio" format="fraction"/>
+        <attr name="rounded" format="boolean"/>
+        <attr name="color" format="color"/>
     </declare-styleable>
 </resources>
