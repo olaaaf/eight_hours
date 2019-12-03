@@ -12,6 +12,7 @@ public class Activities implements Parcelable, Serializable {
     private static final long serialversionUID = 22;
     public static final int grid = 20;
     public int maximum = 60 * 8;
+    public int default_time = 60*8;
     int time_left = maximum;
     private Span[] spans;
 
