@@ -40,18 +40,70 @@
                     app:number_of_lines="7"
                     app:rounded="true" />
 
+            <Switch
+                    android:id="@+id/mplay"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Enable playing multiple\nactivities at once" />
+
+            <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp" />
+
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                <TextView
+                        android:id="@+id/textView5"
+                        style="@style/Widget.AppCompat.CompoundButton.Switch"
+                        android:layout_width="178dp"
+                        android:layout_height="match_parent"
+                        android:text="Defualt time in hours"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.design.widget.TextInputLayout
+                        android:id="@+id/textInputLayout"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    <android.support.design.widget.TextInputEditText
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:text="8"
+                            style="@style/TextPrimary"/>
+                </android.support.design.widget.TextInputLayout>
+            </android.support.constraint.ConstraintLayout>
+
         </LinearLayout>
     </ScrollView>
 
     <TextView
             android:id="@+id/textView4"
             style="@style/TextPrimary"
-            android:layout_width="277dp"
-            android:layout_height="60dp"
+            android:layout_width="244dp"
+            android:layout_height="57dp"
             android:layout_marginTop="56dp"
             android:text="@string/settings_name"
             android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/circle_ripple_transparent"
+            android:rotation="90"
+            android:scaleType="fitCenter"
+            android:tint="@color/textPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/textView4"
+            app:layout_constraintTop_toTopOf="@+id/textView4"
+            app:srcCompat="@drawable/arrow"
+            tools:layout_editor_absoluteX="34dp" />
 </android.support.constraint.ConstraintLayout>

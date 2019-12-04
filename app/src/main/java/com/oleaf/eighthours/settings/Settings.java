@@ -11,6 +11,7 @@ import com.oleaf.eighthours.R;
 
 public class Settings extends AppCompatActivity {
     LinearLayout settingsView;
+    boolean mPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
