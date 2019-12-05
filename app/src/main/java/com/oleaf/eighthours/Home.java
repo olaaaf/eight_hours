@@ -24,6 +24,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.oleaf.eighthours.date.EightCalendar;
 import com.oleaf.eighthours.details.DetailsFragment;
+import com.oleaf.eighthours.settings.SavedSettings;
 import com.oleaf.eighthours.settings.Settings;
 
 public class Home extends AppCompatActivity {
@@ -300,7 +301,10 @@ public class Home extends AppCompatActivity {
             case 3:
                 //Settings
                 if (resultCode == Activity.RESULT_OK){
+                    SavedSettings settings = data.getParcelableExtra("settings");
+                    if (settings != null){
 
+                    }
                 }
         }
     }

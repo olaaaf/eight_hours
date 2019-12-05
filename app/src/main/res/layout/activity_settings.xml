@@ -40,12 +40,6 @@
                     app:number_of_lines="7"
                     app:rounded="true" />
 
-            <Switch
-                    android:id="@+id/mplay"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:text="Enable playing multiple\nactivities at once" />
-
             <Space
                     android:layout_width="match_parent"
                     android:layout_height="5dp" />
