@@ -2,6 +2,7 @@ package com.oleaf.eighthours.settings;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Switch;
 
 import com.oleaf.eighthours.Activities;
 import com.oleaf.eighthours.R;
+import com.oleaf.eighthours.TextEditor;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,7 +28,6 @@ import java.util.Calendar;
 public class Settings extends AppCompatActivity {
     public static final String fileName = "settings";
     LinearLayout settingsView;
-    Volatile<Boolean> mPlay;
     Runnable r = new Runnable() {
         @Override
         public void run() {
@@ -46,35 +47,12 @@ public class Settings extends AppCompatActivity {
             decor.setSystemUiVisibility(decor.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
         }
         settingsView = findViewById(R.id.settingsList);
-        mPlay = new Volatile<>(false, r);
+        loadSettings();
     }
 
     private void loadSettings() {
-        ((Switch) findViewById(R.id.mplay)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mPlay.set(isChecked);
-            }
-        });
-    }
-
-    class Volatile<T> implements Serializable {
-        private T variable;
-        private Runnable r;
-
-        Volatile(T v, Runnable runnable) {
-            variable = v;
-            r = runnable;
-        }
-
-        void set(T nV) {
-            variable = nV;
-            r.run();
-        }
-
-        T get() {
-            return variable;
-        }
+        TextEditor maxHours = findViewById(R.id.maxHours);
+        maxHours.setFilters(new NumberInputFilter[]{new NumberInputFilter(0,24)});
     }
 
     void updateAll() {
@@ -86,7 +64,6 @@ public class Settings extends AppCompatActivity {
             FileOutputStream settingsFile = openFileOutput("." + fileName, Context.MODE_PRIVATE);
             ObjectOutputStream outputStream = new ObjectOutputStream(settingsFile);
             //Write variables
-            outputStream.writeBoolean(mPlay.get());
 
             //Close file
             outputStream.close();
@@ -104,7 +81,6 @@ public class Settings extends AppCompatActivity {
                 FileInputStream fileInputStream = new FileInputStream(settingsFile);
                 ObjectInputStream inputStream = new ObjectInputStream(fileInputStream);
                 //Read variables
-                mPlay.set(inputStream.readBoolean());
 
                 //Close file
                 inputStream.close();
