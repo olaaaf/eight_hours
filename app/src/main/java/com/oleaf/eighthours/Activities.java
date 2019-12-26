@@ -3,6 +3,7 @@ package com.oleaf.eighthours;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.preference.PreferenceScreen;
 
 import java.io.Serializable;
 
@@ -12,21 +13,19 @@ public class Activities implements Parcelable, Serializable {
     private static final long serialversionUID = 22;
     public static final int grid = 20;
     public int maximum = 60 * 8;
+    public int default_maximum = 60*8;
     public boolean maximum_changed = false;
-    public int default_time = 60*8;
     int time_left = maximum;
     private Span[] spans;
 
 
-    Activities(boolean a){
+    Activities(int maximum){
+        this.maximum = maximum;
         spans = new Span[0];
         time_left = maximum;
+        updateDefault(maximum);
     }
 
-    Activities(Context context){
-        //Recovery and file management
-        this(false);
-    }
 
     private Activities(Parcel in){
         readParcel(in);
@@ -74,6 +73,36 @@ public class Activities implements Parcelable, Serializable {
         }
         time_left += spans[index].minutes;
         spans = cp;
+    }
+
+    public void updateTimeLeft(){
+        time_left = maximum;
+        for (Span s : spans){
+            time_left -= s.minutes;
+        }
+    }
+
+    public void changeMaximum(int maximum){
+        if (maximum == default_maximum){
+            resetMaximum();
+            return;
+        }
+        maximum_changed = true;
+        this.maximum = maximum;
+        updateTimeLeft();
+    }
+
+    public void resetMaximum(){
+        maximum_changed = false;
+        maximum = default_maximum;
+        updateTimeLeft();
+    }
+
+    public void updateDefault(int default_maximum){
+        this.default_maximum = default_maximum;
+        if (!maximum_changed)
+            maximum = default_maximum;
+        updateTimeLeft();
     }
 
     public void startActivity(int index){

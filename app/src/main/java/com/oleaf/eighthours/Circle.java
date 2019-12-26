@@ -278,7 +278,7 @@ public class Circle extends View{
         toEdit = false;
         arcs.deselect();
         invalidate();
-        home.updateText(home.activities.time_left);
+        home.updateTimeLeft();
     }
     public void confirm() {
         if (editing > -1){
@@ -296,7 +296,7 @@ public class Circle extends View{
         dragArc.alpha = 0;
         toEdit = false;
         arcs.deselect();
-        home.updateText(home.activities.time_left);
+        home.updateTimeLeft();
         invalidate();
     }
 

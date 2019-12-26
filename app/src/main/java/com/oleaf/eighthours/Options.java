@@ -85,7 +85,7 @@ public class Options extends LinearLayout {
         home.circle.arcs.delete(index);
         home.circle.update();
         home.activities.deleteActivity(index);
-        home.updateText(home.activities.time_left);
+        home.updateTimeLeft();
         hide();
     }
 

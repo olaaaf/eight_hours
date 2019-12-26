@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -44,11 +45,13 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (!getExtras())
-            activities = new Activities(this);
+            activities = new Activities(getDefaultTime());
 
         setContentView(R.layout.activity_home);
 
         Resources r = getResources();
+
+
 
         hoursText = findViewById(R.id.textView);
         colorMenu = findViewById(R.id.color_menu);
@@ -79,6 +82,7 @@ public class Home extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {
             }
         });
+        updateTimeLeft();
         if (Build.VERSION.SDK_INT >= 27){
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.appWhite));
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.appWhite));
@@ -87,8 +91,18 @@ public class Home extends AppCompatActivity {
         }
     }
 
+    public void updateDefaultTime(){
+        activities.updateDefault(getDefaultTime());
+    }
+
+    public void changeActivities(Activities activities){
+        this.activities = activities;
+        activities.updateDefault(getDefaultTime());
+        updateTimeLeft();
+    }
+
     public void resetActivities(){
-        activities = new Activities(this);
+        activities = new Activities(getDefaultTime());
     }
     public void updateActivities(){
         circle.arcs = circle.new Arcs();
@@ -130,7 +144,7 @@ public class Home extends AppCompatActivity {
             return false;
         activities = bundle.getParcelable("activities");
         if (activities == null)
-            activities = new Activities(this);
+            activities = new Activities(getDefaultTime());
         return true;
     }
     public boolean colorUp(){
@@ -149,7 +163,7 @@ public class Home extends AppCompatActivity {
         changeAddButton(AddButton.State.CONFIRM);
     }
     public void colorHide(){
-        updateText(activities.time_left);
+        updateTimeLeft();
         desc.setText("");
         changeAddButton(AddButton.State.ADDNEW);
     }
@@ -175,6 +189,10 @@ public class Home extends AppCompatActivity {
     public void optionsHide(){
         //add_button.setActivated(false);
         options.close();
+    }
+
+    public void updateTimeLeft(){
+        updateText(activities.time_left);
     }
 
     public void chosenChanged(){
@@ -279,6 +297,10 @@ public class Home extends AppCompatActivity {
         changeActivity(SettingsActivity.class, 3);
     }
 
+    private int getDefaultTime(){
+        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("default_time", ""+getResources().getInteger(R.integer.default_hours))) * 60;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -294,9 +316,8 @@ public class Home extends AppCompatActivity {
                 //Settings
                 if (resultCode == Activity.RESULT_OK){
                     SavedSettings settings = data.getParcelableExtra("settings");
-                    if (settings != null){
-
-                    }
+                    updateDefaultTime();
+                    updateTimeLeft();
                 }
         }
     }

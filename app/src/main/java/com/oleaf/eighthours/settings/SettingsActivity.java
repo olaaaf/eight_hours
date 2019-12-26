@@ -1,5 +1,7 @@
 package com.oleaf.eighthours.settings;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -34,6 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        //Set white colors!
         if (Build.VERSION.SDK_INT >= 27){
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.appWhite));
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.appWhite));
@@ -47,21 +50,31 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
             EditTextPreference preference = findPreference("default_time");
+            //Allow only numbers, from 1 to 24
             preference.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
                 @Override
                 public void onBindEditText(@NonNull EditText editText) {
                     editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    editText.setFilters(new InputFilter[] {new NumberInputFilter(1, 24)});
+                    editText.setFilters(new InputFilter[] {new NumberInputFilter(1, 9)});
                 }
             });
+            //If the preference is set to nothing, revert to default value
             preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if (newValue.toString().isEmpty())
                         ((EditTextPreference)preference).setText(getResources().getInteger(R.integer.default_hours)+"");
+                    ((EditTextPreference)preference).setText(newValue.toString());
                     return false;
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_OK, returnIntent);
+        super.onBackPressed();
     }
 }

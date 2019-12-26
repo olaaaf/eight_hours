@@ -79,7 +79,7 @@ public class EightCalendar {
             try{
                 FileInputStream fileInputStream = new FileInputStream(dateFile);
                 ObjectInputStream inputStream = new ObjectInputStream(fileInputStream);
-                home.activities = (Activities) inputStream.readObject();
+                home.changeActivities((Activities) inputStream.readObject());
                 inputStream.close();
                 fileInputStream.close();
             }catch(IOException e){
