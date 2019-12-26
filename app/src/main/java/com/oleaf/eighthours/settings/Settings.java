@@ -2,17 +2,14 @@ package com.oleaf.eighthours.settings;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.design.widget.TextInputEditText;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 
-import com.oleaf.eighthours.Activities;
 import com.oleaf.eighthours.R;
 import com.oleaf.eighthours.TextEditor;
 
@@ -22,8 +19,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.Calendar;
 
 public class Settings extends AppCompatActivity {
     public static final String fileName = "settings";
@@ -39,20 +34,20 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        //setContentView(R.layout.activity_settings);
         if (Build.VERSION.SDK_INT >= 27) {
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.appWhite));
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.appWhite));
             View decor = getWindow().getDecorView();
             decor.setSystemUiVisibility(decor.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
         }
-        settingsView = findViewById(R.id.settingsList);
+       // settingsView = findViewById(R.id.settingsList);
         loadSettings();
     }
 
     private void loadSettings() {
-        TextEditor maxHours = findViewById(R.id.maxHours);
-        maxHours.setFilters(new NumberInputFilter[]{new NumberInputFilter(0,24)});
+        //TextEditor maxHours = findViewById(R.id.maxHours);
+       // maxHours.setFilters(new NumberInputFilter[]{new NumberInputFilter(0,24)});
     }
 
     void updateAll() {

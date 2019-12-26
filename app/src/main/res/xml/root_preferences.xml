@@ -1,0 +1,48 @@
+<!--
+  ~ Copyright 2018 The app Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/activities_header">
+
+        <EditTextPreference
+                app:defaultValue="8"
+                app:key="default_time"
+                app:title="@string/default_time"
+                app:summary="@string/default_time_summary"
+                app:useSimpleSummaryProvider="true"/>
+
+        <SwitchPreference
+                app:defaultValue="false"
+                app:key="multiple_at_once"
+                app:title="@string/multiple_at_once"
+                app:summary="@string/multiple_at_once_summary"
+                />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/app_header">
+
+        <SwitchPreferenceCompat
+                app:key="lite_mode"
+                app:title="@string/lite_mode"
+                app:summary="@string/lite_mode_summary"/>
+
+        <!-- TODO: Theme preference -->
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,24 +1,15 @@
 package com.oleaf.eighthours;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
-import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.AttributeSet;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
@@ -26,6 +17,7 @@ import com.oleaf.eighthours.date.EightCalendar;
 import com.oleaf.eighthours.details.DetailsFragment;
 import com.oleaf.eighthours.settings.SavedSettings;
 import com.oleaf.eighthours.settings.Settings;
+import com.oleaf.eighthours.settings.SettingsActivity;
 
 public class Home extends AppCompatActivity {
     public static final int grid = 20;
@@ -284,7 +276,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void onSettingsPressed(View view){
-        changeActivity(Settings.class, 3);
+        changeActivity(SettingsActivity.class, 3);
     }
 
     @Override

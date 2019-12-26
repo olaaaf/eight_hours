@@ -3,7 +3,7 @@ package com.oleaf.eighthours;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.*;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 

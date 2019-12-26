@@ -1,15 +1,14 @@
 package com.oleaf.eighthours.date;
 
 import android.content.Context;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import android.util.Log;
-import android.widget.Toast;
+
 import com.oleaf.eighthours.Activities;
 import com.oleaf.eighthours.Home;
 
 import java.io.*;
-import java.time.Year;
 import java.util.Calendar;
 
 /**

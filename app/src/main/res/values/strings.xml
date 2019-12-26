@@ -26,4 +26,21 @@
         <u>delete</u>
     </string>
     <string name="name_activity">Name the activity</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="activities_header">Activities</string>
+    <string name="app_header">App</string>
+
+    <!-- Activities Preferences -->
+    <string name="default_time">Default time (in hours)</string>
+    <string name="default_time_summary">In hours</string>
+    <string name="multiple_at_once">Multiple playing</string>
+    <string name="multiple_at_once_summary">Allow playing multiple activities at once</string>
+
+    <!-- App Preferences -->
+    <string name="lite_mode">Lite mode</string>
+    <string name="lite_mode_summary">For slower devices</string>
+    <string name="theme">Theme</string>
+
 </resources>

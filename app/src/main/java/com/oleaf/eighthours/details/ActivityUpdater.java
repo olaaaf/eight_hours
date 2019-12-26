@@ -1,7 +1,7 @@
 package com.oleaf.eighthours.details;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -9,9 +9,7 @@ import android.widget.TextView;
 import com.oleaf.eighthours.R;
 import com.oleaf.eighthours.Span;
 import com.oleaf.eighthours.Tools;
-import com.oleaf.eighthours.details.ProgressBar;
 
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ActivityUpdater extends View{

@@ -11,7 +11,9 @@
             android:roundIcon="@mipmap/sun_icon_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".settings.Settings"></activity>
+        <activity
+                android:name=".settings.SettingsActivity"
+                android:label="@string/title_activity_settings"></activity>
         <activity
                 android:name=".Home"
                 android:label="@string/app_name"
