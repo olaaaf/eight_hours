@@ -33,8 +33,8 @@ public class BackgroundCircle extends View {
     }
 
     void init(Context  c){
-        Resources r = c.getResources();
-        final float w = r.getDimension(R.dimen.circle_width);
+            Resources r = c.getResources();
+            final float w = r.getDimension(R.dimen.circle_width);
         final float h = r.getDimension(R.dimen.circle_height);
         stroke = r.getDimension(R.dimen.circle_rounded);
         backgroundColor = r.getColor(R.color.colorPrimary);

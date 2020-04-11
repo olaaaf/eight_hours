@@ -20,11 +20,11 @@
     <integer name="default_hours">8</integer>
     <dimen name="short_skip">0.5</dimen>    <!-- Meaning what part of a minute does a short click skip -->
     <array name="colors">
-        <item>#f8bbd0</item>
-        <item>#607d8b</item>
-        <item>#90caf9</item>
-        <item>#b388ff</item>
-        <item>#ea80fc</item>
+        <item>#FFf8bbd0</item>
+        <item>#FF607d8b</item>
+        <item>#FF90caf9</item>
+        <item>#FFb388ff</item>
+        <item>#FFea80fc</item>
     </array>
     <dimen name="peek_height">130dp</dimen>
     <dimen name="item_duration">1000</dimen>

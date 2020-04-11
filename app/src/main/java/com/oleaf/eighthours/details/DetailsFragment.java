@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.oleaf.eighthours.Home;
+import com.oleaf.eighthours.Notify;
 import com.oleaf.eighthours.R;
 import com.oleaf.eighthours.Span;
 
@@ -38,6 +39,7 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     private ImageButton playButton;
     private float minSkip=0.5f, maxSkip=0.5f;
     private float shortSkip=0.5f;
+    private Span s;
 
     Runnable changeDrawable = new Runnable() {
         @Override
@@ -83,6 +85,8 @@ public class DetailsFragment extends BottomSheetDialogFragment {
 
         Home home = (Home) getContext();
         Span span = home.activities.getSpan(home.index);
+        s = span;
+
         //inflate the view
         View v = inflater.inflate(R.layout.activity_details, container, false);
         //load resources
@@ -196,6 +200,8 @@ public class DetailsFragment extends BottomSheetDialogFragment {
             activityUpdater.stop();
             progressBar.stopProgress();
         }else{
+            Notify notify = new Notify(getContext());
+            notify.showNotification(s);
             activityUpdater.start();
             progressBar.startProgress();
         }
