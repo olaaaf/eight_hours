@@ -54,7 +54,7 @@ public class EightCalendar {
     }
 
     public void saveActivities(){
-
+        writeDate();
     }
 
     private void checkFolder(){

@@ -196,11 +196,13 @@ public class DetailsFragment extends BottomSheetDialogFragment {
 
     public void play(){
         changeDrawable();
+        Notify notify = new Notify(getContext());
         if (activityUpdater.isRunning()){
             activityUpdater.stop();
             progressBar.stopProgress();
+            //hide the notification
+            notify.hideNotification();
         }else{
-            Notify notify = new Notify(getContext());
             notify.showNotification(s);
             activityUpdater.start();
             progressBar.startProgress();
