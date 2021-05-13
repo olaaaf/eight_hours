@@ -42,7 +42,10 @@ public class Notify {
                 .setColor(color)
                 .setSmallIcon(R.drawable.play_na);
         manager.notify(1, builder.build());
+    }
 
+    public void hideNotification(){
+        manager.cancelAll();
     }
 
     private NotificationCompat.Builder newBuilder(){

@@ -380,5 +380,17 @@
                 />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+            android:id="@+id/dateIndicator"
+            style="@style/TextPrimary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="TODAY"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@+id/dateButton"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/dateButton"
+            app:layout_constraintTop_toBottomOf="@+id/dateButton" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

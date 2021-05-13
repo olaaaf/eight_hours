@@ -3,10 +3,14 @@ package com.oleaf.eighthours.date;
 import android.content.Context;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+
+import android.content.res.TypedArray;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.oleaf.eighthours.Activities;
 import com.oleaf.eighthours.Home;
+import com.oleaf.eighthours.R;
 
 import java.io.*;
 import java.util.Calendar;
@@ -17,6 +21,7 @@ import java.util.Calendar;
  */
 public class EightCalendar {
     private static final String dirName = "dates";
+    public static TypedArray dayNames;
     Home home;
     Calendar date;
     Activities activities;
@@ -27,6 +32,7 @@ public class EightCalendar {
         this.activities = activities;
         this.context = context;
         this.home = home;
+        dayNames = context.getResources().obtainTypedArray(R.array.day_names);
     }
 
     public void showDatePicker(FragmentManager supportedFragmentManager){
@@ -39,6 +45,7 @@ public class EightCalendar {
         date.set(year, month, day);
         readDate();
         home.updateButton(isPast());
+        updateDayIndicator();
     }
 
     public void setToday(){
@@ -67,6 +74,15 @@ public class EightCalendar {
             dateFile.close();
         }catch(IOException e){
             Log.d("IO Error", e.getMessage());
+        }
+    }
+
+    private void updateDayIndicator(){
+        TextView dateIndicator = home.findViewById(R.id.dateIndicator);
+        if (isToday()){
+            dateIndicator.setText(R.string.today);
+        }else{
+            dateIndicator.setText(dayNames.getText(date.get(Calendar.DAY_OF_WEEK)-1));
         }
     }
 
@@ -100,5 +116,4 @@ public class EightCalendar {
         Calendar currentDate = Calendar.getInstance();
         return !(date.get(Calendar.YEAR) > currentDate.get(Calendar.YEAR) || (date.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) && date.get(Calendar.DAY_OF_YEAR) >= currentDate.get(Calendar.DAY_OF_YEAR)));
     }
-
 }

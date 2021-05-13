@@ -305,12 +305,13 @@ public class Circle extends View{
     }
 
     public void startSelected(){
-        Log.println(3, "Time", "onStart: " + home.activities.getSpan(arcs.draggingIndex).getCurrentMinutes());
+        //Log.println(3, "Time", "onStart: " + home.activities.getSpan(arcs.draggingIndex).getCurrentMinutes());
         home.activities.getSpan(arcs.draggingIndex).start();
         //TODO: show percentage
     }
     public void stopSelected(){
-        Log.println(3, "Time", "onPause: " + home.activities.getSpan(arcs.draggingIndex).getCurrentMinutes());
+        //hide the notification
+
         home.activities.getSpan(arcs.draggingIndex).pause();
     }
     public float getAngleBefore(int span_index){

@@ -81,9 +81,13 @@ public class Options extends LinearLayout {
         if (index < 0)
             return;
         Home home = (Home) getContext();
+        //stop the timer
+        home.circle.stopSelected();
+        //Deselect and delete visually
         home.circle.arcs.deselect();
         home.circle.arcs.delete(index);
         home.circle.update();
+        //delete in activities
         home.activities.deleteActivity(index);
         home.updateTimeLeft();
         hide();

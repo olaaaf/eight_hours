@@ -19,6 +19,15 @@
     <dimen name="arc_sh_stroke">5dp</dimen>
     <integer name="default_hours">8</integer>
     <dimen name="short_skip">0.5</dimen>    <!-- Meaning what part of a minute does a short click skip -->
+    <array name="day_names">
+        <item>SUN</item>
+        <item>MON</item>
+        <item>TUE</item>
+        <item>WED</item>
+        <item>THU</item>
+        <item>FRI</item>
+        <item>SAT</item>
+    </array>
     <array name="colors">
         <item>#FFf8bbd0</item>
         <item>#FF607d8b</item>

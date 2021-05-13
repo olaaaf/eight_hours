@@ -13,6 +13,7 @@
     <string name="close">close</string>
     <string name="done_timer">Finished</string>
     <string name="confirm_activity">Confirm</string>
+    <string name="today">TODAY</string>
     <string-array name="menu_buttons">
         <item>Circle</item>
         <item>List</item>
