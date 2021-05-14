@@ -40,7 +40,12 @@ public class ActivityUpdater extends View{
                 }catch (InterruptedException e){
                     Thread.currentThread().interrupt();
                 }
-                update();
+                left.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        update();
+                    }
+                });
             }
         }
     };
