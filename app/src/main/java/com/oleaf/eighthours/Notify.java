@@ -40,6 +40,7 @@ public class Notify {
                 .setContentTitle(span.name)
                 .setSubText(Tools.timeMinutes(span.getMinutes() - span.getCurrentMinutes()) + " left")
                 .setColor(color)
+                .setNotificationSilent()
                 .setSmallIcon(R.drawable.play_na);
         manager.notify(1, builder.build());
     }

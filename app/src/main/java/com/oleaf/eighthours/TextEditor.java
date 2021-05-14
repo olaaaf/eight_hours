@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 public class TextEditor extends AppCompatEditText {
-    Activity activity;
+    Context context;
     Runnable clearFocus = new Runnable() {
         @Override
         public void run() {
@@ -25,17 +25,14 @@ public class TextEditor extends AppCompatEditText {
 
     public TextEditor(Context context) {
         super(context);
-        activity = (Activity) context;
     }
 
     public TextEditor(Context context, AttributeSet attrs) {
         super(context, attrs);
-        activity = (Activity) context;
     }
 
     public TextEditor(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        activity = (Activity) context;
     }
 
     @Override
