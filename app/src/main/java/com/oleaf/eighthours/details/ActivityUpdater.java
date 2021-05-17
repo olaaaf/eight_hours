@@ -63,7 +63,6 @@ public class ActivityUpdater extends View{
                 progressBar.updateProgress(1f);
             }else{
                 left.setText(Tools.timeMinutes(span.getMinutes() - span.getCurrentMinutes()) + " left");
-                Log.d("Time", span.getCurrentMinutes() + "");
             }
         }
     }

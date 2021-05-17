@@ -75,8 +75,11 @@ public class Home extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                        close.setVisibility(View.GONE);
-                    }
+                //hide the button
+                close.setVisibility(View.GONE);
+                //deselect
+
+            }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
@@ -240,6 +243,24 @@ public class Home extends AppCompatActivity {
         options.editPress();
     }
 
+    public void showNotification(Span s){
+        //New intent intended to start the Notify service
+        Intent intent = new Intent(this, Notify.class);
+        //Stop the service just in case
+        stopService(intent);
+        //Put the span object to intent - pass it to the foreground service
+        intent.putExtra("span", (Parcelable) s);
+        //Start the service
+        startService(intent);
+    }
+
+    public void hideNotification(){
+        //Intent with Notify service
+        Intent intent = new Intent(this, Notify.class);
+        //Stop the service - invoke the Destroy function
+        stopService(intent);
+    }
+
     public void addPress(View view){
         switch (addButton.currentState){
             case ADDNEW:
@@ -255,7 +276,6 @@ public class Home extends AppCompatActivity {
                 break;
         }
     }
-
     public void closePress(View view){
         if (view != null)
             if (view.getVisibility() != View.VISIBLE)

@@ -2,6 +2,7 @@ package com.oleaf.eighthours.details;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import androidx.core.content.ContextCompat;
+
+import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.view.*;
 import android.widget.FrameLayout;
@@ -196,17 +199,24 @@ public class DetailsFragment extends BottomSheetDialogFragment {
 
     public void play(){
         changeDrawable();
-        Notify notify = new Notify(getContext());
+
         if (activityUpdater.isRunning()){
             activityUpdater.stop();
             progressBar.stopProgress();
-            //hide the notification
-            notify.hideNotification();
+            hideNotification();
         }else{
-            notify.showNotification(s);
             activityUpdater.start();
             progressBar.startProgress();
+            showNotification();
         }
+    }
+
+    private void showNotification(){
+        ((Home) requireContext()).showNotification(s);
+    }
+
+    private void hideNotification(){
+        ((Home) requireContext()).hideNotification();
     }
 
     private void changeDrawable(){

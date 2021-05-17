@@ -1,6 +1,7 @@
 package com.oleaf.eighthours;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.*;
@@ -311,7 +312,7 @@ public class Circle extends View{
     }
     public void stopSelected(){
         //hide the notification
-
+        home.hideNotification();
         home.activities.getSpan(arcs.draggingIndex).pause();
     }
     public float getAngleBefore(int span_index){
