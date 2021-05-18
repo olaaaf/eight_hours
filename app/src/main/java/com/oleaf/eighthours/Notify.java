@@ -99,6 +99,7 @@ public class Notify extends Service {
 
 
     public void update(){
+
         builder.setContentText(Tools.timeMinutes(span.getMinutes() - span.getCurrentMinutes()) + " left");
         manager.notify(notificationID, builder.build());
     }

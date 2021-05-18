@@ -35,11 +35,16 @@ public class ProgressBar extends View {
                 }catch (InterruptedException e){
                     Thread.currentThread().interrupt();
                 }
-                anim = ((System.currentTimeMillis() - animationStart) / (float) animationSpeed) % (max * 2f);
-                Log.d("A", "anim: "+anim);
-                if (anim > max)
-                    anim = max * 2f - anim;
-                invalidate();
+                ProgressBar.super.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        anim = ((System.currentTimeMillis() - animationStart) / (float) animationSpeed) % (max * 2f);
+                        Log.d("A", "anim: "+anim);
+                        if (anim > max)
+                            anim = max * 2f - anim;
+                        invalidate();
+                    }
+                });
             }
         }
     };
@@ -111,7 +116,7 @@ public class ProgressBar extends View {
 
     private void progressAnimation(Canvas canvas, float alpha){
         paint.setColor(((int) (alpha * 255) << 24) | (0x00FFFFFF & primaryColor));
-        Log.d("Ayy", onGoing+" "+anim);
+        //Log.d("Ayy", onGoing+" "+anim);
 
         drawBar(canvas, 1f);
     }

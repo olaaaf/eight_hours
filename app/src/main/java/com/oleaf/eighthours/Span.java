@@ -13,7 +13,7 @@ public class Span implements Parcelable,  Serializable{
     float minutes;
     long startTime=-1, pauseTime=-1, beforePause=0;
     float additionalTime=0;
-    boolean onGoing;
+    private boolean onGoing;
     byte color_index;
     String name;
 

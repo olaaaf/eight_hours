@@ -51,8 +51,6 @@ public class Home extends AppCompatActivity {
 
         Resources r = getResources();
 
-
-
         hoursText = findViewById(R.id.textView);
         colorMenu = findViewById(R.id.color_menu);
         desc = findViewById(R.id.textView3);
