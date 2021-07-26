@@ -26,7 +26,7 @@ public class ActivityUpdater extends View{
     private float minSkipValue = 0;
     private float skipAddintion = 0;
 
-    public static final long defaultMsUpdate = 500;
+    public static final long defaultMsUpdate = 1000;
     public static final long defaultMsUpdateQuick = 32;
     public static final long defaultSkipTime = 1300;
 

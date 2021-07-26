@@ -39,7 +39,6 @@ public class ProgressBar extends View {
                     @Override
                     public void run() {
                         anim = ((System.currentTimeMillis() - animationStart) / (float) animationSpeed) % (max * 2f);
-                        Log.d("A", "anim: "+anim);
                         if (anim > max)
                             anim = max * 2f - anim;
                         invalidate();

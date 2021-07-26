@@ -10,12 +10,12 @@ import static com.oleaf.eighthours.Activities.grid;
 public class Span implements Parcelable,  Serializable{
     private static final long serialversionUID = 44;
     public static final String default_name="Activity";
-    float minutes;
-    long startTime=-1, pauseTime=-1, beforePause=0;
-    float additionalTime=0;
+    public float minutes;
+    public long startTime=-1, pauseTime=-1, beforePause=0;
+    public float additionalTime=0;
     private boolean onGoing;
-    byte color_index;
-    String name;
+    public byte color_index;
+    public String name;
 
     Span(int _minutes, int _color_index, int time_left, String _name){
         minutes = clamp(round_up(_minutes), time_left);

@@ -1,23 +1,29 @@
 package com.oleaf.eighthours;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.IBinder;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.oleaf.eighthours.date.EightCalendar;
 import com.oleaf.eighthours.details.DetailsFragment;
+import com.oleaf.eighthours.notification.NotificationManager;
+import com.oleaf.eighthours.notification.Notify;
 import com.oleaf.eighthours.settings.SavedSettings;
-import com.oleaf.eighthours.settings.Settings;
 import com.oleaf.eighthours.settings.SettingsActivity;
 
 public class Home extends AppCompatActivity {
@@ -31,6 +37,9 @@ public class Home extends AppCompatActivity {
     public Circle circle;
     public EightCalendar eightCalendar;
     public View textEditLayout;
+    public Notify notify;
+    public boolean isBound;
+    public NotificationManager notificationManager;
 
     private TextEditor editText;
     private AddButton addButton;
@@ -62,6 +71,7 @@ public class Home extends AppCompatActivity {
         textEditLayout = findViewById(R.id.textEditLayout);
         editText = findViewById(R.id.edit_name);
         detailsFragment = DetailsFragment.newInstance();
+        notificationManager = new NotificationManager(this);
         eightCalendar = new EightCalendar(activities, this, this);
         eightCalendar.readDate();
         showTwist = AnimationUtils.loadAnimation(this, R.anim.show_twist);
@@ -113,8 +123,9 @@ public class Home extends AppCompatActivity {
         circle.invalidate();
     }
     public int addActivity(int min, int color){
-        Toast.makeText(this, editText.getText().toString(), Toast.LENGTH_SHORT).show();
         int ret = activities.newActivity(min, color, editText.getText().toString());
+        String name = activities.getSpan(ret).getName();
+        Toast.makeText(this, name + " added.", Toast.LENGTH_SHORT).show();
         editText.clearFocus();
         editText.setText("");
         return ret;//indicator.update(activities.getLength());
@@ -241,22 +252,8 @@ public class Home extends AppCompatActivity {
         options.editPress();
     }
 
-    public void showNotification(Span s){
-        //New intent intended to start the Notify service
-        Intent intent = new Intent(this, Notify.class);
-        //Stop the service just in case
-        stopService(intent);
-        //Put the span object to intent - pass it to the foreground service
-        intent.putExtra("span", (Parcelable) s);
-        //Start the service
-        startService(intent);
-    }
-
     public void hideNotification(){
-        //Intent with Notify service
-        Intent intent = new Intent(this, Notify.class);
-        //Stop the service - invoke the Destroy function
-        stopService(intent);
+
     }
 
     public void addPress(View view){
@@ -318,6 +315,8 @@ public class Home extends AppCompatActivity {
     private int getDefaultTime(){
         return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("default_time", ""+getResources().getInteger(R.integer.default_hours))) * 60;
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

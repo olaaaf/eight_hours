@@ -12,7 +12,8 @@
             android:roundIcon="@mipmap/sun_icon_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <service android:name=".Notify" android:exported="false"/>
+        <service android:name=".notification.Notify"
+                android:exported="false"/>
         <activity
                 android:name=".settings.SettingsActivity"
                 android:label="@string/title_activity_settings" />

@@ -1,18 +1,23 @@
-package com.oleaf.eighthours;
+package com.oleaf.eighthours.notification;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+
+import com.oleaf.eighthours.Home;
+import com.oleaf.eighthours.R;
+import com.oleaf.eighthours.Span;
+import com.oleaf.eighthours.Tools;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -28,7 +33,12 @@ public class Notify extends Service {
     //An Atomic Boolean for use inside a Thread
     private AtomicBoolean running = new AtomicBoolean(true);
     private NotificationCompat.Builder builder;
+    private long skipStart = 0;
+    private float skipValue = 0;
+    private float minSkipValue = 0;
+    private float skipAddintion = 0;
 
+    private final MyBinder myBinder = new MyBinder();
     //Notification constants
     private static final String channelId = "1";
     private static final String channelName = "Activities timer";
@@ -53,34 +63,50 @@ public class Notify extends Service {
             public void run() {
                 while(running.get()){
                     try{
-                        Thread.sleep(500);
+                        Thread.sleep(1000);
                     }catch(InterruptedException ie){
                         Thread.currentThread().interrupt();
                     }
-                    update();
+                    if (running.get()){
+                        update();
+                    }else{
+                        hideNotification();
+                    }
                 }
             }
         });
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    /**
+     * Attach a span to the notification and start the runnable thread
+     * @param s - the span to attach to
+     */
+    public void attachSpan(Span s){
         //Get a TypedArray from the resources
         colors = getResources().obtainTypedArray(R.array.colors);
-        //Get the span object from the intent
-        span = intent.getParcelableExtra("span");
         //Create a base notification
+        this.span = s;
         builder = buildNotification(span);
-
         Intent notificationIntent = new Intent(this, Home.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, 0);
         builder.setContentIntent(pendingIntent);
         startForeground(notificationID, builder.build());
-
         //Start the thread that updates the notification
         updateThread.start();
+    }
+
+    /**
+     * Detach the span from the notification, hide the notification and stop the runnable thread, while keeping the service going
+     */
+    public void detach(){
+        running.set(false);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
         return START_STICKY;
     }
 
@@ -94,12 +120,14 @@ public class Notify extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return myBinder;
     }
 
+    public int getRandom(){
+        return (int) (Math.random() * 100f);
+    }
 
     public void update(){
-
         builder.setContentText(Tools.timeMinutes(span.getMinutes() - span.getCurrentMinutes()) + " left");
         manager.notify(notificationID, builder.build());
     }
@@ -121,6 +149,9 @@ public class Notify extends Service {
 
     private void hideNotification(){
         manager.cancel(notificationID);
+        //save span progress
+
+        stopForeground(true);
     }
 
     private NotificationCompat.Builder newBuilder(){
@@ -131,5 +162,12 @@ public class Notify extends Service {
             builder = new NotificationCompat.Builder(this);
         }
         return builder;
+    }
+
+    public class MyBinder extends Binder {
+        Notify getService() {
+            // Return this instance of MyService so clients can call public methods
+            return Notify.this;
+        }
     }
 }

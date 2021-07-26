@@ -2,7 +2,6 @@ package com.oleaf.eighthours.details;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -18,7 +17,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import androidx.core.content.ContextCompat;
 
-import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.view.*;
 import android.widget.FrameLayout;
@@ -26,7 +24,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.oleaf.eighthours.Home;
-import com.oleaf.eighthours.Notify;
 import com.oleaf.eighthours.R;
 import com.oleaf.eighthours.Span;
 
@@ -212,11 +209,17 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     }
 
     private void showNotification(){
-        ((Home) requireContext()).showNotification(s);
+        Home home = ((Home) requireContext());
+        //Start the service
+        home.notificationManager.start();
+        //Connect to the service
+        home.notificationManager.connect(s);
     }
 
     private void hideNotification(){
-        ((Home) requireContext()).hideNotification();
+        Home home = ((Home) requireContext());
+        //Disconnect from the service
+        home.notificationManager.disconnect();
     }
 
     private void changeDrawable(){
