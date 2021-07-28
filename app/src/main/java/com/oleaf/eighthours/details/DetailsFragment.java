@@ -211,7 +211,7 @@ public class DetailsFragment extends BottomSheetDialogFragment {
     private void showNotification(){
         Home home = ((Home) requireContext());
         //Start the service
-        home.notificationManager.start();
+        //home.notificationManager.startService();
         //Connect to the service
         home.notificationManager.connect(s);
     }

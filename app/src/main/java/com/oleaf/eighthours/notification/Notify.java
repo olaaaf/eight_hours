@@ -32,6 +32,7 @@ public class Notify extends Service {
     private NotificationChannel channel;
     //An Atomic Boolean for use inside a Thread
     private AtomicBoolean running = new AtomicBoolean(true);
+    private AtomicBoolean hide = new AtomicBoolean(false);
     private NotificationCompat.Builder builder;
     private long skipStart = 0;
     private float skipValue = 0;
@@ -61,15 +62,15 @@ public class Notify extends Service {
         updateThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(running.get()){
-                    try{
+                while(running.get()) {
+                    try {
                         Thread.sleep(1000);
-                    }catch(InterruptedException ie){
+                    } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();
                     }
-                    if (running.get()){
+                    if (!hide.get()) {
                         update();
-                    }else{
+                    } else {
                         hideNotification();
                     }
                 }
@@ -86,6 +87,7 @@ public class Notify extends Service {
         colors = getResources().obtainTypedArray(R.array.colors);
         //Create a base notification
         this.span = s;
+        hide.set(false);
         builder = buildNotification(span);
         Intent notificationIntent = new Intent(this, Home.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -93,26 +95,31 @@ public class Notify extends Service {
                 PendingIntent.getActivity(this, 0, notificationIntent, 0);
         builder.setContentIntent(pendingIntent);
         startForeground(notificationID, builder.build());
-        //Start the thread that updates the notification
-        updateThread.start();
     }
 
     /**
      * Detach the span from the notification, hide the notification and stop the runnable thread, while keeping the service going
      */
     public void detach(){
-        running.set(false);
+        hide.set(true);
+    }
+
+    public Span getSpan(){
+        return span;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        running.set(true);
+        //Start the thread that updates the notification
+        updateThread.start();
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         running.set(false);
+        detach();
         hideNotification();
         super.onDestroy();
     }
@@ -128,8 +135,10 @@ public class Notify extends Service {
     }
 
     public void update(){
-        builder.setContentText(Tools.timeMinutes(span.getMinutes() - span.getCurrentMinutes()) + " left");
-        manager.notify(notificationID, builder.build());
+        if (span != null){
+            builder.setContentText(Tools.timeMinutes(span.getMinutes() - span.getCurrentMinutes()) + " left");
+            manager.notify(notificationID, builder.build());
+        }
     }
 
     //Notification functions
@@ -150,7 +159,6 @@ public class Notify extends Service {
     private void hideNotification(){
         manager.cancel(notificationID);
         //save span progress
-
         stopForeground(true);
     }
 

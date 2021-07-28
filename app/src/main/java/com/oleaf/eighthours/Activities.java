@@ -19,7 +19,7 @@ public class Activities implements Parcelable, Serializable {
     private Span[] spans;
 
 
-    Activities(int maximum){
+    public Activities(int maximum){
         this.maximum = maximum;
         spans = new Span[0];
         time_left = maximum;
@@ -29,6 +29,14 @@ public class Activities implements Parcelable, Serializable {
 
     private Activities(Parcel in){
         readParcel(in);
+    }
+
+    public void setSpan(Span s){
+        for (int i = 0; i < spans.length; ++i){
+            if (spans[i].name.equals(s.name)){
+                spans[i] = s;
+            }
+        }
     }
     public Span[] getSpans(){
         return spans;

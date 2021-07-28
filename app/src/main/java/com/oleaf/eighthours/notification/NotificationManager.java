@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.oleaf.eighthours.Home;
 import com.oleaf.eighthours.Span;
 
 import static android.content.Context.ACTIVITY_SERVICE;
@@ -17,16 +18,13 @@ public class NotificationManager {
     boolean isBound = false;
     //This flag is used to connect to a service that is already running on app start
     boolean isRunning;
+    boolean connectWithout = false;
     Context context;
     Span span;
     Runnable eachUpdate;
 
     public NotificationManager(Context context) {
         this.context = context;
-    }
-
-    public void start(){
-        startService();
     }
 
     public void stopService(){
@@ -52,7 +50,12 @@ public class NotificationManager {
         }
     }
 
-    private void startService(){
+    public void connectInitial(){
+        connectWithout = true;
+        connect(null);
+    }
+
+    public void startService(){
         //New intent intended to start the Notify service
         Intent intent = new Intent(context, Notify.class);
         //Stop the service just in case
@@ -73,13 +76,20 @@ public class NotificationManager {
             // We've bound to MyService, cast the IBinder and get MyBinder instance
             Notify.MyBinder myBinder = (Notify.MyBinder) binder;
             service = myBinder.getService();
-            service.attachSpan(span);
+            if (connectWithout){
+                span = service.getSpan();
+                if (span != null){
+                    ((Home)context).activities.setSpan(span);
+                }
+                connectWithout = false;
+            }else{
+                service.attachSpan(span);
+            }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
             Log.d("S","ServiceConnection: disconnected from service.");
-
         }
     };
 }

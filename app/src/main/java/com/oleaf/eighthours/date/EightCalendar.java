@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.oleaf.eighthours.Activities;
 import com.oleaf.eighthours.Home;
 import com.oleaf.eighthours.R;
+import com.oleaf.eighthours.Span;
 
 import java.io.*;
 import java.util.Calendar;
@@ -24,15 +25,11 @@ public class EightCalendar {
     public static TypedArray dayNames;
     Home home;
     Calendar date;
-    Activities activities;
-    Context context;
 
-    public EightCalendar(Activities activities, Context context, Home home){
+    public EightCalendar(Home home){
         date = Calendar.getInstance();
-        this.activities = activities;
-        this.context = context;
         this.home = home;
-        dayNames = context.getResources().obtainTypedArray(R.array.day_names);
+        dayNames = home.getResources().obtainTypedArray(R.array.day_names);
     }
 
     public void showDatePicker(FragmentManager supportedFragmentManager){
@@ -41,7 +38,7 @@ public class EightCalendar {
     }
 
     public void changeDate(int year, int month, int day){
-        writeDate();
+        writeDate(home, home.activities, date);
         date.set(year, month, day);
         readDate();
         home.updateButton(isPast());
@@ -54,22 +51,28 @@ public class EightCalendar {
     }
 
     public void saveActivities(){
-        writeDate();
+        writeDate(home, home.activities, date);
     }
 
-    private void checkFolder(){
+    public static void saveSpan(Span span, Context context, Calendar date){
+        Activities activities = readDate(context, date);
+        activities.setSpan(span);
+        writeDate(context, activities, date);
+    }
+
+    private static void checkFolder(Context context){
         File folder = context.getDir(dirName, Context.MODE_PRIVATE);
         if (!folder.exists()){
             folder.mkdir();
         }
     }
 
-    private void writeDate(){
-        checkFolder();
+    public static void writeDate(Context context, Activities activities, Calendar date){
+        checkFolder(context);
         try{
             FileOutputStream dateFile = context.openFileOutput("."+date.get(Calendar.DAY_OF_MONTH)+"-"+date.get(Calendar.MONTH) + "-" +date.get(Calendar.YEAR), Context.MODE_PRIVATE);
             ObjectOutputStream outputStream = new ObjectOutputStream(dateFile);
-            outputStream.writeObject(home.activities);
+            outputStream.writeObject(activities);
             outputStream.close();
             dateFile.close();
         }catch(IOException e){
@@ -87,15 +90,23 @@ public class EightCalendar {
     }
 
     public void readDate(){
-        checkFolder();
+        home.resetActivities();
+        Activities readActivities = (Activities) readDate(home, date);
+        home.changeActivities(readActivities);
+        home.updateActivities();
+    }
+
+    public static Activities readDate(Context context, Calendar date){
+        checkFolder(context);
         File dateFile = new File(context.getFilesDir(),"."+date.get(Calendar.DAY_OF_MONTH)+"-"+date.get(Calendar.MONTH) + "-" +date.get(Calendar.YEAR));
 
-        home.resetActivities();
+        Activities activities = new Activities(Home.getDefaultTime(context));
         if (dateFile.exists()){
             try{
                 FileInputStream fileInputStream = new FileInputStream(dateFile);
                 ObjectInputStream inputStream = new ObjectInputStream(fileInputStream);
-                home.changeActivities((Activities) inputStream.readObject());
+
+                activities = (Activities) inputStream.readObject();
                 inputStream.close();
                 fileInputStream.close();
             }catch(IOException e){
@@ -104,7 +115,7 @@ public class EightCalendar {
                 Log.d("Class not found", e.getMessage());
             }
         }
-        home.updateActivities();
+        return activities;
     }
 
     public boolean isToday(){

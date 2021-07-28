@@ -71,8 +71,7 @@ public class Home extends AppCompatActivity {
         textEditLayout = findViewById(R.id.textEditLayout);
         editText = findViewById(R.id.edit_name);
         detailsFragment = DetailsFragment.newInstance();
-        notificationManager = new NotificationManager(this);
-        eightCalendar = new EightCalendar(activities, this, this);
+        eightCalendar = new EightCalendar(this);
         eightCalendar.readDate();
         showTwist = AnimationUtils.loadAnimation(this, R.anim.show_twist);
         hideTwist = AnimationUtils.loadAnimation(this, R.anim.hide_twist);
@@ -100,6 +99,12 @@ public class Home extends AppCompatActivity {
             View decor = getWindow().getDecorView();
             decor.setSystemUiVisibility(decor.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR |View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR   );
         }
+
+        notificationManager = new NotificationManager(this);
+        //if the service is ongoing get the current span
+        notificationManager.connectInitial();
+        //Restart/Start the service
+        notificationManager.startService();
     }
 
     public void updateDefaultTime(){
@@ -313,10 +318,12 @@ public class Home extends AppCompatActivity {
     }
 
     private int getDefaultTime(){
-        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("default_time", ""+getResources().getInteger(R.integer.default_hours))) * 60;
+        return getDefaultTime(this);
     }
 
-
+    public static int getDefaultTime(Context context){
+        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("default_time", ""+context.getResources().getInteger(R.integer.default_hours))) * 60;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
