@@ -89,6 +89,7 @@ public class Options extends LinearLayout {
         home.circle.update();
         //delete in activities
         home.activities.deleteActivity(index);
+        home.eightCalendar.saveActivities();
         home.updateTimeLeft();
         hide();
     }

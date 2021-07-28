@@ -96,6 +96,10 @@ public class EightCalendar {
         home.updateActivities();
     }
 
+    public Calendar getDate(){
+        return date;
+    }
+
     public static Activities readDate(Context context, Calendar date){
         checkFolder(context);
         File dateFile = new File(context.getFilesDir(),"."+date.get(Calendar.DAY_OF_MONTH)+"-"+date.get(Calendar.MONTH) + "-" +date.get(Calendar.YEAR));

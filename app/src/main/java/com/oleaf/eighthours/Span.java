@@ -15,15 +15,17 @@ public class Span implements Parcelable,  Serializable{
     public float additionalTime=0;
     private boolean onGoing;
     public byte color_index;
+    public int index;
     public String name;
 
-    Span(int _minutes, int _color_index, int time_left, String _name){
+    Span(int index, int _minutes, int _color_index, int time_left, String _name){
         minutes = clamp(round_up(_minutes), time_left);
         color_index = (byte) _color_index;
         name = _name;
+        this.index = index;
     }
-    Span(int _minutes, int _color_index, int time_left){
-        this(_minutes, _color_index, time_left, default_name);
+    Span(int index, int _minutes, int _color_index, int time_left){
+        this(index, _minutes, _color_index, time_left, default_name);
     }
     private int round_up(int time) {
         return Math.round(time / (float) grid) * grid;
@@ -41,6 +43,7 @@ public class Span implements Parcelable,  Serializable{
     protected Span(Parcel in) {
         minutes = in.readFloat();
         color_index = in.readByte();
+        index = in.readInt();
         name = in.readString();
         startTime = in.readLong();
         additionalTime = in.readFloat();
@@ -53,6 +56,7 @@ public class Span implements Parcelable,  Serializable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeFloat(minutes);
         dest.writeByte(color_index);
+        dest.writeInt(index);
         dest.writeString(name);
         dest.writeLong(startTime);
         dest.writeFloat(additionalTime);

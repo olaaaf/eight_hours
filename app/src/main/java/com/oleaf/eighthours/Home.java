@@ -101,8 +101,6 @@ public class Home extends AppCompatActivity {
         }
 
         notificationManager = new NotificationManager(this);
-        //if the service is ongoing get the current span
-        notificationManager.connectInitial();
         //Restart/Start the service
         notificationManager.startService();
     }
@@ -151,6 +149,7 @@ public class Home extends AppCompatActivity {
 
     public void editActivity(int index, int min, int color){
         activities.editActivity(index, min, (byte) color, editText.getText().toString());
+        eightCalendar.saveActivities();
     }
     //Activity changing
     private boolean getExtras(){
@@ -344,5 +343,14 @@ public class Home extends AppCompatActivity {
                     updateTimeLeft();
                 }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (!notificationManager.isBound){
+            //destroy service
+            notificationManager.stopService();
+        }
+        super.onDestroy();
     }
 }

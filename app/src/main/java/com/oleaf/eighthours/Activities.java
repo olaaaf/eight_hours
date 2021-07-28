@@ -33,10 +33,12 @@ public class Activities implements Parcelable, Serializable {
 
     public void setSpan(Span s){
         for (int i = 0; i < spans.length; ++i){
-            if (spans[i].name.equals(s.name)){
+            if (spans[i].index == s.index){
                 spans[i] = s;
+                break;
             }
         }
+        updateTimeLeft();
     }
     public Span[] getSpans(){
         return spans;
@@ -55,9 +57,9 @@ public class Activities implements Parcelable, Serializable {
         Span[] cp = new Span[spans.length+1];
         spans = copyOf(spans, spans.length+1);
         if (name.isEmpty())
-            spans[spans.length-1] = new Span(minutes, color_index, time_left);
+            spans[spans.length-1] = new Span(spans.length-1, minutes, color_index, time_left);
         else
-            spans[spans.length-1] = new Span(minutes, color_index, time_left, name);
+            spans[spans.length-1] = new Span(spans.length-1,minutes, color_index, time_left, name);
         time_left -= spans[spans.length-1].minutes;
         return spans.length-1;
     }

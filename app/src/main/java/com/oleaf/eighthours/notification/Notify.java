@@ -18,7 +18,9 @@ import com.oleaf.eighthours.Home;
 import com.oleaf.eighthours.R;
 import com.oleaf.eighthours.Span;
 import com.oleaf.eighthours.Tools;
+import com.oleaf.eighthours.date.EightCalendar;
 
+import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Notify extends Service {
@@ -29,15 +31,11 @@ public class Notify extends Service {
 
     private Thread updateThread;
     private NotificationManagerCompat manager;
-    private NotificationChannel channel;
     //An Atomic Boolean for use inside a Thread
     private AtomicBoolean running = new AtomicBoolean(true);
     private AtomicBoolean hide = new AtomicBoolean(false);
     private NotificationCompat.Builder builder;
-    private long skipStart = 0;
-    private float skipValue = 0;
-    private float minSkipValue = 0;
-    private float skipAddintion = 0;
+    private Calendar date;
 
     private final MyBinder myBinder = new MyBinder();
     //Notification constants
@@ -53,7 +51,7 @@ public class Notify extends Service {
         manager = NotificationManagerCompat.from(this);
         //Create a notification channel if the Android version is newer or equal to O
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            channel = new NotificationChannel(channelId, channelName, channelImportance);
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, channelImportance);
             channel.setDescription(channelDesc);
             manager.createNotificationChannel(channel);
         }
@@ -82,7 +80,9 @@ public class Notify extends Service {
      * Attach a span to the notification and start the runnable thread
      * @param s - the span to attach to
      */
-    public void attachSpan(Span s){
+    public void attachSpan(Span s, Calendar date){
+        //Obtain the date of current span (used for saving progress later)
+        this.date = date;
         //Get a TypedArray from the resources
         colors = getResources().obtainTypedArray(R.array.colors);
         //Create a base notification
@@ -102,6 +102,11 @@ public class Notify extends Service {
      */
     public void detach(){
         hide.set(true);
+        if (date != null && span != null)
+            //Save span
+            EightCalendar.saveSpan(span, this, date);
+        //Hide notification
+        hideNotification();
     }
 
     public Span getSpan(){
@@ -120,7 +125,6 @@ public class Notify extends Service {
     public void onDestroy() {
         running.set(false);
         detach();
-        hideNotification();
         super.onDestroy();
     }
 
@@ -135,9 +139,11 @@ public class Notify extends Service {
     }
 
     public void update(){
-        if (span != null){
+        if (span != null && running.get()){
             builder.setContentText(Tools.timeMinutes(span.getMinutes() - span.getCurrentMinutes()) + " left");
             manager.notify(notificationID, builder.build());
+        }else{
+            hideNotification();
         }
     }
 

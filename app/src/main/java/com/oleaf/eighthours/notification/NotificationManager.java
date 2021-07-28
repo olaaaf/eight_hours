@@ -15,10 +15,9 @@ import static android.content.Context.ACTIVITY_SERVICE;
 
 public class NotificationManager {
     Notify service;
-    boolean isBound = false;
+    public boolean isBound = false;
     //This flag is used to connect to a service that is already running on app start
     boolean isRunning;
-    boolean connectWithout = false;
     Context context;
     Span span;
     Runnable eachUpdate;
@@ -50,11 +49,6 @@ public class NotificationManager {
         }
     }
 
-    public void connectInitial(){
-        connectWithout = true;
-        connect(null);
-    }
-
     public void startService(){
         //New intent intended to start the Notify service
         Intent intent = new Intent(context, Notify.class);
@@ -76,15 +70,7 @@ public class NotificationManager {
             // We've bound to MyService, cast the IBinder and get MyBinder instance
             Notify.MyBinder myBinder = (Notify.MyBinder) binder;
             service = myBinder.getService();
-            if (connectWithout){
-                span = service.getSpan();
-                if (span != null){
-                    ((Home)context).activities.setSpan(span);
-                }
-                connectWithout = false;
-            }else{
-                service.attachSpan(span);
-            }
+            service.attachSpan(span, ((Home) context).eightCalendar.getDate());
         }
 
         @Override
