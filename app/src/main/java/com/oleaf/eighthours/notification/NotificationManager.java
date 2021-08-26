@@ -38,6 +38,7 @@ public class NotificationManager {
             isBound = false;
             context.unbindService(serviceConnection);
             service.detach();
+            ((Home) context).circle.invalidate();
         }
     }
 
@@ -71,6 +72,7 @@ public class NotificationManager {
             Notify.MyBinder myBinder = (Notify.MyBinder) binder;
             service = myBinder.getService();
             service.attachSpan(span, ((Home) context).eightCalendar.getDate());
+            ((Home) context).circle.invalidate();
         }
 
         @Override

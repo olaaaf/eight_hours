@@ -117,7 +117,8 @@ public class Notify extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         running.set(true);
         //Start the thread that updates the notification
-        updateThread.start();
+        if (!updateThread.isAlive())
+            updateThread.start();
         return START_STICKY;
     }
 
@@ -145,6 +146,8 @@ public class Notify extends Service {
         }else{
             hideNotification();
         }
+
+
     }
 
     //Notification functions

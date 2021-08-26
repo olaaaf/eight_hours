@@ -6,6 +6,7 @@
     <color name="colorAccent">#FDD835</color>
     <color name="circle_color">#47525E</color>
     <color name="drag_color">#e25033</color>
+    <color name="play_color">#020025</color>
     <color name="cancel">#263238</color>
     <color name="cancel_pressed">#a5bad1</color>
     <color name="indicator_circle">#fdd835</color>

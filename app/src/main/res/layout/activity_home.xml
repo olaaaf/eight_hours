@@ -56,21 +56,21 @@
             app:layout_constraintTop_toTopOf="@+id/guideline10"/>
 
     <TextView
-            style="@style/TextSecondary"
             android:id="@+id/textView3"
+            style="@style/TextSecondary"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:autoSizeMaxTextSize="15sp"
+            android:autoSizeTextType="uniform"
             android:gravity="center_horizontal"
             android:text="@string/timeleft"
-            android:autoSizeTextType="uniform"
-            android:autoSizeMaxTextSize="15sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/guideline14"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="@+id/textView"
-            app:layout_constraintBottom_toTopOf="@+id/guideline14"
-            app:layout_constraintVertical_bias="0.0"
-            android:visibility="gone"/>
+            app:layout_constraintVertical_bias="0.0" />
 
     <com.oleaf.eighthours.ColorMenu
             style="@style/TransparentBackground"
@@ -341,18 +341,18 @@
             app:layout_constraintTop_toBottomOf="@+id/dateButton"/>
 
     <ImageButton
+            android:id="@+id/dateButton"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            app:srcCompat="@drawable/calendar"
-            android:id="@+id/dateButton"
-            android:background="@drawable/circle_ripple_transparent"
-            android:tint="#FF000000"
-            android:onClick="calendarPress"
-            app:layout_constraintStart_toStartOf="@+id/guideline17"
-            app:layout_constraintTop_toTopOf="@+id/guideline7"
-            app:layout_constraintBottom_toTopOf="@+id/guideline7"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline17"/>
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/circle_ripple_transparent"
+            android:onClick="calendarPress"
+            android:tint="#FF000000"
+            app:layout_constraintBottom_toTopOf="@+id/guideline7"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/guideline7"
+            app:srcCompat="@drawable/calendar" />
 
 
     <com.google.android.material.textfield.TextInputLayout

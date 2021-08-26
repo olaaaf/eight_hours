@@ -81,6 +81,7 @@ public class Options extends LinearLayout {
         if (index < 0)
             return;
         Home home = (Home) getContext();
+        home.notificationManager.disconnect();
         //stop the timer
         home.circle.stopSelected();
         //Deselect and delete visually

@@ -189,7 +189,7 @@ public class Home extends AppCompatActivity {
         }
     }
     public void optionsShow(int index){
-
+        //Show the name of the activity
     }
 
     public void fillEdit(int index){
@@ -205,6 +205,8 @@ public class Home extends AppCompatActivity {
     public void optionsHide(){
         //add_button.setActivated(false);
         options.close();
+        //hide the name
+        desc.setText("");
     }
 
     public void updateTimeLeft(){
@@ -291,11 +293,17 @@ public class Home extends AppCompatActivity {
         options.show(index);
         addButton.currentState = eightCalendar.isToday() ? AddButton.State.PLAY : AddButton.State.PLAY_INACTIVE;
         addButton.setState(addButton.currentState);
+        String name = activities.getSpan(index).getName();
+        //show the name of the activity
+        desc.setVisibility(View.VISIBLE);
+        desc.setText(name);
     }
 
     public void showHide(){
         close.startAnimation(hideTwist);
         changeAddButton(AddButton.State.ADDNEW);
+        desc.setText("");
+        circle.cancel();
     }
 
     public void showClose(){

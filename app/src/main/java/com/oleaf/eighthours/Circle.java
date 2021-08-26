@@ -33,6 +33,7 @@ public class Circle extends View{
     Animation animation;
     Arcs arcs;
     Arcs.Arc dragArc;
+    Arcs.Arc playArc;
     private Handler handlerUpdater;
     private Runnable runnable;
     private boolean handlerWorking;
@@ -125,6 +126,7 @@ public class Circle extends View{
         alpha_rounded = (float) Math.asin(paint.getStrokeWidth() / (height / 2f));
         arcs = new Arcs();
         dragArc = arcs.new Arc(0, resources.getColor(R.color.drag_color), false);
+        playArc = arcs.new Arc(0, resources.getColor(R.color.play_color), false);
         basicEdit = basicEdit = new BasicAnimation(1){
             @Override
             public void afterFinish() {
@@ -136,6 +138,19 @@ public class Circle extends View{
 
     @Override
     protected void onDraw(final Canvas canvas) {
+        //playing arc(s)
+        int a = -90;
+        for (Span s : home.activities.getSpans()){
+            if (!s.isOnGoing())
+                a += convertMinutes(s.getMinutes());
+            else{
+                playArc.alpha = convertMinutes(s.getMinutes());
+                paint.setStrokeWidth(paint.getStrokeWidth() + 15);
+                playArc.drawRounded(a, canvas);
+                paint.setStrokeWidth(paint.getStrokeWidth() - 15);
+            }
+        }
+
         start_alpha = arcs.drawAll(canvas);
         if (dragging){
             dragArc.drawRounded(start_alpha, canvas);
@@ -166,8 +181,8 @@ public class Circle extends View{
             return Math.round(Math.round(dragArc.alpha /360f * home.activities.maximum) / (float) Home.grid) * Home.grid;
         }
     }
-    public float convertMinutes(int a){
-        return ((float)a)/((float)home.activities.maximum)*360.0f;
+    public float convertMinutes(float a){
+        return a/((float)home.activities.maximum)*360.0f;
     }
     private void drawBaseCircle(Canvas canvas){
         float stroke_width = paint.getStrokeWidth();
